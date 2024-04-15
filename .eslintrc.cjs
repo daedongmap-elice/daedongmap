@@ -17,8 +17,13 @@ module.exports = {
   plugins: [],
   rules: {
     "react/jsx-filename-extension": [
-      1,
-      { extensions: [".js", ".jsx", ".ts", "tsx"] },
+      "warn",
+      { extensions: [".tsx", ".ts", ".js", "jsx"] },
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      { ts: "never", tsx: "never" },
     ],
   },
 };
