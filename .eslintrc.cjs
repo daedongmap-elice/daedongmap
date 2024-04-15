@@ -14,16 +14,22 @@ module.exports = {
     sourceType: "module",
     project: ["./tsconfig.json"],
   },
-  plugins: [],
+  plugins: ["react", "prettier"],
   rules: {
+    "import/extensions": ["off"],
+    "import/no-extraneous-dependencies": 0,
     "react/jsx-filename-extension": [
-      "warn",
-      { extensions: [".tsx", ".ts", ".js", "jsx"] },
+      1,
+      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
     ],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      { ts: "never", tsx: "never" },
-    ],
+    "linebreak-style": 0,
+  },
+  ignorePatterns: ['vite.config.ts'],
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".ts", ".d.ts", ".tsx"],
+      },
+    },
   },
 };
