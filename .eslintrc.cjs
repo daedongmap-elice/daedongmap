@@ -24,7 +24,7 @@ module.exports = {
     ],
     "linebreak-style": 0,
   },
-  ignorePatterns: ['vite.config.ts'],
+  ignorePatterns: ["vite.config.ts"],
   settings: {
     "import/resolver": {
       node: {
