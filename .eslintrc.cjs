@@ -23,7 +23,7 @@ module.exports = {
       { extensions: [".js", ".jsx", ".ts", ".tsx"] },
     ],
     "linebreak-style": 0,
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
   ignorePatterns: ["vite.config.ts"],
   settings: {
