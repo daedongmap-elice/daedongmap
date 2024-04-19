@@ -1,15 +1,7 @@
-import { FC } from "react";
-
-interface ImgProps {
-  imgName: string;
-}
-
-const Photo: FC<ImgProps> = ({ imgName }) => {
+export default function Photo() {
   return (
-    <>
-      <img src={`img/${imgName}`} alt="" className="w-full" />
-    </>
+    <div>
+      <div></div>
+    </div>
   );
-};
-
-export default Photo;
+}
