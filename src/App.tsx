@@ -1,9 +1,11 @@
 import "./App.css";
+import { FaBeer } from "react-icons/fa";
 
 function App() {
   return (
     <>
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <FaBeer />
       <details className="dropdown">
         <summary className="m-1 btn">open or close</summary>
         <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
