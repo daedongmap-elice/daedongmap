@@ -8,6 +8,8 @@ export default {
         mainG: "#2A6448",
         YbtnText: "#3C3C3C",
         GbtnText: "#FFFFFF",
+        subGray: "#7C7C7C",
+        subLightGray: "#DADADA",
       },
     },
   },
