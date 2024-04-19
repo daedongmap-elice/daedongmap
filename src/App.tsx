@@ -12,6 +12,7 @@ function App() {
           <li>
             <div>Item 1</div>
           </li>
+          <p>폰트가 바뀌어쓴ㄴ지 확인 해봐요</p>
           <li>
             <div>Item 2</div>
           </li>
