@@ -25,7 +25,7 @@ module.exports = {
     "linebreak-style": 0,
     "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
-  ignorePatterns: ["vite.config.ts"],
+  ignorePatterns: ["vite.config.ts", "postcss.config.js", "tailwind.config.js"],
   settings: {
     "import/resolver": {
       node: {
