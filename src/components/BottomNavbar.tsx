@@ -21,7 +21,3 @@ export default function BottomNavbar() {
     </div>
   );
 }
-
-// .btm-nav > *:not(.active) {
-//   padding-top: 0;
-// }
