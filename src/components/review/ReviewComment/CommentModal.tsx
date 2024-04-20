@@ -1,4 +1,4 @@
-import CommentProfile from "./CommentProfile";
+import Comment from "./Comment";
 
 export default function CommentModal() {
   return (
@@ -22,9 +22,9 @@ export default function CommentModal() {
           <p className="py-4 text-xs">
             Press ESC key or click on ✕ button to close
           </p>
-          <CommentProfile />
-          <CommentProfile />
-          <CommentProfile />
+          <Comment />
+          <Comment />
+          <Comment />
           <div className="fixed bottom-5 w-10/12">
             <form className="flex gap-2">
               <input

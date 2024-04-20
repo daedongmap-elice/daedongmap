@@ -1,4 +1,4 @@
-export default function CommentProfile() {
+export default function Comment() {
   return (
     <>
       <a href="/">
