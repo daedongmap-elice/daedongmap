@@ -1,9 +1,9 @@
-import UserProfile from "../../components/review/ReviewDetail/UserProfile";
 import EditButton from "../../components/review/EditButton";
 import ReviewPhoto from "../../components/review/ReviewDetail/ReviewPhoto";
 import LikeButton from "../../components/review/ReviewDetail/LikeButton";
 import DateCreated from "../../components/review/DateCreated";
 import RatingStar from "../../components/review/RatingStar";
+import ReviewProfile from "../../components/review/ReviewDetail/ReviewProfile";
 
 export default function ReviewDetail() {
   function handleSeeMore() {
@@ -13,7 +13,7 @@ export default function ReviewDetail() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <UserProfile />
+        <ReviewProfile />
         <div className="mt-4 mb-3 mr-3">
           <EditButton />
         </div>
