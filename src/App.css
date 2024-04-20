@@ -58,3 +58,27 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+.custom-line {
+	position: relative;
+  }
+  
+  .custom-line::before,
+  .custom-line::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	bottom: 0;
+	height: 1px;
+	background-color: #DADADA;
+  }
+  
+  .custom-line::before {
+	width: 53%; 
+	right: 105%; 
+  }
+  
+  .custom-line::after {
+	width: 53%; 
+	left: 105%; 
+  }

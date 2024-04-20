@@ -3,7 +3,7 @@ export function SignUpPresent() {
   return (
     <>
       <div className="w-full mt-[70px] flex flex-col items-center">
-        <img className="w-[300px] h-[129px]" src={logo} alt="로고 이미지" />
+        <img src={logo} alt="로고 이미지" />
         <form className="w-full max-w-xs">
           <div className="label">
             <span className="label-text">E-mail</span>
