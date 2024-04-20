@@ -4,6 +4,8 @@ import PreLoginPresent from "./components/user/preLoginPresnt";
 import { SignUpPresent } from "./components/user/signupPresent";
 import { LoginPresent } from "./components/user/loginPresent";
 import { MypagePresent } from "./components/user/mypagePresent";
+import BottomNavbar from "./components/BottomNavbar";
+import { MainMapPage } from "./pages/MainMapPage";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="mypage" element={<MypagePresent />} />
         </Routes>
       </Router>
+      <MainMapPage />
+      <BottomNavbar />
     </>
   );
 }
