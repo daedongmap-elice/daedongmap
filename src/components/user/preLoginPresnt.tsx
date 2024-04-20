@@ -1,6 +1,6 @@
 import icons from "./../../asssests/LoginLogo.jpg";
 
-export function PreLoginPresent() {
+export default function PreLoginPresent() {
   return (
     <>
       <div className="w-full mt-[130px] flex flex-col items-center justify-center">
