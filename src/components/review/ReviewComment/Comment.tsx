@@ -1,3 +1,5 @@
+import DateCreated from "../DateCreated";
+
 export default function Comment() {
   return (
     <>
@@ -11,8 +13,9 @@ export default function Comment() {
             />
           </div>
           <div className="text-xs max-w-64">
-            <p className="mb-2">
+            <p className="mb-2 flex justify-between items-center">
               <b>유저닉네임</b>
+              <DateCreated />
             </p>
             <p className="">
               나중에 가봐야겠네요 헌법개정안은 국회가 의결한 후 30일 이내에
