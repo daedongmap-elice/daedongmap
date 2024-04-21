@@ -7,7 +7,9 @@ interface ThumbnailProps {
 const Thumbnail: FC<ThumbnailProps> = ({ imgName }) => {
   return (
     <>
-      <img src={`img/${imgName}`} alt="" className="w-full" />
+      <a href="/detail">
+        <img src={`img/${imgName}`} alt="" className="w-full" />
+      </a>
     </>
   );
 };
