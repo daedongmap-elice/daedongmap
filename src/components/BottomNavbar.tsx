@@ -7,16 +7,24 @@ export default function BottomNavbar() {
   return (
     <div className="btm-nav h-9">
       <button className="pb-0 border-none rounded-none bg-white">
-        <BiSolidHome className="h-5 w-5" />
+        <a href="/">
+          <BiSolidHome className="h-5 w-5" />
+        </a>
       </button>
       <button className="pb-0 border-none rounded-none bg-white">
-        <BiSolidGridAlt className="h-5 w-5" />
+        <a href="/review">
+          <BiSolidGridAlt className="h-5 w-5" />
+        </a>
       </button>
       <button className="pb-0 border-none rounded-none bg-white">
-        <BsFillPlusCircleFill />
+        <a href="/post">
+          <BsFillPlusCircleFill />
+        </a>
       </button>
       <button className="pb-0 border-none rounded-none bg-white">
-        <BiSolidUserCircle className="h-5 w-5" />
+        <a href="/mypage">
+          <BiSolidUserCircle className="h-5 w-5" />
+        </a>
       </button>
     </div>
   );
