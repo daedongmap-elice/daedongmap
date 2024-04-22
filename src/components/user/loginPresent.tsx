@@ -24,9 +24,11 @@ export function LoginPresent() {
             className="input input-bordered w-[280px] max-w-xs"
           />
         </form>
-        <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
-          회원가입
-        </button>
+        <a href="/">
+          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+            로그인
+          </button>
+        </a>
         <p className="text-center text-xs custom-line mt-[15px]">
           소셜 계정으로 간편 로그인
         </p>
