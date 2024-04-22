@@ -1,5 +1,5 @@
 import logo from "./../../assests/Logo.jpg";
-export function SignUpPresent() {
+export default function SignUpPresent() {
   return (
     <>
       <div className="w-full mt-[70px] flex flex-col items-center">

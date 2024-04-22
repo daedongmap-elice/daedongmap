@@ -1,7 +1,7 @@
 import logo from "./../../assests/Logo.jpg";
 import profile from "./../../assests/profile.jpg";
 
-export function EditProfilePresnet() {
+export default function EditProfilePresnet() {
   return (
     <>
       <div className="w-full mt-[40px] flex flex-col items-center">

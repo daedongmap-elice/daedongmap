@@ -1,7 +1,7 @@
 import logo from "./../../assests/Logo.jpg";
 import "./../../App.css";
 
-export function LoginPresent() {
+export default function LoginPresent() {
   return (
     <>
       <div className="w-full mt-[70px] flex flex-col items-center">
