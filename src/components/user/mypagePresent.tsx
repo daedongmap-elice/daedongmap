@@ -1,6 +1,6 @@
 import profile from "./../../assests/profile.jpg";
 
-export function MyPagePresent() {
+export default function MyPagePresent() {
   return (
     <>
       <div className="flex flex-col items-center">
