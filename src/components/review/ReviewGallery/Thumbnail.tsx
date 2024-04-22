@@ -1,14 +1,12 @@
-import { FC } from "react";
-
 interface ThumbnailProps {
-  imgName: string;
+  imageUrl: string;
 }
 
-const Thumbnail: FC<ThumbnailProps> = ({ imgName }) => {
+const Thumbnail: React.FC<ThumbnailProps> = ({ imageUrl }) => {
   return (
     <>
       <a href="/detail">
-        <img src={`img/${imgName}`} alt="" className="w-full" />
+        <img src={imageUrl} alt="" className="w-full" />
       </a>
     </>
   );
