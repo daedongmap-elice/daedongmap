@@ -4,6 +4,7 @@ import markerIcon from "../public/svg/marker.svg";
 import { ChangeViewBtn } from "../components/map/ChangeViewBtn";
 import { SearchInput } from "../components/map/SearchInput";
 import { NowPositionBtn } from "../components/map/NowPositionBtn";
+import { PlaceInfoCard } from "../components/map/PlaceInfoCard";
 
 export function MainMapPage() {
   return (
@@ -64,6 +65,9 @@ export function MainMapPage() {
       <div>
         <ChangeViewBtn />
         <NowPositionBtn />
+        <div className="absolute bottom-16 z-10 w-[320px] left-1/2 -translate-x-1/2">
+          <PlaceInfoCard />
+        </div>
       </div>
     </Map>
   );
