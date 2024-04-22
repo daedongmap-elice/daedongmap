@@ -1,9 +1,8 @@
-import logo from "./../../asssests/Logo.jpg";
-export function SignUpPresent() {
+export default function SignUpPresent() {
   return (
     <>
       <div className="w-full mt-[70px] flex flex-col items-center">
-        <img src={logo} alt="로고 이미지" />
+        <img src="img/Logo.jpg" alt="로고 이미지" />
         <form className="w-full max-w-xs">
           <div className="label">
             <span className="label-text">E-mail</span>
@@ -38,9 +37,11 @@ export function SignUpPresent() {
             className="input input-bordered w-full max-w-xs"
           />
         </form>
-        <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
-          회원가입
-        </button>
+        <a href="/login">
+          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+            회원가입
+          </button>
+        </a>
       </div>
     </>
   );

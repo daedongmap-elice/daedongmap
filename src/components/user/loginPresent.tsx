@@ -1,11 +1,10 @@
-import logo from "./../../asssests/Logo.jpg";
 import "./../../App.css";
 
-export function LoginPresent() {
+export default function LoginPresent() {
   return (
     <>
       <div className="w-full mt-[70px] flex flex-col items-center">
-        <img src={logo} alt="로고 이미지" />
+        <img src="img/Logo.jpg" alt="로고 이미지" />
         <form className="w-[280px] flex flex-col max-w-xs">
           <div className="label">
             <span className="label-text">E-mail</span>
@@ -24,9 +23,11 @@ export function LoginPresent() {
             className="input input-bordered w-[280px] max-w-xs"
           />
         </form>
-        <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
-          회원가입
-        </button>
+        <a href="/">
+          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+            로그인
+          </button>
+        </a>
         <p className="text-center text-xs custom-line mt-[15px]">
           소셜 계정으로 간편 로그인
         </p>
