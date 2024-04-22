@@ -10,11 +10,13 @@ import SignUpPresent from "../components/user/signupPresent";
 import LoginPresent from "../components/user/loginPresent";
 import MyPagePresent from "../components/user/mypagePresent";
 import EditProfilePresnet from "../components/user/editProfilePresent";
+import NotFoundPresent from "../components/notFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <NotFoundPresent />,
     children: [
       { path: "/", element: <MainMapPage /> },
       //게시글 관련 페이지
