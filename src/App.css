@@ -86,12 +86,12 @@ time,
 mark,
 audio,
 video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -105,13 +105,13 @@ hgroup,
 menu,
 nav,
 section {
-    display: block;
+  display: block;
 }
 body {
-    line-height: 1;
-    font-family: "Noto Sans KR", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
+  line-height: 1;
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
 /* <uniquifier>: Use a unique and descriptive class name
@@ -119,46 +119,50 @@ body {
 
 ol,
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 blockquote,
 q {
-    quotes: none;
+  quotes: none;
 }
 
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-    content: "";
-    content: none;
+  content: "";
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 .custom-line {
-	position: relative;
-  }
-  
-  .custom-line::before,
-  .custom-line::after {
-	content: '';
-	position: absolute;
-	top: 50%;
-	bottom: 0;
-	height: 1px;
-	background-color: #DADADA;
-  }
-  
-  .custom-line::before {
-	width: 53%; 
-	right: 105%; 
-  }
-  
-  .custom-line::after {
-	width: 53%; 
-	left: 105%; 
-  }
+  position: relative;
+}
+
+.custom-line::before,
+.custom-line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+  height: 1px;
+  background-color: #dadada;
+}
+
+.custom-line::before {
+  width: 53%;
+  right: 105%;
+}
+
+.custom-line::after {
+  width: 53%;
+  left: 105%;
+}
+
+.text-xxs {
+  font-size: 0.65rem;
+}
