@@ -1,4 +1,4 @@
-import icons from "./../../asssests/LoginLogo.jpg";
+import icons from "./../../assests/LoginLogo.jpg";
 
 export default function PreLoginPresent() {
   return (

@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PreLoginPresent from "./components/user/preLoginPresnt";
 import { SignUpPresent } from "./components/user/signupPresent";
 import { LoginPresent } from "./components/user/loginPresent";
-import { MypagePresent } from "./components/user/mypagePresent";
+import { EditProfilePresnet } from "./components/user/editProfilePresent";
 import { MainMapPage } from "./pages/MainMapPage";
+import { MyPagePresent } from "./components/user/mypagePresent";
 import BottomNavbar from "./components/BottomNavbar";
 import ReviewGallery from "./pages/review/ReviewGallery";
 import ReviewPost from "./pages/review/ReviewPost";
@@ -20,7 +21,8 @@ function App() {
           <Route path="/prelogin" element={<PreLoginPresent />} />
           <Route path="/signup" element={<SignUpPresent />} />
           <Route path="/login" element={<LoginPresent />} />
-          <Route path="/mypage" element={<MypagePresent />} />
+          <Route path="mypage" element={<MyPagePresent />} />
+          <Route path="/editprofile" element={<EditProfilePresnet />} />
           <Route path="/review" element={<ReviewGallery />} />
           <Route path="/post" element={<ReviewPost />} />
           <Route path="/detail" element={<ReviewDetail />} />
