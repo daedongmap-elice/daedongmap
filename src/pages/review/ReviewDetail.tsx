@@ -1,5 +1,5 @@
 import EditButton from "../../components/review/EditButton";
-import ReviewPhoto from "../../components/review/ReviewDetail/ReviewPhoto";
+import ReviewImage from "../../components/review/ReviewDetail/ReviewImage";
 import LikeButton from "../../components/review/ReviewDetail/LikeButton";
 import DateCreated from "../../components/review/DateCreated";
 import RatingStar from "../../components/review/RatingStar";
@@ -18,7 +18,7 @@ export default function ReviewDetail() {
           <EditButton />
         </div>
       </div>
-      <ReviewPhoto />
+      <ReviewImage />
       <div className="flex justify-between items-center mt-2">
         <LikeButton />
         <DateCreated />
@@ -50,7 +50,7 @@ export default function ReviewDetail() {
           <button onClick={handleSeeMore}>더 보기</button>
         </span>
       </div>
-      <div className="text-subGray text-sm px-5 pt-2">
+      <div className="text-subGray text-sm px-5 pt-2 mb-6">
         <button>
           <a href="/comment">댓글 0개 보기</a>
         </button>
