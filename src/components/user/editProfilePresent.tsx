@@ -1,5 +1,5 @@
-import logo from "./../../assests/Logo.jpg";
-import profile from "./../../assests/profile.jpg";
+import logo from "@/assests/Logo.jpg";
+import profile from "@/assests/profile.jpg";
 
 export default function EditProfilePresnet() {
   return (
