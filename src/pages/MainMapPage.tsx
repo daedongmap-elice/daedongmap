@@ -61,8 +61,10 @@ export function MainMapPage() {
         }}
       />
       <SearchInput />
-      <ChangeViewBtn />
-      <NowPositionBtn />
+      <div>
+        <ChangeViewBtn />
+        <NowPositionBtn />
+      </div>
     </Map>
   );
 }
