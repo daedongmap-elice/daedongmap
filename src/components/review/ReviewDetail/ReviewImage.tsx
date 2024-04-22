@@ -1,4 +1,4 @@
-export default function ReviewPhoto() {
+export default function ReviewImage() {
   return (
     <>
       <div className="carousel w-full">
