@@ -38,9 +38,11 @@ export function SignUpPresent() {
             className="input input-bordered w-full max-w-xs"
           />
         </form>
-        <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
-          회원가입
-        </button>
+        <a href="/login">
+          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+            회원가입
+          </button>
+        </a>
       </div>
     </>
   );

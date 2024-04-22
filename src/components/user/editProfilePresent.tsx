@@ -39,9 +39,11 @@ export function EditProfilePresnet() {
             className="input input-bordered w-full max-w-xs"
           />
         </form>
-        <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
-          프로필 편집
-        </button>
+        <a href="/mypage">
+          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+            프로필 편집
+          </button>
+        </a>
       </div>
     </>
   );
