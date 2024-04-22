@@ -1,47 +1,28 @@
-import logo from "./../../asssests/Logo.jpg";
-import profile from "./../../asssests/profile.jpg";
+import profile from "./../../assests/profile.jpg";
 
-export function MypagePresent() {
+export function MyPagePresent() {
   return (
     <>
-      <div className="w-full mt-[40px] flex flex-col items-center">
-        <img src={logo} alt="로고 이미지" />
-        <p className="absolute top-[130px] text-subLightGray">프로필 편집</p>
-        <div className="avatar">
-          <div className="w-24 rounded-full border-solid border  border-subGray">
-            <img src={profile} alt="프로필 이미지 " />
+      <div className="flex flex-col items-center">
+        <div className="mt-[80px] flex flex-row">
+          <div className="avatar mr-4">
+            <div className="w-24 rounded-full border-solid border  border-subGray">
+              <img src={profile} alt="프로필 이미지 " />
+            </div>
+          </div>
+          <div className="flex flex-col justify-center">
+            <span className="text-2xl font-semibold">맛정호</span>
+            <div>
+              <span className="text-xs text-subGray">게시글</span>
+              <span className="text-xs">10</span>
+            </div>
+            <span className="text-sm">전국의 맛집을 소개하리다!</span>
           </div>
         </div>
-        <button className="btn btn-link no-underline">사진 변경</button>
-        <form>
-          <div className="label">
-            <span className="label-text">닉네임</span>
-          </div>
-          <input
-            type="text"
-            placeholder="닉네임을 입력해주세요."
-            className="input input-bordered w-full max-w-xs"
-          />
-          <div className="label">
-            <span className="label-text">자기소개</span>
-          </div>
-          <input
-            type="text"
-            placeholder="소개글을 입력해주세요."
-            className="input input-bordered w-full max-w-xs"
-          />
-          <div className="label">
-            <span className="label-text">웹 사이트</span>
-          </div>
-          <input
-            type="text"
-            placeholder="연동할 주소를 입력해주세요."
-            className="input input-bordered w-full max-w-xs"
-          />
-        </form>
-        <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
-          프로필 편집
+        <button className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText">
+          <a href="/editprofile">프로필 편집</a>
         </button>
+        <hr className="mt-5 w-10/12 border-t border-solid border-subLightGray" />
       </div>
     </>
   );

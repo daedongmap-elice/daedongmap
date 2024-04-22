@@ -1,4 +1,4 @@
-import logo from "./../../asssests/Logo.jpg";
+import logo from "./../../assests/Logo.jpg";
 import "./../../App.css";
 
 export function LoginPresent() {
