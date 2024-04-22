@@ -51,7 +51,9 @@ export default function ReviewDetail() {
         </span>
       </div>
       <div className="text-subGray text-sm px-5 pt-2">
-        <button>댓글 0개 보기</button>
+        <button>
+          <a href="/comment">댓글 0개 보기</a>
+        </button>
       </div>
     </>
   );
