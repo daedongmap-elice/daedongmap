@@ -1,5 +1,3 @@
-import profile from "./../../assests/profile.jpg";
-
 export default function MyPagePresent() {
   return (
     <>
@@ -7,7 +5,7 @@ export default function MyPagePresent() {
         <div className="mt-[80px] flex flex-row">
           <div className="avatar mr-4">
             <div className="w-24 rounded-full border-solid border  border-subGray">
-              <img src={profile} alt="프로필 이미지 " />
+              <img src="img/profile.jpg" alt="프로필 이미지 " />
             </div>
           </div>
           <div className="flex flex-col justify-center">

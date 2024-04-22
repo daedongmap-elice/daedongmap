@@ -1,9 +1,8 @@
-import logo from "./../../assests/Logo.jpg";
 export default function SignUpPresent() {
   return (
     <>
       <div className="w-full mt-[70px] flex flex-col items-center">
-        <img src={logo} alt="로고 이미지" />
+        <img src="img/Logo.jpg" alt="로고 이미지" />
         <form className="w-full max-w-xs">
           <div className="label">
             <span className="label-text">E-mail</span>

@@ -1,15 +1,12 @@
-import logo from "@/assests/Logo.jpg";
-import profile from "@/assests/profile.jpg";
-
 export default function EditProfilePresnet() {
   return (
     <>
       <div className="w-full mt-[40px] flex flex-col items-center">
-        <img src={logo} alt="로고 이미지" />
+        <img src="img/Logo.jpg" alt="로고 이미지" />
         <p className="absolute top-[130px] text-subLightGray">프로필 편집</p>
         <div className="avatar">
           <div className="w-24 rounded-full border-solid border  border-subGray">
-            <img src={profile} alt="프로필 이미지 " />
+            <img src="/img/profile.jpg" alt="프로필 이미지 " />
           </div>
         </div>
         <button className="btn btn-link no-underline">사진 변경</button>
