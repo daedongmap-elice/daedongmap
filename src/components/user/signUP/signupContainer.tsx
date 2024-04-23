@@ -1,12 +1,8 @@
 import { useState } from "react";
+//import { signUp } from "@/hooks/useAuth";
+import { SignUpData } from "@/type/types";
+import { isValidationEmail } from "@/utils/authUtils";
 import SignUpPresent from "./signupPresent";
-
-interface SignUpData {
-  email: string;
-  password: string;
-  nickname: string;
-  phoneNumber: string;
-}
 
 export default function SignUpContainer() {
   const [formData, setFormData] = useState<SignUpData>({
@@ -15,22 +11,25 @@ export default function SignUpContainer() {
     nickname: "",
     phoneNumber: "",
   });
-
+  const [isEmail, setIsEmail] = useState<boolean>(true);
   const handleFormSubmit = (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
     console.log(formData);
-    alert("클릭했습니다.");
+    console.log(isEmail);
+    //signUp(formData);
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setIsEmail(isValidationEmail(formData.email));
   };
   return (
     <SignUpPresent
       onFormSubmit={handleFormSubmit}
       handleChange={handleInputChange}
+      isEmail={isEmail}
     />
   );
 }

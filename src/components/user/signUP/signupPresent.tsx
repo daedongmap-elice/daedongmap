@@ -1,10 +1,12 @@
 interface SignUpProps {
   onFormSubmit: (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isEmail: boolean;
 }
 const SignUpPresent: React.FC<SignUpProps> = ({
   onFormSubmit,
   handleChange,
+  isEmail,
 }) => {
   return (
     <>
@@ -13,14 +15,31 @@ const SignUpPresent: React.FC<SignUpProps> = ({
         <form className="w-full max-w-xs" onSubmit={onFormSubmit}>
           <div className="label">
             <span className="label-text">E-mail</span>
+            {isEmail ? (
+              <></>
+            ) : (
+              <span className="label-text-alt text-[#EA1C1C]">
+                잘못된 Email 형식입니다.
+              </span>
+            )}
           </div>
-          <input
-            type="text"
-            name="email"
-            placeholder="E-mail을 입력해주세요."
-            onChange={handleChange}
-            className="input input-bordered w-full max-w-xs"
-          />
+          {isEmail ? (
+            <input
+              type="text"
+              name="email"
+              placeholder="E-mail을 입력해주세요."
+              onChange={handleChange}
+              className="input input-bordered w-full max-w-xs"
+            />
+          ) : (
+            <input
+              type="text"
+              name="email"
+              placeholder="E-mail을 입력해주세요."
+              onChange={handleChange}
+              className="input input-bordered input-error w-full max-w-xs"
+            />
+          )}
           <div className="label">
             <span className="label-text">비밀번호</span>
           </div>

@@ -13,7 +13,7 @@ import LoginPresent from "../components/user/loginPresent";
 import MyPagePresent from "../components/user/mypagePresent";
 import EditProfilePresnet from "../components/user/editProfilePresent";
 import NotFoundPresent from "../components/notFound";
-import SignUpContainer from "@/components/user/signupContainer";
+import SignUpContainer from "@/components/user/signUP/signupContainer";
 
 const router = createBrowserRouter([
   {
