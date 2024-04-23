@@ -1,5 +1,4 @@
-import RatingStar from "@/components/review/RatingStar";
-import ImageInput from "@/components/review/ReviewPost/ImageInput";
+import { RatingStar, ImageInput } from "@/components/review/index";
 
 export default function ReviewPost() {
   const handleSubmit = () => {
@@ -33,7 +32,7 @@ export default function ReviewPost() {
         <input
           type="text"
           placeholder="장소 선택"
-          className="input input-sm input-bordered w-full max-w-xs flex-col text-xs"
+          className="input input-sm input-bordered w-3/4 max-w-xs flex-col text-xs"
           onClick={openSearch}
         />
         <select className="select select-bordered select-sm w-3/4 max-w-xs text-xs">

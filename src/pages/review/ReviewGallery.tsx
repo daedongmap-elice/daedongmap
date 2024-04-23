@@ -1,6 +1,4 @@
-import Select from "@/components/review/ReviewGallery/Select";
-import Logo from "../../components/review/ReviewGallery/Logo";
-import Thumbnail from "../../components/review/ReviewGallery/Thumbnail";
+import { Select, Logo, Thumbnail } from "@/components/review/index";
 
 export default function ReviewGallery() {
   return (
