@@ -1,7 +1,14 @@
+import ReviewDetail from "./ReviewDetail";
+
 export default function ReviewFeed() {
   return (
     <>
-      <div></div>
+      <ReviewDetail />
+      <div className="divider"></div>
+      <ReviewDetail />
+      <div className="divider"></div>
+      <ReviewDetail />
+      <div className="divider"></div>
     </>
   );
 }
