@@ -6,11 +6,12 @@ import ReviewPost from "../pages/review/ReviewPost";
 import ReviewDetail from "../pages/review/ReviewDetail";
 import ReviewComment from "../pages/review/ReviewComment";
 import PreLoginPresent from "../components/user/preLoginPresnt";
-import SignUpPresent from "../components/user/signupPresent";
+//import SignUpPresent from "../components/user/signupPresent";
 import LoginPresent from "../components/user/loginPresent";
 import MyPagePresent from "../components/user/mypagePresent";
 import EditProfilePresnet from "../components/user/editProfilePresent";
 import NotFoundPresent from "../components/notFound";
+import SignUpContainer from "@/components/user/signupContainer";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       { path: "/comment", element: <ReviewComment /> },
       //유저 관련 페이지
       { path: "/prelogin", element: <PreLoginPresent /> },
-      { path: "/signup", element: <SignUpPresent /> },
+      { path: "/signup", element: <SignUpContainer /> },
       { path: "/login", element: <LoginPresent /> },
       { path: "/mypage", element: <MyPagePresent /> },
       { path: "/editprofile", element: <EditProfilePresnet /> },
