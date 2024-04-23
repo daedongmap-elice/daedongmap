@@ -1,6 +1,4 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import selectedMarkerIcon from "svg/selectedMarker.svg";
-import markerIcon from "svg/marker.svg";
 import {
   PlaceListModal,
   PlaceInfoCard,
@@ -49,7 +47,7 @@ export function MainMap() {
         image={
           selectMarker.lat === 37.4987872 && selectMarker.lng === 127.0289786
             ? {
-                src: selectedMarkerIcon, // 마커이미지의 주소입니다
+                src: "svg/selectedMarker.svg", // 마커이미지의 주소입니다
                 size: {
                   width: 26,
                   height: 32,
@@ -62,7 +60,7 @@ export function MainMap() {
                 },
               }
             : {
-                src: markerIcon, // 마커이미지의 주소입니다
+                src: "svg/marker.svg", // 마커이미지의 주소입니다
                 size: {
                   width: 21,
                   height: 29,
@@ -86,7 +84,7 @@ export function MainMap() {
         image={
           selectMarker.lat === 37.4994147 && selectMarker.lng === 127.0281479
             ? {
-                src: selectedMarkerIcon, // 마커이미지의 주소입니다
+                src: "svg/selectedMarker.svg", // 마커이미지의 주소입니다
                 size: {
                   width: 26,
                   height: 32,
@@ -99,7 +97,7 @@ export function MainMap() {
                 },
               }
             : {
-                src: markerIcon, // 마커이미지의 주소입니다
+                src: "svg/marker.svg", // 마커이미지의 주소입니다
                 size: {
                   width: 21,
                   height: 29,

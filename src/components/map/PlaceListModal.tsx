@@ -1,5 +1,4 @@
 import { IoSearch } from "react-icons/io5";
-import Logo from "img/logo.png";
 import { PlaceInfoCard } from "@/components/map/index";
 
 export default function PlaceListModal({
@@ -11,7 +10,7 @@ export default function PlaceListModal({
     <div>
       {openListModal && (
         <div className="absolute top-0 z-20 h-[5.3vh] w-full bg-white">
-          <img src={Logo} alt="로고" className="mx-auto my-0 h-full" />
+          <img src="img/logo.png" alt="로고" className="mx-auto my-0 h-full" />
           <IoSearch className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2" />
         </div>
       )}
