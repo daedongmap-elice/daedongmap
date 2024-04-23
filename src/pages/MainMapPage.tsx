@@ -115,11 +115,6 @@ export function MainMapPage() {
       <SearchInput />
       <div>
         <div
-          className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
-        >
-          <ChangeViewBtn onClick={handleOpenModal} />
-        </div>
-        <div
           className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
         >
           <NowPositionBtn />
@@ -132,7 +127,15 @@ export function MainMapPage() {
           <></>
         )}
       </div>
-      {openListModal && <PlaceListModal onClick={handleOpenModal} />}
+      {openListModal && <PlaceListModal />}
+      <div
+        className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
+      >
+        <ChangeViewBtn
+          onClick={handleOpenModal}
+          btnType={openListModal ? "listView" : "mapView"}
+        />
+      </div>
     </Map>
   );
 }

@@ -1,13 +1,8 @@
 import { IoSearch } from "react-icons/io5";
 import Logo from "./../../../public/img/logo.png";
 import { PlaceInfoCard } from "./PlaceInfoCard";
-import { ChangeViewBtn } from "./ChangeViewBtn";
 
-interface PlaceListModalProps {
-  onClick: () => void;
-}
-
-export function PlaceListModal({ onClick }: PlaceListModalProps) {
+export function PlaceListModal() {
   return (
     <>
       <div className="absolute top-0 z-10 w-full">
@@ -23,9 +18,6 @@ export function PlaceListModal({ onClick }: PlaceListModalProps) {
             <PlaceInfoCard />
           </div>
         </div>
-      </div>
-      <div className={`absolute bottom-16 left-1/2 z-10 -translate-x-1/2`}>
-        <ChangeViewBtn onClick={onClick} />
       </div>
     </>
   );
