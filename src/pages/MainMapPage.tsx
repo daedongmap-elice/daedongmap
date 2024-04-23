@@ -127,7 +127,7 @@ export function MainMapPage() {
           <></>
         )}
       </div>
-      {openListModal && <PlaceListModal />}
+      <PlaceListModal openListModal={openListModal} />
       <div
         className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
       >
