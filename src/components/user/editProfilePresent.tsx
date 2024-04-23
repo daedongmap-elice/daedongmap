@@ -1,11 +1,11 @@
 export default function EditProfilePresnet() {
   return (
     <>
-      <div className="w-full mt-[40px] flex flex-col items-center">
+      <div className="mt-[40px] flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
         <p className="absolute top-[130px] text-subLightGray">프로필 편집</p>
         <div className="avatar">
-          <div className="w-24 rounded-full border-solid border  border-subGray">
+          <div className="w-24 rounded-full border border-solid  border-subGray">
             <img src="/img/profile.jpg" alt="프로필 이미지 " />
           </div>
         </div>
@@ -37,7 +37,7 @@ export default function EditProfilePresnet() {
           />
         </form>
         <a href="/mypage">
-          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+          <button className="btn mt-[30px] h-[30px] w-[280px] bg-mainG text-GbtnText">
             프로필 편집
           </button>
         </a>

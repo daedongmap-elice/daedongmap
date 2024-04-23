@@ -1,5 +1,5 @@
 import EditButton from "../../components/review/EditButton";
-import ReviewPhoto from "../../components/review/ReviewDetail/ReviewPhoto";
+import ReviewImage from "../../components/review/ReviewDetail/ReviewImage";
 import LikeButton from "../../components/review/ReviewDetail/LikeButton";
 import DateCreated from "../../components/review/DateCreated";
 import RatingStar from "../../components/review/RatingStar";
@@ -12,18 +12,18 @@ export default function ReviewDetail() {
   }
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <ReviewProfile />
-        <div className="mt-4 mb-3 mr-3">
+        <div className="mb-3 mr-3 mt-4">
           <EditButton />
         </div>
       </div>
-      <ReviewPhoto />
-      <div className="flex justify-between items-center mt-2">
+      <ReviewImage />
+      <div className="mt-2 flex items-center justify-between">
         <LikeButton />
         <DateCreated />
       </div>
-      <div className="flex justify-between items-center mt-3 pl-5 pr-5 text-sm">
+      <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
         <div className="flex items-center gap-1">
           <span className="min-w-fit">맛</span>
           <RatingStar />
@@ -37,7 +37,7 @@ export default function ReviewDetail() {
           <RatingStar />
         </div>
       </div>
-      <div className="flex justify-between px-5 pt-4 text-sm w-full">
+      <div className="flex w-full justify-between px-5 pt-4 text-sm">
         <p
           id="content"
           className="overflow-hidden text-ellipsis whitespace-nowrap"
@@ -46,11 +46,11 @@ export default function ReviewDetail() {
           국회가 의결한 후 30일 이내에 국민투표에 붙여 국회의원선거권자 과반수의
           투표와 투표자 과반수의 찬성을 얻어야 한다.
         </p>
-        <span className="text-subGray min-w-fit">
+        <span className="min-w-fit text-subGray">
           <button onClick={handleSeeMore}>더 보기</button>
         </span>
       </div>
-      <div className="text-subGray text-sm px-5 pt-2">
+      <div className="mb-6 px-5 pt-2 text-sm text-subGray">
         <button>
           <a href="/comment">댓글 0개 보기</a>
         </button>

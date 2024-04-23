@@ -8,7 +8,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
 }) => {
   return (
     <>
-      <div className="w-full mt-[30px] flex flex-col items-center">
+      <div className="mt-[20px] flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
         <form className="w-full max-w-xs" onSubmit={onFormSubmit}>
           <div className="label">
@@ -59,10 +59,10 @@ const SignUpPresent: React.FC<SignUpProps> = ({
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />
-          <div className="w-full flex flex-col items-center">
+          <div className="flex w-full flex-col items-center">
             <button
               type="submit"
-              className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText mx-auto"
+              className="btn mx-auto mt-[30px] h-[30px] w-[280px] bg-mainG text-GbtnText"
             >
               회원가입
             </button>

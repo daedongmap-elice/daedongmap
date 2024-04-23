@@ -1,4 +1,4 @@
-export default function ReviewPhoto() {
+export default function ReviewImage() {
   return (
     <>
       <div className="carousel w-full">
@@ -18,20 +18,20 @@ export default function ReviewPhoto() {
           <img src="img/sample3.png" className="w-full" alt="item" />
         </div>
       </div>
-      <div className="flex justify-center w-full pt-2 pb-2 gap-2">
-        <a href="#item1" className="btn btn-xs rounded-xl w-6">
+      <div className="flex w-full justify-center gap-2 pb-2 pt-2">
+        <a href="#item1" className="btn btn-xs w-6 rounded-xl">
           1
         </a>
-        <a href="#item2" className="btn btn-xs rounded-xl w-6">
+        <a href="#item2" className="btn btn-xs w-6 rounded-xl">
           2
         </a>
-        <a href="#item3" className="btn btn-xs rounded-xl w-6">
+        <a href="#item3" className="btn btn-xs w-6 rounded-xl">
           3
         </a>
-        <a href="#item4" className="btn btn-xs rounded-xl w-6">
+        <a href="#item4" className="btn btn-xs w-6 rounded-xl">
           4
         </a>
-        <a href="#item" className="btn btn-xs rounded-xl w-6">
+        <a href="#item5" className="btn btn-xs w-6 rounded-xl">
           5
         </a>
       </div>

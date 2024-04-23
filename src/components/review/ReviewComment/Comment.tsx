@@ -4,16 +4,16 @@ export default function Comment() {
   return (
     <>
       <a href="/">
-        <div className="mt-4 mb-3 flex">
+        <div className="mb-3 mt-4 flex">
           <div>
             <img
-              className="mask mask-circle w-9 ml-3 mr-3"
+              className="mask mask-circle ml-3 mr-3 w-9"
               src="img/sample3.png"
               alt="user-profile"
             />
           </div>
-          <div className="text-xs max-w-64">
-            <p className="mb-2 flex justify-between items-center">
+          <div className="max-w-64 text-xs">
+            <p className="mb-2 flex items-center justify-between">
               <b>유저닉네임</b>
               <DateCreated />
             </p>
