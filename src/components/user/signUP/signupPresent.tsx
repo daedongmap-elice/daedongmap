@@ -2,11 +2,13 @@ interface SignUpProps {
   onFormSubmit: (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isEmail: boolean;
+  isPassword: boolean;
 }
 const SignUpPresent: React.FC<SignUpProps> = ({
   onFormSubmit,
   handleChange,
   isEmail,
+  isPassword,
 }) => {
   return (
     <>
@@ -40,6 +42,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
               className="input input-bordered input-error w-full max-w-xs"
             />
           )}
+
           <div className="label">
             <span className="label-text">비밀번호</span>
           </div>
@@ -52,12 +55,32 @@ const SignUpPresent: React.FC<SignUpProps> = ({
           />
           <div className="label">
             <span className="label-text">비밀번호 확인</span>
+            {isPassword ? (
+              <></>
+            ) : (
+              <span className="label-text-alt text-[#EA1C1C]">
+                비밀번호가 일치하지 않습니다.
+              </span>
+            )}
           </div>
-          <input
-            type="password"
-            placeholder="비밀번호를 입렵해주세요."
-            className="input input-bordered w-full max-w-xs"
-          />
+          {isPassword ? (
+            <input
+              type="password"
+              name="checkPassword"
+              placeholder="비밀번호를 입렵해주세요."
+              onChange={handleChange}
+              className="input input-bordered w-full max-w-xs"
+            />
+          ) : (
+            <input
+              type="password"
+              name="checkPassword"
+              placeholder="비밀번호를 입력해주세요."
+              onChange={handleChange}
+              className="input input-bordered input-error w-full max-w-xs"
+            />
+          )}
+
           <div className="label">
             <span className="label-text">전화번호</span>
           </div>
