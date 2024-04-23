@@ -5,6 +5,7 @@ import { ChangeViewBtn } from "../components/map/ChangeViewBtn";
 import { SearchInput } from "../components/map/SearchInput";
 import { NowPositionBtn } from "../components/map/NowPositionBtn";
 import { PlaceInfoCard } from "../components/map/PlaceInfoCard";
+import { PlaceListModal } from "@/components/map/PlaceListModal";
 import { useState } from "react";
 
 export function MainMapPage() {
@@ -13,10 +14,15 @@ export function MainMapPage() {
     lng: number;
   }>({ lat: 0, lng: 0 });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const [openListModal, setOpenListModal] = useState<boolean>(false);
 
   const handleOnClick = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
     setShowInfoCard(true);
+  };
+
+  const handleOpenModal = () => {
+    setOpenListModal(() => !openListModal);
   };
   return (
     <Map // 지도를 표시할 Container
@@ -111,7 +117,7 @@ export function MainMapPage() {
         <div
           className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
         >
-          <ChangeViewBtn />
+          <ChangeViewBtn onClick={handleOpenModal} />
         </div>
         <div
           className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
@@ -119,13 +125,14 @@ export function MainMapPage() {
           <NowPositionBtn />
         </div>
         {selectMarker.lat !== 0 && selectMarker.lng !== 0 ? (
-          <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2 transition-all duration-150">
+          <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
             <PlaceInfoCard />
           </div>
         ) : (
           <></>
         )}
       </div>
+      {openListModal && <PlaceListModal onClick={handleOpenModal} />}
     </Map>
   );
 }
