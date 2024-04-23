@@ -3,9 +3,9 @@ import "./../../App.css";
 export default function LoginPresent() {
   return (
     <>
-      <div className="w-full mt-[70px] flex flex-col items-center">
+      <div className="mt-[70px] flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
-        <form className="w-[280px] flex flex-col max-w-xs">
+        <form className="flex w-[280px] max-w-xs flex-col">
           <div className="label">
             <span className="label-text">E-mail</span>
           </div>
@@ -24,11 +24,11 @@ export default function LoginPresent() {
           />
         </form>
         <a href="/">
-          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+          <button className="btn mt-[30px] h-[30px] w-[280px] bg-mainG text-GbtnText">
             로그인
           </button>
         </a>
-        <p className="text-center text-xs custom-line mt-[15px]">
+        <p className="custom-line mt-[15px] text-center text-xs">
           소셜 계정으로 간편 로그인
         </p>
       </div>

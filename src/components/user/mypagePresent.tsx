@@ -4,7 +4,7 @@ export default function MyPagePresent() {
       <div className="flex flex-col items-center">
         <div className="mt-[80px] flex flex-row">
           <div className="avatar mr-4">
-            <div className="w-24 rounded-full border-solid border  border-subGray">
+            <div className="w-24 rounded-full border border-solid  border-subGray">
               <img src="img/profile.jpg" alt="프로필 이미지 " />
             </div>
           </div>
