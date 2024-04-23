@@ -5,7 +5,7 @@ import Thumbnail from "../../components/review/ReviewGallery/Thumbnail";
 export default function ReviewGallery() {
   return (
     <>
-      <div className="flex justify-between mb-2">
+      <div className="mb-2 flex justify-between">
         <Logo />
         <div>
           <Select items={["추천순", "인기순", "최신순"]} />
