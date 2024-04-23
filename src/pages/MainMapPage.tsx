@@ -1,6 +1,6 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import selectedMarkerIcon from "../public/svg/selectedMarker.svg";
-import markerIcon from "../public/svg/marker.svg";
+import selectedMarkerIcon from "../../public/svg/selectedMarker.svg";
+import markerIcon from "../../public/svg/marker.svg";
 import { ChangeViewBtn } from "../components/map/ChangeViewBtn";
 import { SearchInput } from "../components/map/SearchInput";
 import { NowPositionBtn } from "../components/map/NowPositionBtn";
