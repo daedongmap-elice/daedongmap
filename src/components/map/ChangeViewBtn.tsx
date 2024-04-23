@@ -5,7 +5,10 @@ type ChangeViewBtnProps = {
   btnType: "listView" | "mapView";
 };
 
-export function ChangeViewBtn({ onClick, btnType }: ChangeViewBtnProps) {
+export default function ChangeViewBtn({
+  onClick,
+  btnType,
+}: ChangeViewBtnProps) {
   return (
     <button
       className={`btn btn-sm rounded-full border-none shadow ${btnType === "mapView" ? "bg-white" : "bg-mainG text-GbtnText"}`}

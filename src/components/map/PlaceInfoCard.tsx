@@ -1,6 +1,6 @@
 import { FaLocationArrow } from "react-icons/fa6";
 
-export function PlaceInfoCard() {
+export default function PlaceInfoCard() {
   return (
     <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
       <div className="flex items-center gap-1.5">

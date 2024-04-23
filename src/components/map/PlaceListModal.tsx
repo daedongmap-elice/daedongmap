@@ -1,8 +1,12 @@
 import { IoSearch } from "react-icons/io5";
-import Logo from "./../../../public/img/logo.png";
-import { PlaceInfoCard } from "./PlaceInfoCard";
+import Logo from "img/logo.png";
+import { PlaceInfoCard } from "@/components/map/index";
 
-export function PlaceListModal({ openListModal }: { openListModal: boolean }) {
+export default function PlaceListModal({
+  openListModal,
+}: {
+  openListModal: boolean;
+}) {
   return (
     <div>
       {openListModal && (

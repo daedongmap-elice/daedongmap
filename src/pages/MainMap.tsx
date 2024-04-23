@@ -1,14 +1,16 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import selectedMarkerIcon from "../../public/svg/selectedMarker.svg";
-import markerIcon from "../../public/svg/marker.svg";
-import { ChangeViewBtn } from "../components/map/ChangeViewBtn";
-import { SearchInput } from "../components/map/SearchInput";
-import { NowPositionBtn } from "../components/map/NowPositionBtn";
-import { PlaceInfoCard } from "../components/map/PlaceInfoCard";
-import { PlaceListModal } from "@/components/map/PlaceListModal";
+import selectedMarkerIcon from "svg/selectedMarker.svg";
+import markerIcon from "svg/marker.svg";
+import {
+  PlaceListModal,
+  PlaceInfoCard,
+  NowPositionBtn,
+  SearchInput,
+  ChangeViewBtn,
+} from "@/components/map/index";
 import { useState } from "react";
 
-export function MainMapPage() {
+export function MainMap() {
   const [selectMarker, setSelectMarker] = useState<{
     lat: number;
     lng: number;

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../components/layout/Layout";
-import { MainMapPage } from "../pages/MainMapPage";
+import { MainMap } from "../pages/MainMap";
 import ReviewGallery from "../pages/review/ReviewGallery";
 import ReviewPost from "../pages/review/ReviewPost";
 import ReviewDetail from "../pages/review/ReviewDetail";
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFoundPresent />,
     children: [
-      { path: "/", element: <MainMapPage /> },
+      { path: "/", element: <MainMap /> },
       //게시글 관련 페이지
       { path: "/review", element: <ReviewGallery /> },
       { path: "/detail", element: <ReviewDetail /> },
