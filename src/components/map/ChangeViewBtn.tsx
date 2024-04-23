@@ -1,9 +1,9 @@
 import { FaListUl, FaMapMarkedAlt } from "react-icons/fa";
 
-interface ChangeViewBtnProps {
+type ChangeViewBtnProps = {
   onClick: () => void;
   btnType: "listView" | "mapView";
-}
+};
 
 export function ChangeViewBtn({ onClick, btnType }: ChangeViewBtnProps) {
   return (
