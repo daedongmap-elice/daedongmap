@@ -12,11 +12,11 @@ export function MainMapPage() {
     lat: number;
     lng: number;
   }>({ lat: 0, lng: 0 });
-  // const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
 
   const handleOnClick = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
-    // setShowInfoCard(true);
+    setShowInfoCard(true);
   };
   return (
     <Map // 지도를 표시할 Container
@@ -108,10 +108,18 @@ export function MainMapPage() {
       />
       <SearchInput />
       <div>
-        <ChangeViewBtn />
-        <NowPositionBtn />
+        <div
+          className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
+        >
+          <ChangeViewBtn />
+        </div>
+        <div
+          className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
+        >
+          <NowPositionBtn />
+        </div>
         {selectMarker.lat !== 0 && selectMarker.lng !== 0 ? (
-          <div className="absolute bottom-16 z-10 w-[320px] left-1/2 -translate-x-1/2">
+          <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2 transition-all duration-150">
             <PlaceInfoCard />
           </div>
         ) : (
