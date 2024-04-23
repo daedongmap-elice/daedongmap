@@ -1,7 +1,7 @@
 export default function SignUpPresent() {
   return (
     <>
-      <div className="w-full mt-[70px] flex flex-col items-center">
+      <div className="mt-[70px] flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
         <form className="w-full max-w-xs">
           <div className="label">
@@ -38,7 +38,7 @@ export default function SignUpPresent() {
           />
         </form>
         <a href="/login">
-          <button className="btn mt-[30px] w-[280px] h-[30px] bg-mainG text-GbtnText">
+          <button className="btn mt-[30px] h-[30px] w-[280px] bg-mainG text-GbtnText">
             회원가입
           </button>
         </a>

@@ -10,15 +10,15 @@ export default function CommentModal() {
       >
         open modal
       </button>
-      <dialog id="my_modal_3" className="modal h-5/6 fixed bottom-10">
-        <div className="modal-box h-5/6 w-full rounded-b-none fixed bottom-0">
+      <dialog id="my_modal_3" className="modal fixed bottom-10 h-5/6">
+        <div className="modal-box fixed bottom-0 h-5/6 w-full rounded-b-none">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-base text-center">댓글</h3>
+          <h3 className="text-center text-base font-bold">댓글</h3>
           <p className="py-4 text-xs">
             Press ESC key or click on ✕ button to close
           </p>
@@ -30,9 +30,9 @@ export default function CommentModal() {
               <input
                 type="text"
                 placeholder="댓글 달기..."
-                className="input input-bordered w-full h-8 text-xs"
+                className="input input-bordered h-8 w-full text-xs"
               />
-              <button className="btn btn-sm h-4 bg-mainG text-GbtnText text-xs">
+              <button className="btn btn-sm h-4 bg-mainG text-xs text-GbtnText">
                 확인
               </button>
             </form>
