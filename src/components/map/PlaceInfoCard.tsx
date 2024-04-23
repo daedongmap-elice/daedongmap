@@ -45,7 +45,7 @@ export default function PlaceInfoCard() {
           <input
             type="radio"
             className="mask mask-half-1 mask-star-2 bg-mainY"
-            checked
+            defaultChecked={true}
           />
           <input
             type="radio"
