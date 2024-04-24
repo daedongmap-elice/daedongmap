@@ -15,7 +15,7 @@ export default function PlaceListModal({
         </div>
       )}
       <div
-        className={`fixed z-10 h-[95.3vh] h-fit w-full overflow-y-auto bg-[#F7F7F9] pt-16 transition-all duration-100 ${openListModal ? "top-0" : "top-[1000px]"}`}
+        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-16 transition-all duration-100 ${openListModal ? "top-0" : "top-[1000px]"}`}
       >
         <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3">
           <PlaceInfoCard />
