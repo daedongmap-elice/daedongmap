@@ -5,6 +5,7 @@ import {
   DateCreated,
   RatingStar,
   ReviewProfile,
+  CommentModal,
 } from "@/components/review/index";
 
 export default function ReviewDetail() {
@@ -59,9 +60,14 @@ export default function ReviewDetail() {
         </button>
       </div>
       <div className="mb-6 px-5 pt-2 text-sm text-subGray">
-        <button>
-          <a href="/comment">댓글 0개 보기</a>
+        <button
+          onClick={() => document.getElementById("commentModal").showModal()}
+        >
+          댓글 0개 보기
         </button>
+        <dialog id="commentModal" className="modal modal-bottom text-black">
+          <CommentModal />
+        </dialog>
       </div>
     </>
   );
