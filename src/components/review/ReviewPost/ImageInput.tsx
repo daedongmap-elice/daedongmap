@@ -10,17 +10,17 @@ export default function ImageInput() {
   //   false,
   // ]);
 
-  // const handleImageChange = (e) => {
-  // setImages((prevFiles) => {
-  //   const newImages = [...prevFiles];
-  //   newImages[Number(e.target.id)] = e.target.files[0].name;
-  //   return newImages;
-  // });
-  // setIsAttached((prev) => {
-  //   const newArr = [...prev];
-  //   newArr[Number(e.target.id)] = true;
-  //   return newArr;
-  // });
+  // const handleImageChange = (e: Event) => {
+  //   // setImages((prevFiles) => {
+  //   //   const newImages = [...prevFiles];
+  //   //   newImages[Number(e.target?.id)] = e.target.files[0].name;
+  //   //   return newImages;
+  //   });
+  //   setIsAttached((prev) => {
+  //     const newArr = [...prev];
+  //     newArr[Number(e.target.id)] = true;
+  //     return newArr;
+  //   });
   // };
 
   return (
@@ -62,21 +62,21 @@ export default function ImageInput() {
             </a>
           </div>
         </>
-      ) : (
-        <label htmlFor="file">
-          <div className="flex h-52 min-h-52 w-52 flex-col items-center justify-center  bg-subLightGray text-lg text-subGray">
-            사진 추가
-            <div className="text-base">(최대 5장까지 첨부 가능)</div>
-          </div>
-          <input
-            className="hidden"
-            type="file"
-            name="file"
-            id="file"
-            accept={"image/png, image/jpeg, image/jpg"}
-          />
-        </label>
-      )} */}
+      ) : ( */}
+      <label htmlFor="file">
+        <div className="flex h-52 min-h-52 w-52 flex-col items-center justify-center  bg-subLightGray text-base text-subGray">
+          사진 추가
+          <div className="text-sm">(최대 5장까지 첨부 가능)</div>
+        </div>
+        <input
+          className="hidden"
+          type="file"
+          name="file"
+          id="file"
+          accept={"image/png, image/jpeg, image/jpg"}
+        />
+      </label>
+      {/* )} */}
     </>
   );
 }
