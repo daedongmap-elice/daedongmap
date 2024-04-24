@@ -18,7 +18,7 @@ export default function ReviewImage() {
           <img src="img/sample3.png" className="w-full" alt="item" />
         </div>
       </div>
-      <div className="flex w-full justify-center gap-2 pb-2 pt-2">
+      <div className="flex w-full justify-center gap-3 pb-2 pt-2">
         <a href="#item1" className="btn btn-xs w-6 rounded-xl">
           1
         </a>
