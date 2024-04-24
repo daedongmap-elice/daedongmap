@@ -6,7 +6,7 @@ import {
   SearchInput,
   ChangeViewBtn,
 } from "@/components/map/index";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function MainMap() {
   const [selectMarker, setSelectMarker] = useState<{
@@ -84,28 +84,19 @@ export function MainMap() {
     >
       <SearchInput />
       {arr.map((place) => {
-        const {
-          // place_name: placeName,
-          // place_url: placeUrl,
-          // category_name: categoryName,
-          // address_name: addressName,
-          // road_address_name: roadAddressName,
-          // id,
-          // phone,
-          x: lng,
-          y: lat,
-        } = place;
+        const { id, x: lng, y: lat } = place;
+        const isSelected =
+          selectMarker.lat === Number(lat) && selectMarker.lng === Number(lng);
 
         return (
-          <>
+          <React.Fragment key={id}>
             <MapMarker
               position={{
                 lat: Number(lat),
                 lng: Number(lng),
               }}
               image={
-                selectMarker.lat === Number(lat) &&
-                selectMarker.lng === Number(lng)
+                isSelected
                   ? {
                       src: "svg/selectedMarker.svg",
                       size: {
@@ -138,15 +129,14 @@ export function MainMap() {
               }
             />
 
-            {selectMarker.lat === Number(lat) &&
-            selectMarker.lng === Number(lng) ? (
+            {isSelected ? (
               <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                <PlaceInfoCard />
+                <PlaceInfoCard place={place} />
               </div>
             ) : (
               <></>
             )}
-          </>
+          </React.Fragment>
         );
       })}
 
@@ -155,7 +145,7 @@ export function MainMap() {
       >
         <NowPositionBtn />
       </div>
-      <PlaceListModal openListModal={openListModal} />
+      <PlaceListModal openListModal={openListModal} placeList={arr} />
       <div
         className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
       >
