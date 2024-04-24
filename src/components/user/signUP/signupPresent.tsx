@@ -3,12 +3,14 @@ interface SignUpProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isEmail: boolean;
   isPassword: boolean;
+  buttonDisabled: boolean;
 }
 const SignUpPresent: React.FC<SignUpProps> = ({
   onFormSubmit,
   handleChange,
   isEmail,
   isPassword,
+  buttonDisabled,
 }) => {
   return (
     <>
@@ -104,6 +106,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
           <div className="flex w-full flex-col items-center">
             <button
               type="submit"
+              disabled={buttonDisabled}
               className="btn mx-auto mt-[30px] h-[30px] w-[280px] bg-mainG text-GbtnText"
             >
               회원가입
