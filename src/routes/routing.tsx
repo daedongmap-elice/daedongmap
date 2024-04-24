@@ -4,7 +4,6 @@ import { MainMapPage } from "../pages/MainMapPage";
 import ReviewGallery from "../pages/review/ReviewGallery";
 import ReviewPost from "../pages/review/ReviewPost";
 import ReviewDetail from "../pages/review/ReviewDetail";
-import ReviewComment from "../pages/review/ReviewComment";
 import ReviewFeed from "@/pages/review/ReviewFeed";
 import ReviewEdit from "@/pages/review/ReviewEdit";
 import PreLoginPresent from "../components/user/preLoginPresnt";
@@ -26,7 +25,6 @@ const router = createBrowserRouter([
       //게시글 관련 페이지
       { path: "/review", element: <ReviewGallery /> },
       { path: "/detail", element: <ReviewDetail /> },
-      { path: "/comment", element: <ReviewComment /> },
       { path: "/post", element: <ReviewPost /> },
       { path: "/edit", element: <ReviewEdit /> },
       { path: "/feed", element: <ReviewFeed /> },
