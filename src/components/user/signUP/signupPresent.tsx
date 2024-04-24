@@ -4,6 +4,7 @@ interface SignUpProps {
   isEmail: boolean;
   isPassword: boolean;
   buttonDisabled: boolean;
+  pwLength: number;
 }
 const SignUpPresent: React.FC<SignUpProps> = ({
   onFormSubmit,
@@ -11,6 +12,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
   isEmail,
   isPassword,
   buttonDisabled,
+  pwLength,
 }) => {
   return (
     <>
@@ -47,6 +49,17 @@ const SignUpPresent: React.FC<SignUpProps> = ({
 
           <div className="label">
             <span className="label-text">비밀번호</span>
+            {pwLength == 0 ? (
+              <span className="label-text-alt text-[#EA1C1C]">
+                비밀번호는 필수 정보입니다.
+              </span>
+            ) : pwLength < 8 ? (
+              <span className="label-text-alt text-[#EA1C1C]">
+                비밀번호 8자 이상 입력해주세요.
+              </span>
+            ) : (
+              <></>
+            )}
           </div>
           <input
             type="password"

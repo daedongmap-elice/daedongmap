@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SignUpData } from "@/type/types";
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "http://3.34.82.178:8082/api";
 
 const axiosClient = axios.create({
   withCredentials: true,

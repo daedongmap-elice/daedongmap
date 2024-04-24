@@ -7,8 +7,11 @@ export const isCheckPassword = (
   password: string,
   checkPassword: string
 ): boolean => {
-  if (password === checkPassword) {
-    return true;
+  if (password.length >= 8) {
+    if (password === checkPassword) {
+      return true;
+    }
+    return false;
   }
   return false;
 };
