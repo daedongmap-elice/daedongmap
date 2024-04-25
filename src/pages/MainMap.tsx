@@ -28,16 +28,14 @@ export function MainMap() {
     errMsg: null,
     isLoading: true,
   });
-  // const [mapLocation, setMapLocation] = useState<{
-  //   center: {
-  //     lat: number;
-  //     lng: number;
-  //   };
-  //   isPanto: boolean;
-  // }>({
-  //   center: { lat: 33.450701, lng: 126.570667 },
-  //   isPanto: false,
-  // });
+  const [mapLocation, setMapLocation] = useState<{
+    center: {
+      lat: number;
+      lng: number;
+    };
+  }>({
+    center: { lat: 33.450701, lng: 126.570667 },
+  });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const arr = [
@@ -94,8 +92,9 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
-  // const handleChangeMapLocation = () => {
-  // }
+  const handleChangeMapLocation = (center: { lat: number; lng: number }) => {
+    setMapLocation({ center });
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -132,15 +131,29 @@ export function MainMap() {
     }
   }, []);
 
+  useEffect(() => {
+    setMapLocation((prev) => ({
+      ...prev,
+      center: userLocation.center,
+    }));
+  }, [userLocation]);
+
   return (
     <Map
-      center={userLocation.center}
+      center={mapLocation.center}
       style={{
         width: "100%",
         height: "95.3vh",
       }}
       level={4}
       onClick={handleClickMap}
+      isPanto={true}
+      onCenterChanged={(map) =>
+        handleChangeMapLocation({
+          lat: map.getCenter().getLat(),
+          lng: map.getCenter().getLng(),
+        })
+      }
     >
       <SearchInput />
       {arr.map((place) => {
@@ -203,7 +216,10 @@ export function MainMap() {
       <div
         className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
       >
-        <NowPositionBtn />
+        <NowPositionBtn
+          onClickEvent={handleChangeMapLocation}
+          userLocation={userLocation.center}
+        />
       </div>
       <PlaceListModal openListModal={openListModal} placeList={arr} />
       <div
