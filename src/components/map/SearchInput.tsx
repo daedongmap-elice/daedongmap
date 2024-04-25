@@ -1,6 +1,6 @@
 import { IoSearch } from "react-icons/io5";
 
-export function SearchInput() {
+export default function SearchInput() {
   return (
     <div className="absolute left-1/2 top-10 z-10 h-11 w-10/12 -translate-x-1/2">
       <div className="relative h-full w-full">
