@@ -5,6 +5,7 @@ import {
   DateCreated,
   RatingStar,
   ReviewProfile,
+  CommentModal,
 } from "@/components/review/index";
 
 export default function ReviewDetail() {
@@ -34,15 +35,15 @@ export default function ReviewDetail() {
       <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
         <div className="flex items-center gap-1">
           <span className="min-w-fit">맛</span>
-          <RatingStar />
+          <RatingStar item="taste" />
         </div>
         <div className="flex items-center gap-1">
           <span className="min-w-fit">위생</span>
-          <RatingStar />
+          <RatingStar item="clean" />
         </div>
         <div className="flex items-center gap-1">
           <span className="min-w-fit">친절</span>
-          <RatingStar />
+          <RatingStar item="kind" />
         </div>
       </div>
       <div className="flex w-full justify-between px-5 pt-4 text-sm">
@@ -59,9 +60,14 @@ export default function ReviewDetail() {
         </button>
       </div>
       <div className="mb-6 px-5 pt-2 text-sm text-subGray">
-        <button>
-          <a href="/comment">댓글 0개 보기</a>
+        <button
+          onClick={() => document.getElementById("commentModal").showModal()}
+        >
+          댓글 0개 보기
         </button>
+        <dialog id="commentModal" className="modal modal-bottom text-black">
+          <CommentModal />
+        </dialog>
       </div>
     </>
   );
