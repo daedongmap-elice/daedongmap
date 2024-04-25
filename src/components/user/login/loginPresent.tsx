@@ -1,4 +1,6 @@
 import "@/App.css";
+import Naver from "./naverLogin";
+
 interface LoginProps {
   onFormSubmit: (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -50,6 +52,7 @@ const LoginPresent: React.FC<LoginProps> = ({
         <p className="custom-line mt-[15px] text-center text-xs">
           소셜 계정으로 간편 로그인
         </p>
+        <Naver></Naver>
       </div>
     </>
   );
