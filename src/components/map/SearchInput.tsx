@@ -62,6 +62,12 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
     });
   };
 
+  const handleOnKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   useEffect(() => {
     handleSearch();
   }, [map]);
@@ -74,6 +80,7 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
           className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"
           placeholder="지역/맛집 검색"
           onChange={(e) => handleOnClick(e)}
+          onKeyDown={(e) => handleOnKeyDown(e)}
         ></input>
         <IoSearch
           onClick={handleSearch}
