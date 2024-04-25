@@ -69,6 +69,7 @@ export default function ImageInput() {
           <div className="text-sm">(최대 5장까지 첨부 가능)</div>
         </div>
         <input
+          required
           className="hidden"
           type="file"
           name="file"
