@@ -7,7 +7,7 @@ import { getCookie } from "../../hooks/useCookie";
 export default function BottomNavbar() {
   const getCookies = getCookie();
   return (
-    <div className="btm-nav h-9">
+    <div className="btm-nav z-[100] h-9">
       <button className="rounded-none border-none bg-white pb-0">
         <a href="/">
           <BiSolidHome className="h-5 w-5" />

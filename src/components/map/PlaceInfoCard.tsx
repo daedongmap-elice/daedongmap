@@ -1,11 +1,37 @@
 import { FaLocationArrow } from "react-icons/fa6";
 
-export function PlaceInfoCard() {
+interface PlaceInfoCardProps {
+  place: {
+    place_name: string;
+    place_url: string;
+    category_name: string;
+    address_name: string;
+    road_address_name: string;
+    id: string;
+    phone: string;
+    x: string;
+    y: string;
+  };
+}
+
+export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
+  if (!place) {
+    return null;
+  }
+
+  const {
+    place_name: placeName,
+    // place_url: placeUrl,
+    category_name: categoryName,
+    road_address_name: roadAddressName,
+    phone,
+  } = place;
+
   return (
     <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
       <div className="flex items-center gap-1.5">
-        <h2 className="text-base font-bold">갓덴스시 강남점</h2>
-        <p className="text-xs text-subGray ">일식</p>
+        <h2 className="text-base font-bold">{placeName}</h2>
+        <p className="text-xs text-subGray ">{categoryName}</p>
       </div>
       <div className="flex items-center gap-1.5">
         <h4 className="text-xs font-medium">4.5</h4>
@@ -45,7 +71,7 @@ export function PlaceInfoCard() {
           <input
             type="radio"
             className="mask mask-half-1 mask-star-2 bg-mainY"
-            checked
+            defaultChecked={true}
           />
           <input
             type="radio"
@@ -54,11 +80,11 @@ export function PlaceInfoCard() {
         </div>
         <p className="text-xs text-subGray">(265)</p>
       </div>
-      <p className="text-xs">서울 강남구 테헤란로 109 강남제일빌딩 1층</p>
+      <p className="text-xs">{roadAddressName}</p>
       <div className="flex gap-1">
         <p className="text-xs font-medium">0.7km</p>
         <p className="text-xs font-bold">|</p>
-        <p className="text-xs text-mainG">00-0000-0000</p>
+        <p className="text-xs text-mainG">{phone}</p>
       </div>
       <div className="mt-0.5 flex justify-between">
         <div className="h-[60px] w-[95px] bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fcfile%2F166DC3354E4DE28425')] bg-cover bg-center"></div>
