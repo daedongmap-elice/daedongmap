@@ -1,5 +1,5 @@
 import { useState } from "react";
-//import { signUp } from "@/hooks/useAuth";
+import { signUp } from "@/hooks/useAuth";
 import { SignUpData } from "@/type/types";
 import { isValidationEmail, isCheckPassword } from "@/utils/authUtils";
 import SignUpPresent from "./signupPresent";
@@ -19,7 +19,7 @@ export default function SignUpContainer() {
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    //signUp(formData);
+    signUp(formData);
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

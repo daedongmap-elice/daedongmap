@@ -14,6 +14,7 @@ import EditProfilePresnet from "../components/user/editProfilePresent";
 import NotFoundPresent from "../components/notFound";
 import SignUpContainer from "@/components/user/signUP/signupContainer";
 import LoginContainer from "@/components/user/login/loginContainer";
+import OAuth from "@/components/user/login/loginNaver";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "/prelogin", element: <PreLoginPresent /> },
       { path: "/signup", element: <SignUpContainer /> },
       { path: "/login", element: <LoginContainer /> },
+      { path: "/user/login", element: <OAuth /> },
       { path: "/mypage", element: <MyPagePresent /> },
       { path: "/editprofile", element: <EditProfilePresnet /> },
     ],
