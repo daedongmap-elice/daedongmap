@@ -6,13 +6,38 @@ import {
   SearchInput,
   ChangeViewBtn,
 } from "@/components/map/index";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export function MainMap() {
   const [selectMarker, setSelectMarker] = useState<{
     lat: number;
     lng: number;
   }>({ lat: 0, lng: 0 });
+  const [userLocation, setUserLocation] = useState<{
+    center: {
+      lat: number;
+      lng: number;
+    };
+    errMsg: null | string;
+    isLoading: boolean;
+  }>({
+    center: {
+      lat: 33.450701,
+      lng: 126.570667,
+    },
+    errMsg: null,
+    isLoading: true,
+  });
+  // const [mapLocation, setMapLocation] = useState<{
+  //   center: {
+  //     lat: number;
+  //     lng: number;
+  //   };
+  //   isPanto: boolean;
+  // }>({
+  //   center: { lat: 33.450701, lng: 126.570667 },
+  //   isPanto: false,
+  // });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const arr = [
@@ -69,12 +94,47 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
+  // const handleChangeMapLocation = () => {
+  // }
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (
+            userLocation.center.lat !== position.coords.latitude &&
+            userLocation.center.lng !== position.coords.longitude
+          ) {
+            setUserLocation((prev) => ({
+              ...prev,
+              center: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              },
+              isLoading: false,
+            }));
+          }
+        },
+        (err) => {
+          setUserLocation((prev) => ({
+            ...prev,
+            errMsg: err.message,
+            isLoading: false,
+          }));
+        }
+      );
+    } else {
+      setUserLocation((prev) => ({
+        ...prev,
+        errMsg: "위치를 불러올 수 없습니다.",
+        isLoading: false,
+      }));
+    }
+  }, []);
+
   return (
     <Map
-      center={{
-        lat: 37.4987872,
-        lng: 127.0289786,
-      }}
+      center={userLocation.center}
       style={{
         width: "100%",
         height: "95.3vh",
