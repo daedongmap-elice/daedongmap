@@ -15,11 +15,9 @@ interface PlaceInfoCardProps {
 }
 
 export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
-  console.log(place); //undefined
   if (!place) {
     return null;
   }
-  console.log(place); //제대로 출력
 
   const {
     place_name: placeName,

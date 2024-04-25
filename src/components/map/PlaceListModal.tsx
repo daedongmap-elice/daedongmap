@@ -20,7 +20,6 @@ export default function PlaceListModal({
   openListModal,
   placeList,
 }: PlaceListModalProps) {
-  console.log(placeList);
   return (
     <div>
       {openListModal && (
@@ -34,7 +33,7 @@ export default function PlaceListModal({
       >
         <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3">
           {placeList.map((place) => {
-            return <PlaceInfoCard place={place} />;
+            return <PlaceInfoCard key={place.id} place={place} />;
           })}
         </div>
       </div>
