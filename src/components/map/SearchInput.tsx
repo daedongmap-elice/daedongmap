@@ -34,27 +34,35 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
 
     setText((prev) => prev + " 음식점");
 
-    ps.keywordSearch(`${text}`, (data, status) => {
+    ps.keywordSearch(`${text}`, (datas, status) => {
       if (status === kakao.maps.services.Status.OK) {
         const bounds = new kakao.maps.LatLngBounds();
-        const places = [];
+        const places: {
+          address_name: string;
+          category_name: string;
+          id: string;
+          phone: string;
+          place_name: string;
+          place_url: string;
+          road_address_name: string;
+          x: string;
+          y: string;
+        }[] = [];
 
-        for (let i = 0; i < data.length; i++) {
+        datas.map((data) => {
           places.push({
-            address_name: data[i].address_name,
-            category_name: data[i].category_name,
-            id: data[i].id,
-            phone: data[i].phone,
-            place_name: data[i].place_name,
-            place_url: data[i].place_url,
-            road_address_name: data[i].road_address_name,
-            x: data[i].x,
-            y: data[i].y,
+            address_name: data.address_name,
+            category_name: data.category_name,
+            id: data.id,
+            phone: data.phone,
+            place_name: data.place_name,
+            place_url: data.place_url,
+            road_address_name: data.road_address_name,
+            x: data.x,
+            y: data.y,
           });
-          bounds.extend(
-            new kakao.maps.LatLng(Number(data[i].y), Number(data[i].x))
-          );
-        }
+          bounds.extend(new kakao.maps.LatLng(Number(data.y), Number(data.x)));
+        });
 
         setMarkers(places);
         map.setBounds(bounds);
