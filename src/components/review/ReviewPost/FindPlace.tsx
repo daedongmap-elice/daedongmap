@@ -1,4 +1,4 @@
-import { SearchInput } from "@/components/map/SearchInput";
+import SearchInput from "@/components/map/SearchInput";
 // import { useState } from "react";
 
 export default function FindPlace() {
