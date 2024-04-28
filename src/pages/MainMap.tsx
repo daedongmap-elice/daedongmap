@@ -59,7 +59,7 @@ export function MainMap() {
   };
 
   const handleOpenModal = () => {
-    setOpenListModal(() => !openListModal);
+    setOpenListModal((prev) => !prev);
   };
 
   const handleClickMap = (
@@ -126,7 +126,7 @@ export function MainMap() {
       }}
       level={4}
       onClick={handleClickMap}
-      isPanto={true}
+      isPanto
       onCreate={setMap}
       onCenterChanged={(map2) =>
         handleChangeMapLocation({
