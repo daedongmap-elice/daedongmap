@@ -21,11 +21,15 @@ export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
 
   const {
     place_name: placeName,
-    // place_url: placeUrl,
+    place_url: placeUrl,
     // category_name: categoryName,
     road_address_name: roadAddressName,
     phone,
   } = place;
+
+  const handleClickKaKaoBtn = () => {
+    window.open(placeUrl);
+  };
 
   return (
     <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
@@ -91,7 +95,10 @@ export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
         <div className="h-[60px] w-[95px] bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
         <div className="h-[60px] w-[95px] bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=https%3A%2F%2Fpostfiles.pstatic.net%2FMjAyNDA0MTdfMTEw%2FMDAxNzEzMzU2OTgyNTg0.R-8WU3e-khviuz6oOIK8UvI038ixpd1lwKdZMFykobMg.6uzd42BTrjFkgJPXlIMoL9xDmzXHWYtXTrxxDhwNxcMg.JPEG%2FIMG_3479.jpg%3Ftype%3Dw773')] bg-cover bg-center"></div>
       </div>
-      <button className="btn btn-xs absolute right-2.5 w-fit gap-0 rounded-full border-[#258FFF] bg-white text-xs">
+      <button
+        onClick={handleClickKaKaoBtn}
+        className="btn btn-xs absolute right-2.5 w-fit gap-0 rounded-full border-[#258FFF] bg-white text-xs"
+      >
         kakao<strong>map</strong>
         <FaLocationArrow className="text-mainY" />
       </button>
