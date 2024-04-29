@@ -59,7 +59,7 @@ export function MainMap() {
   };
 
   const handleOpenModal = () => {
-    setOpenListModal(() => !openListModal);
+    setOpenListModal((prev) => !prev);
   };
 
   const handleClickMap = (
@@ -126,7 +126,7 @@ export function MainMap() {
       }}
       level={4}
       onClick={handleClickMap}
-      isPanto={true}
+      isPanto
       onCreate={setMap}
       onCenterChanged={(map2) =>
         handleChangeMapLocation({
@@ -135,7 +135,12 @@ export function MainMap() {
         })
       }
     >
-      <SearchInput setMarkers={setMarkers} map={map} />
+      <SearchInput
+        setMarkers={setMarkers}
+        map={map}
+        type="main"
+        setShowInfoCard={setShowInfoCard}
+      />
       {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
         <></>
       ) : (
@@ -188,7 +193,7 @@ export function MainMap() {
 
               {isSelected ? (
                 <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                  <PlaceInfoCard place={place} />
+                  <PlaceInfoCard place={place} userLocation={userLocation} />
                 </div>
               ) : (
                 <></>
@@ -206,7 +211,11 @@ export function MainMap() {
           userLocation={userLocation.center}
         />
       </div>
-      <PlaceListModal openListModal={openListModal} placeList={markers} />
+      <PlaceListModal
+        openListModal={openListModal}
+        placeList={markers}
+        userLocation={userLocation}
+      />
       <div
         className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
       >
