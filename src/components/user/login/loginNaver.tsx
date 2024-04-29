@@ -5,8 +5,8 @@ import axios from "axios";
 const NaverOAuth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
+  const code: string | null = searchParams.get("code");
+  const state: string | null = searchParams.get("state");
 
   console.log(code, state);
 
