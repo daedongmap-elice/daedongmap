@@ -22,7 +22,7 @@ export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
   const {
     place_name: placeName,
     // place_url: placeUrl,
-    category_name: categoryName,
+    // category_name: categoryName,
     road_address_name: roadAddressName,
     phone,
   } = place;
@@ -31,7 +31,7 @@ export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
     <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
       <div className="flex items-center gap-1.5">
         <h2 className="text-base font-bold">{placeName}</h2>
-        <p className="text-xs text-subGray ">{categoryName}</p>
+        <p className="text-xs text-subGray ">한식</p>
       </div>
       <div className="flex items-center gap-1.5">
         <h4 className="text-xs font-medium">4.5</h4>

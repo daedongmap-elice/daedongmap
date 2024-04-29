@@ -33,9 +33,7 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
     const ps = new kakao.maps.services.Places();
 
     if (text !== "") {
-      setText((prev) => prev + " 음식점");
-
-      ps.keywordSearch(`${text}`, (datas, status) => {
+      ps.keywordSearch(`${text} 음식점`, (datas, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const bounds = new kakao.maps.LatLngBounds();
           const places: {
