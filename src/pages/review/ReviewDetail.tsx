@@ -11,6 +11,14 @@ import { useState } from "react";
 
 export default function ReviewDetail() {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정할 것
+
+  // TODO: 리뷰 상세 페이지 진입 시 ‘나의 좋아요 클릭 여부’와 '해당 리뷰의 좋아요 개수'를 조회(GET) 후
+  //       반영 - isLiked 여부, N명이 좋아합니다
+  //       좋아요 버튼을 클릭하면 isLiked의 여부를 전환하며 서버에 POST 또는 DELETE 요청보내기
+
+  // TODO: ReviewProfile 클릭하면 '마이페이지'로 넘어가서 '사용자별 리뷰 조회'하도록 해야 함
+  // TODO: EditButton 클릭 시 ReviewEdit으로 가야 함
 
   return (
     <>
@@ -22,7 +30,7 @@ export default function ReviewDetail() {
       </div>
       <ReviewImage />
       <div className="mt-2 flex items-center justify-between">
-        <LikeButton />
+        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
         <DateCreated />
       </div>
       <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
