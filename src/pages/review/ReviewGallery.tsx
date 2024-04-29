@@ -2,7 +2,7 @@ import { Select, Logo, Thumbnail } from "@/components/review/index";
 
 export default function ReviewGallery() {
   return (
-    <>
+    <div className="pb-16">
       <div className="mb-2 flex justify-between">
         <Logo />
         <div>
@@ -43,6 +43,6 @@ export default function ReviewGallery() {
         <Thumbnail imageUrl="img/sample3.png" />
         <Thumbnail imageUrl="img/sample4.png" />
       </div>
-    </>
+    </div>
   );
 }

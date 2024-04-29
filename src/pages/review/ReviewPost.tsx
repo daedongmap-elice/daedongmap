@@ -38,20 +38,18 @@ export default function ReviewPost() {
   // TODO: 음식점 선택 모달 띄우고 지도에서 마커 선택 시 정보를 서버로 넘기기
 
   return (
-    <>
-      <div className="mb-6 mb-9 ml-5 mt-4 text-lg font-medium">
-        새 리뷰 등록하기
-      </div>
-      <div className="flex flex-col items-center justify-center gap-3">
+    <div className="pb-16">
+      <div className="mb-6 ml-5 mt-4 text-lg font-medium">새 리뷰 등록하기</div>
+      <div className="flex flex-col items-center justify-center gap-1">
         <div className="flex justify-center">
           <ImageInput />
         </div>
-        <div className="mt-3 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
-          <div className="flex items-center gap-1">
+        <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
+          <div className="mb-0.5 flex items-center gap-1">
             <span className="min-w-6 text-center">맛</span>
             <RatingStar name="taste" setRating={setTasteRating} />
           </div>
-          <div className="flex items-center gap-1">
+          <div className="mb-0.5 flex items-center gap-1">
             <span className="min-w-6">위생</span>
             <RatingStar name="hygiene" setRating={setHygieneRating} />
           </div>
@@ -62,7 +60,7 @@ export default function ReviewPost() {
         </div>
         <button
           type="button"
-          className="btn btn-outline btn-sm w-3/4 max-w-xs flex-col items-baseline border-gray-300 text-xs font-normal"
+          className="btn btn-outline btn-sm mb-2 w-3/4 max-w-xs flex-col items-baseline border-gray-300 text-xs font-normal"
           // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
           onClick={() => document.getElementById("placeModal").showModal()}
         >
@@ -73,7 +71,7 @@ export default function ReviewPost() {
         </dialog>
         <select
           required
-          className="select select-bordered select-sm w-3/4 max-w-xs text-xs"
+          className="select select-bordered select-sm mb-2 w-3/4 max-w-xs text-xs"
         >
           <option disabled defaultValue="default">
             분류 선택
@@ -96,6 +94,6 @@ export default function ReviewPost() {
           리뷰 등록
         </button>
       </div>
-    </>
+    </div>
   );
 }

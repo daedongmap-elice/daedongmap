@@ -3,7 +3,7 @@ import {
   ReviewImage,
   LikeButton,
   DateCreated,
-  RatingStar,
+  Star,
   ReviewProfile,
   CommentModal,
 } from "@/components/review/index";
@@ -19,9 +19,11 @@ export default function ReviewDetail() {
 
   // TODO: ReviewProfile 클릭하면 '마이페이지'로 넘어가서 '사용자별 리뷰 조회'하도록 해야 함
   // TODO: EditButton 클릭 시 ReviewEdit으로 가야 함
+  const p = document.querySelector("p");
+  console.log(p?.style.textOverflow);
 
   return (
-    <>
+    <div className="pb-16">
       <div className="flex items-center justify-between">
         <ReviewProfile />
         <div className="mb-3 mr-3 mt-4">
@@ -36,26 +38,26 @@ export default function ReviewDetail() {
       <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
         <div className="flex items-center gap-1">
           <span className="min-w-fit">맛</span>
-          <RatingStar item="taste" />
+          <Star name="taste" rating={3} />
         </div>
         <div className="flex items-center gap-1">
           <span className="min-w-fit">위생</span>
-          <RatingStar item="clean" />
+          <Star name="hygiene" rating={4} />
         </div>
         <div className="flex items-center gap-1">
           <span className="min-w-fit">친절</span>
-          <RatingStar item="kind" />
+          <Star name="kindness" rating={5} />
         </div>
       </div>
       <div className="flex w-full justify-between px-5 pt-4 text-sm">
         <p
-          id="content"
-          className={`${isSeeMoreClicked ? "" : "text-clip"} overflow-${isSeeMoreClicked ? "visible" : "hidden"} whitespace-${isSeeMoreClicked ? "normal" : "nowrap"}`}
+          className={`overflow-${isSeeMoreClicked ? "visible" : "hidden"} whitespace-${isSeeMoreClicked ? "normal" : "nowrap"} ${isSeeMoreClicked ? "" : "text-clip"}`}
         >
           오늘 여기 식당에서 점심 먹었는데 제육덮밥 맛있었어요! 헌법개정안은
           국회가 의결한 후 30일 이내에 국민투표에 붙여 국회의원선거권자 과반수의
           투표와 투표자 과반수의 찬성을 얻어야 한다.
         </p>
+
         <button
           onClick={() => setIsSeeMoreClicked(true)}
           className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
@@ -74,6 +76,6 @@ export default function ReviewDetail() {
           <CommentModal />
         </dialog>
       </div>
-    </>
+    </div>
   );
 }
