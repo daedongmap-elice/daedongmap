@@ -116,7 +116,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />
-          <div className="flex w-full flex-col items-center">
+          <div className="flex w-full items-center">
             <button
               type="submit"
               disabled={buttonDisabled}
