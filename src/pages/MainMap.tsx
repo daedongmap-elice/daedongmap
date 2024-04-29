@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 export function MainMap() {
+  const [map, setMap] = useState<kakao.maps.Map>();
   const [selectMarker, setSelectMarker] = useState<{
     lat: number;
     lng: number;
@@ -28,53 +29,29 @@ export function MainMap() {
     errMsg: null,
     isLoading: true,
   });
-  // const [mapLocation, setMapLocation] = useState<{
-  //   center: {
-  //     lat: number;
-  //     lng: number;
-  //   };
-  //   isPanto: boolean;
-  // }>({
-  //   center: { lat: 33.450701, lng: 126.570667 },
-  //   isPanto: false,
-  // });
+  const [mapLocation, setMapLocation] = useState<{
+    center: {
+      lat: number;
+      lng: number;
+    };
+  }>({
+    center: { lat: 33.450701, lng: 126.570667 },
+  });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
-  const arr = [
+  const [markers, setMarkers] = useState<
     {
-      place_name: "강남진해장",
-      place_url: "https://place.map.kakao.com/1428481536",
-      category_name: "한식",
-      address_name: "서울 강남구 역삼동 819-4",
-      road_address_name: "서울 강남구 테헤란로5길 11 유빌딩 1층",
-      id: "1428481536",
-      phone: "02-557-2662",
-      x: "127.0292471",
-      y: "37.4994553",
-    },
-    {
-      place_name: "갓덴스시 강남점",
-      place_url: "https://place.map.kakao.com/13575898",
-      category_name: "일식",
-      address_name: "서울 강남구 역삼동 822-4",
-      road_address_name: "서울 강남구 테헤란로 109 강남제일빌딩 1층",
-      id: "13575898",
-      phone: "02-2051-1477",
-      x: "127.0289786",
-      y: "37.4987872",
-    },
-    {
-      place_name: "용용선생 강남역점",
-      place_url: "https://place.map.kakao.com/1336266407",
-      category_name: "중식",
-      address_name: "서울 강남구 역삼동 817-21",
-      road_address_name: "서울 강남구 강남대로96길 17 1층",
-      id: "1336266407",
-      phone: "02-569-0999",
-      x: "127.0284191",
-      y: "37.5000464",
-    },
-  ];
+      address_name: string;
+      category_name: string;
+      id: string;
+      phone: string;
+      place_name: string;
+      place_url: string;
+      road_address_name: string;
+      x: string;
+      y: string;
+    }[]
+  >();
 
   const handleOnClick = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
@@ -94,8 +71,9 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
-  // const handleChangeMapLocation = () => {
-  // }
+  const handleChangeMapLocation = (center: { lat: number; lng: number }) => {
+    setMapLocation({ center });
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -132,80 +110,103 @@ export function MainMap() {
     }
   }, []);
 
+  useEffect(() => {
+    setMapLocation((prev) => ({
+      ...prev,
+      center: userLocation.center,
+    }));
+  }, [userLocation]);
+
   return (
     <Map
-      center={userLocation.center}
+      center={mapLocation.center}
       style={{
         width: "100%",
         height: "95.3vh",
       }}
       level={4}
       onClick={handleClickMap}
+      isPanto={true}
+      onCreate={setMap}
+      onCenterChanged={(map2) =>
+        handleChangeMapLocation({
+          lat: map2.getCenter().getLat(),
+          lng: map2.getCenter().getLng(),
+        })
+      }
     >
-      <SearchInput />
-      {arr.map((place) => {
-        const { id, x: lng, y: lat } = place;
-        const isSelected =
-          selectMarker.lat === Number(lat) && selectMarker.lng === Number(lng);
+      <SearchInput setMarkers={setMarkers} map={map} />
+      {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
+        <></>
+      ) : (
+        markers.map((place) => {
+          const { id, x: lng, y: lat } = place;
+          const isSelected =
+            selectMarker.lat === Number(lat) &&
+            selectMarker.lng === Number(lng);
 
-        return (
-          <React.Fragment key={id}>
-            <MapMarker
-              position={{
-                lat: Number(lat),
-                lng: Number(lng),
-              }}
-              image={
-                isSelected
-                  ? {
-                      src: "svg/selectedMarker.svg",
-                      size: {
-                        width: 26,
-                        height: 32,
-                      },
-                      options: {
-                        offset: {
-                          x: 13,
-                          y: 32,
+          return (
+            <React.Fragment key={id}>
+              <MapMarker
+                position={{
+                  lat: Number(lat),
+                  lng: Number(lng),
+                }}
+                image={
+                  isSelected
+                    ? {
+                        src: "svg/selectedMarker.svg",
+                        size: {
+                          width: 26,
+                          height: 32,
                         },
-                      },
-                    }
-                  : {
-                      src: "svg/marker.svg",
-                      size: {
-                        width: 21,
-                        height: 29,
-                      },
-                      options: {
-                        offset: {
-                          x: 10.5,
-                          y: 29,
+                        options: {
+                          offset: {
+                            x: 13,
+                            y: 32,
+                          },
                         },
-                      },
-                    }
-              }
-              onClick={() =>
-                handleOnClick({ lat: Number(lat), lng: Number(lng) })
-              }
-            />
+                      }
+                    : {
+                        src: "svg/marker.svg",
+                        size: {
+                          width: 21,
+                          height: 29,
+                        },
+                        options: {
+                          offset: {
+                            x: 10.5,
+                            y: 29,
+                          },
+                        },
+                      }
+                }
+                onClick={() =>
+                  handleOnClick({ lat: Number(lat), lng: Number(lng) })
+                }
+              />
 
-            {isSelected ? (
-              <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                <PlaceInfoCard place={place} />
-              </div>
-            ) : (
-              <></>
-            )}
-          </React.Fragment>
-        );
-      })}
+              {isSelected ? (
+                <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                  <PlaceInfoCard place={place} />
+                </div>
+              ) : (
+                <></>
+              )}
+            </React.Fragment>
+          );
+        })
+      )}
 
       <div
         className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
       >
-        <NowPositionBtn />
+        <NowPositionBtn
+          onClickEvent={handleChangeMapLocation}
+          userLocation={userLocation.center}
+        />
       </div>
-      <PlaceListModal openListModal={openListModal} placeList={arr} />
+      <PlaceListModal openListModal={openListModal} placeList={markers} />
       <div
         className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
       >

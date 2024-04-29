@@ -23,15 +23,15 @@ export default function ReviewPost() {
         <div className="mt-3 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
           <div className="flex items-center gap-1">
             <span className="min-w-6 text-center">맛</span>
-            <RatingStar />
+            <RatingStar item={"taste"} />
           </div>
           <div className="flex items-center gap-1">
             <span className="min-w-6">위생</span>
-            <RatingStar />
+            <RatingStar item={"clean"} />
           </div>
           <div className="mb-3 flex items-center gap-1">
             <span className="min-w-6">친절</span>
-            <RatingStar />
+            <RatingStar item={"kind"} />
           </div>
         </div>
         <button
