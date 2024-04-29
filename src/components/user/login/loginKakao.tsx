@@ -2,22 +2,19 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
-const NaverOAuth = () => {
+const KakaoOauth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
-
-  console.log(code, state);
+  const code: string | null = searchParams.get("code");
 
   useEffect(() => {
-    const naver = async () => {
+    console.log(code);
+    const kakao = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5137/v1/nid/me/naver/oauth?code=${code}&state=${state}`
+          `http://localhost:5137/oauth/token/kakao/oauth?code=${code}`
         );
-        const authorizationHeader = res.headers.authorization;
-        localStorage.setItem("Token", authorizationHeader);
+        console.log(res);
         navigate("/");
       } catch (error) {
         console.error("Error fetching OAuth token:", error);
@@ -25,10 +22,10 @@ const NaverOAuth = () => {
     };
 
     if (code) {
-      naver();
+      kakao();
     }
   }, [code]);
   return <div>조금만 기다려주세요.</div>;
 };
 
-export default NaverOAuth;
+export default KakaoOauth;
