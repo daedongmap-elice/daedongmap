@@ -1,17 +1,30 @@
-import { FaListUl } from "react-icons/fa";
+import { FaListUl, FaMapMarkedAlt } from "react-icons/fa";
 
-export function ChangeViewBtn() {
+type ChangeViewBtnProps = {
+  onClick: () => void;
+  btnType: "listView" | "mapView";
+};
+
+export default function ChangeViewBtn({
+  onClick,
+  btnType,
+}: ChangeViewBtnProps) {
   return (
-    <button className="btn btn-sm rounded-full bg-white z-10 absolute bottom-10 left-1/2 -translate-x-1/2">
-      <FaListUl className="h-4 w-4">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-        />
-      </FaListUl>
-      목록보기
+    <button
+      className={`btn btn-sm rounded-full border-none shadow ${btnType === "mapView" ? "bg-white" : "bg-mainG text-GbtnText"}`}
+      onClick={onClick}
+    >
+      {btnType === "mapView" ? (
+        <>
+          <FaListUl className="h-4 w-4"></FaListUl>
+          목록보기
+        </>
+      ) : (
+        <>
+          <FaMapMarkedAlt className="h-4 w-4"></FaMapMarkedAlt>
+          지도보기
+        </>
+      )}
     </button>
   );
 }
