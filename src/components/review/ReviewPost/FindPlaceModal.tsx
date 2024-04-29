@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { SearchInput } from "@/components/map/index";
 
 interface Marker {
   position: {
@@ -61,6 +62,7 @@ export default function FindPlace() {
             level={3} // 지도의 확대 레벨
             onCreate={setMap}
           >
+            <SearchInput />
             {markers.map((marker) => (
               <MapMarker
                 key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}

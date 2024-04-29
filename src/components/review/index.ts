@@ -10,7 +10,7 @@ export { default as Logo } from "./ReviewGallery/Logo";
 export { default as Select } from "./ReviewGallery/Select";
 export { default as Thumbnail } from "./ReviewGallery/Thumbnail";
 export { default as ImageInput } from "./ReviewPost/ImageInput";
-export { default as FindPlace } from "./ReviewPost/FindPlace";
+export { default as FindPlaceModal } from "./ReviewPost/FindPlaceModal";
 export { default as DateCreated } from "./DateCreated";
 export { default as EditButton } from "./EditButton";
 export { default as RatingStar } from "./RatingStar";

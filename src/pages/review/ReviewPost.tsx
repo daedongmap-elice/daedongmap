@@ -1,4 +1,8 @@
-import { RatingStar, ImageInput, FindPlace } from "@/components/review/index";
+import {
+  RatingStar,
+  ImageInput,
+  FindPlaceModal,
+} from "@/components/review/index";
 // import React, { useState } from "react";
 // import axios from "axios";
 import { useState } from "react";
@@ -65,7 +69,7 @@ export default function ReviewPost() {
           음식점 선택
         </button>
         <dialog id="placeModal" className="modal modal-bottom">
-          <FindPlace />
+          <FindPlaceModal />
         </dialog>
         <select
           required
