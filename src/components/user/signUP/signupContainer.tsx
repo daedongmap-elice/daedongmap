@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { signUp } from "@/hooks/useAuth";
+import { useMemo, useState } from "react";
+//import { signUp } from "@/hooks/useAuth";
 import { SignUpData } from "@/type/types";
 import { isValidationEmail, isCheckPassword } from "@/utils/authUtils";
 import SignUpPresent from "./signupPresent";
@@ -8,39 +8,42 @@ export default function SignUpContainer() {
   const [formData, setFormData] = useState<SignUpData>({
     email: "",
     password: "",
+    checkPassword: "",
     nickname: "",
     phoneNumber: "",
   });
   const [isEmail, setIsEmail] = useState<boolean>(true);
   const [isPassword, setIsPassword] = useState<boolean>(true);
   const [pwLength, setPwLength] = useState<number>(0);
-  const [checkPassword, setCheckPassword] = useState<string>("");
   const handleFormSubmit = (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    signUp(formData);
+    console.log(formData);
+    //signUp(formData);
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    // if (value == "") {
-    //   setIsEmail(!isEmail);
-    //   setIsPassword(!isPassword);
-    // }
     setFormData({ ...formData, [name]: value });
-    if (name == "checkPassword") {
-      setCheckPassword(value);
+    if (formData.email) {
+      setIsEmail(isValidationEmail(formData.email));
     }
-    setIsEmail(isValidationEmail(formData.email));
-    setIsPassword(isCheckPassword(formData.password, checkPassword));
-    setPwLength(formData.password.length);
+    if (formData.password) {
+      setPwLength(formData.password.length);
+    }
+    if (formData.checkPassword && formData.password) {
+      setIsPassword(isCheckPassword(formData.password, formData.checkPassword));
+    }
   };
-  const isButtonDisabled = !(
-    isEmail &&
-    isPassword &&
-    formData.nickname &&
-    formData.phoneNumber
-  );
+
+  const isButtonDisabled = useMemo(() => {
+    return !(
+      isEmail &&
+      isPassword &&
+      formData.nickname &&
+      formData.phoneNumber
+    );
+  }, [isEmail, isPassword, formData.nickname, formData.phoneNumber]);
   return (
     <SignUpPresent
       onFormSubmit={handleFormSubmit}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignUpData, LoginData } from "@/type/types";
+import { SignUpRequest, LoginData } from "@/type/types";
 
 const BASE_URL = "http://3.34.82.178:8082/api";
 
@@ -8,7 +8,7 @@ const axiosClient = axios.create({
   baseURL: BASE_URL,
 });
 
-export const signUp = async (info: SignUpData) => {
+export const signUp = async (info: SignUpRequest) => {
   try {
     const res = await axiosClient.post("/user/register", info);
     console.log(res);
