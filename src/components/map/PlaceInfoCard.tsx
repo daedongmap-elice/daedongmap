@@ -56,7 +56,7 @@ export default function PlaceInfoCard({
 
   return (
     <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1">
         <h2 className="text-base font-bold">{placeName}</h2>
         <p className="text-xs text-subGray ">한식</p>
       </div>

@@ -34,8 +34,8 @@ export default function PlaceListModal({
   return (
     <div>
       {openListModal && (
-        <div className="absolute top-0 z-20 h-[5.3vh] w-full bg-white">
-          <img src="img/logo.png" alt="로고" className="mx-auto my-0 h-full" />
+        <div className="absolute top-0 z-20 h-[5.3vh] w-full content-center bg-white">
+          <img src="svg/logo.svg" alt="로고" className="mx-auto my-0 h-3/5" />
           <IoSearch className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2" />
         </div>
       )}
