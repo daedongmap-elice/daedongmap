@@ -1,5 +1,7 @@
 import "@/App.css";
 import Naver from "./naverLogin";
+import Kakao from "./kakaoLogin";
+import Google from "./googleLogin";
 
 interface LoginProps {
   onFormSubmit: (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => void;
@@ -53,6 +55,8 @@ const LoginPresent: React.FC<LoginProps> = ({
           소셜 계정으로 간편 로그인
         </p>
         <Naver></Naver>
+        <Kakao></Kakao>
+        <Google></Google>
       </div>
     </>
   );
