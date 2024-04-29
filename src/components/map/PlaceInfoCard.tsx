@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { FaLocationArrow } from "react-icons/fa6";
 
 interface PlaceInfoCardProps {
@@ -12,13 +13,24 @@ interface PlaceInfoCardProps {
     x: string;
     y: string;
   };
+  userLocation: {
+    center: {
+      lat: number;
+      lng: number;
+    };
+    errMsg: null | string;
+    isLoading: boolean;
+  };
 }
 
-export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
-  if (!place) {
+export default function PlaceInfoCard({
+  place,
+  userLocation,
+}: PlaceInfoCardProps) {
+  if (!place || !userLocation) {
     return null;
   }
-
+  const [distance, setDistance] = useState(0);
   const {
     place_name: placeName,
     place_url: placeUrl,
@@ -30,6 +42,17 @@ export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
   const handleClickKaKaoBtn = () => {
     window.open(placeUrl);
   };
+
+  useEffect(() => {
+    const pos = new kakao.maps.Polyline({
+      path: [
+        new kakao.maps.LatLng(userLocation.center.lat, userLocation.center.lng),
+        new kakao.maps.LatLng(Number(place.y), Number(place.x)),
+      ],
+    });
+    const dist = Math.round(pos.getLength());
+    setDistance(dist);
+  }, []);
 
   return (
     <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
@@ -86,7 +109,7 @@ export default function PlaceInfoCard({ place }: PlaceInfoCardProps) {
       </div>
       <p className="text-xs">{roadAddressName}</p>
       <div className="flex gap-1">
-        <p className="text-xs font-medium">0.7km</p>
+        <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
         <p className="text-xs font-bold">|</p>
         <p className="text-xs text-mainG">{phone}</p>
       </div>

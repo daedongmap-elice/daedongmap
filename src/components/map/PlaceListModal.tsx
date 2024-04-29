@@ -16,11 +16,20 @@ interface PlaceListModalProps {
         y: string;
       }[]
     | undefined;
+  userLocation: {
+    center: {
+      lat: number;
+      lng: number;
+    };
+    errMsg: null | string;
+    isLoading: boolean;
+  };
 }
 
 export default function PlaceListModal({
   openListModal,
   placeList,
+  userLocation,
 }: PlaceListModalProps) {
   return (
     <div>
@@ -39,7 +48,13 @@ export default function PlaceListModal({
             <></>
           ) : (
             placeList.map((place) => {
-              return <PlaceInfoCard key={place.id} place={place} />;
+              return (
+                <PlaceInfoCard
+                  key={place.id}
+                  place={place}
+                  userLocation={userLocation}
+                />
+              );
             })
           )}
         </div>
