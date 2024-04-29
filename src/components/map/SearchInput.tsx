@@ -20,12 +20,14 @@ interface SearchInputProps {
   >;
   map: kakao.maps.Map | undefined;
   type: "main" | "post";
+  setShowInfoCard?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function SearchInput({
   setMarkers,
   map,
   type,
+  setShowInfoCard,
 }: SearchInputProps) {
   const [text, setText] = useState<string>("");
 
@@ -74,6 +76,10 @@ export default function SearchInput({
           map.setBounds(bounds);
         }
       });
+
+      if (setShowInfoCard) {
+        setShowInfoCard(false);
+      }
     }
   };
 
