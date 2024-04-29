@@ -1,4 +1,6 @@
 export default function ReviewImage() {
+  // TODO: 해당 게시글의 이미지를 조회해서 불러온 다음 map으로 그려내야 함 (ImageInput컴포넌트 참고)
+
   return (
     <>
       <div className="carousel w-full">
