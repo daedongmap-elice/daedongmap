@@ -4,16 +4,13 @@ import { useNavigate } from "react-router-dom";
 export default function ImageInput() {
   const [images, setImages] = useState<string[]>([]);
   const navigate = useNavigate();
-  const guide = document.getElementById("guide") as HTMLElement;
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imgsArray = Array.from(e.target.files as FileList);
     const selectedImgs: string[] = imgsArray.map((img) => {
       return URL.createObjectURL(img);
     });
     setImages(selectedImgs);
-
-    // 파일이 선택되면 guide 요소 숨기기
-    guide.classList.add("hidden");
     navigate("/post/#item0");
   };
 
@@ -29,6 +26,7 @@ export default function ImageInput() {
   return (
     <div className="flex flex-col items-center justify-center gap-2">
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+      {/* label태그 내에 div를 넣었을 때의 오류 해결을 위함 */}
       <label htmlFor="file">
         <input
           required
@@ -49,8 +47,7 @@ export default function ImageInput() {
             </div>
           ))}
           <div
-            id="guide"
-            className="carousel-item flex h-full w-full flex-col items-center justify-center bg-subLightGray text-base text-subGray"
+            className={`${images.length > 0 ? "hidden" : ""} carousel-item flex h-full w-full flex-col items-center justify-center bg-subLightGray text-base text-subGray`}
           >
             사진 추가
             <div className="text-sm">(최대 5장까지 첨부 가능)</div>
@@ -71,9 +68,3 @@ export default function ImageInput() {
     </div>
   );
 }
-
-/*
-사용자가 이미지 추가
-이미지를 1개 첨부하면, 
-처리된 문자열을 images배열에 push함
-*/

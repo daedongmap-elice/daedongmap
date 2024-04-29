@@ -1,4 +1,6 @@
 export default function ReviewProfile() {
+  // TODO: ReviewProfile 클릭하면 '마이페이지'로 넘어가서 '사용자별 리뷰 조회'하도록 해야 함
+
   return (
     <>
       <a href="/">
