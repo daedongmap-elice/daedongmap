@@ -135,7 +135,7 @@ export function MainMap() {
         })
       }
     >
-      <SearchInput setMarkers={setMarkers} map={map} />
+      <SearchInput setMarkers={setMarkers} map={map} type="main" />
       {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
         <></>
       ) : (

@@ -19,9 +19,14 @@ interface SearchInputProps {
     >
   >;
   map: kakao.maps.Map | undefined;
+  type: "main" | "post";
 }
 
-export default function SearchInput({ setMarkers, map }: SearchInputProps) {
+export default function SearchInput({
+  setMarkers,
+  map,
+  type,
+}: SearchInputProps) {
   const [text, setText] = useState<string>("");
 
   const handleOnClick = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +93,7 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
         <input
           type="text"
           className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"
-          placeholder="지역/맛집 검색"
+          placeholder={type === "main" ? "지역/맛집 검색" : "음식점 검색"}
           onChange={(e) => handleOnClick(e)}
           onKeyDown={(e) => handleOnKeyDown(e)}
         ></input>
