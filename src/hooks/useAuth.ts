@@ -3,7 +3,7 @@ import { SignUpRequest, LoginData } from "@/type/types";
 
 const BASE_URL = "http://35.232.243.53:8080/api";
 
-const axiosClient = axios.create({
+export const axiosClient = axios.create({
   withCredentials: true,
   baseURL: BASE_URL,
 });
@@ -43,7 +43,7 @@ export const getProfile = async () => {
   try {
     const res = await axiosClient.get(`/user`, { headers });
     if (res.status === 200) {
-      //console.log(res);
+      console.log(res);
       return res.data;
     }
   } catch (error) {

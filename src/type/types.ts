@@ -19,3 +19,8 @@ export interface ProfileData {
   status: string;
   webSite: string; //선택
 }
+
+export interface UserInfo {
+  nickName: string;
+  status: string;
+}
