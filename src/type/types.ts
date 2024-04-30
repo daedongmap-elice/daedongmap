@@ -1,7 +1,7 @@
 export interface SignUpRequest {
   email: string;
   password: string;
-  nickname: string;
+  nickName: string;
   phoneNumber: string;
 }
 
@@ -16,6 +16,6 @@ export interface LoginData {
 
 export interface ProfileData {
   nickname: string;
-  aboutMe: string;
-  webSite: string;
+  status: string;
+  webSite: string; //선택
 }

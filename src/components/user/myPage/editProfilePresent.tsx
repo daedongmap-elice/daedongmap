@@ -34,7 +34,7 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
             <span className="label-text">자기소개</span>
           </div>
           <textarea
-            name="aboutMe"
+            name="status"
             placeholder="소개글을 입력해주세요.(50자 제한)"
             onChange={handleChange}
             maxLength={50}

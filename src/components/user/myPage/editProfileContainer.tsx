@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import EditProfilePresnet from "./editProfilePresent";
 import { ProfileData } from "@/type/types";
 //import { useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ import { ProfileData } from "@/type/types";
 export default function EditProfileContainer() {
   const [profile, setProfile] = useState<ProfileData>({
     nickname: "",
-    aboutMe: "",
+    status: "",
     webSite: "",
   });
   //const navigate = useNavigate();

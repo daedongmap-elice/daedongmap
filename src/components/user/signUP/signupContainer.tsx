@@ -1,26 +1,29 @@
 import { useMemo, useState } from "react";
-//import { signUp } from "@/hooks/useAuth";
+import { signUp } from "@/hooks/useAuth";
 import { SignUpData } from "@/type/types";
 import { isValidationEmail, isCheckPassword } from "@/utils/authUtils";
 import SignUpPresent from "./signupPresent";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpContainer() {
   const [formData, setFormData] = useState<SignUpData>({
     email: "",
     password: "",
     checkPassword: "",
-    nickname: "",
+    nickName: "",
     phoneNumber: "",
   });
   const [isEmail, setIsEmail] = useState<boolean>(true);
   const [isPassword, setIsPassword] = useState<boolean>(true);
   const [pwLength, setPwLength] = useState<number>(0);
+  const navigate = useNavigate();
   const handleFormSubmit = (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
     console.log(formData);
-    //signUp(formData);
+    signUp(formData);
+    navigate("/login");
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,10 +43,10 @@ export default function SignUpContainer() {
     return !(
       isEmail &&
       isPassword &&
-      formData.nickname &&
+      formData.nickName &&
       formData.phoneNumber
     );
-  }, [isEmail, isPassword, formData.nickname, formData.phoneNumber]);
+  }, [isEmail, isPassword, formData.nickName, formData.phoneNumber]);
   return (
     <SignUpPresent
       onFormSubmit={handleFormSubmit}

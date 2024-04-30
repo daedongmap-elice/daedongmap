@@ -7,10 +7,8 @@ import ReviewDetail from "../pages/review/ReviewDetail";
 import ReviewFeed from "@/pages/review/ReviewFeed";
 import ReviewEdit from "@/pages/review/ReviewEdit";
 import PreLoginPresent from "../components/user/preLoginPresnt";
-//import SignUpPresent from "../components/user/signupPresent";
-//import LoginPresent from "../components/user/login/loginPresent";
-import MyPagePresent from "../components/user/myPage/mypagePresent";
-import EditProfilePresnet from "../components/user/myPage/editProfilePresent";
+import MyPageContainer from "@/components/user/myPage/mypageContainer";
+import EditProfileContainer from "@/components/user/myPage/editProfileContainer";
 import NotFoundPresent from "../components/notFound";
 import SignUpContainer from "@/components/user/signUP/signupContainer";
 import LoginContainer from "@/components/user/login/loginContainer";
@@ -38,8 +36,8 @@ const router = createBrowserRouter([
       { path: "/naver/oauth", element: <NaverOAuth /> },
       { path: "/kakao/oauth", element: <KakaoOauth /> },
       { path: "/kakao/oauth", element: <GoogleOauth /> },
-      { path: "/mypage", element: <MyPagePresent /> },
-      { path: "/editprofile", element: <EditProfilePresnet /> },
+      { path: "/mypage", element: <MyPageContainer /> },
+      { path: "/editprofile", element: <EditProfileContainer /> },
     ],
   },
 ]);
