@@ -1,6 +1,7 @@
 import { Select, Logo, Thumbnail } from "@/components/review/index";
 
 export default function ReviewGallery() {
+  // 리뷰 전체 조회하여 썸네일 뿌리기
   return (
     <div className="pb-16">
       <div className="mb-2 flex justify-between">
