@@ -10,13 +10,15 @@ export default function LoginContainer() {
     password: "",
   });
   const navigate = useNavigate();
-  const handleFormSubmit = (
+  const handleFormSubmit = async (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    Login(formData);
+    const loginState = await Login(formData);
     //window.location.href = "/mypage";
-    navigate("/mypage");
+    if (loginState) {
+      navigate("/mypage");
+    }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

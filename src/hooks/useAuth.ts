@@ -30,8 +30,23 @@ export const Login = async (info: LoginData) => {
       //LoginSuccess(res);
       localStorage.setItem("accessToken", res.data.token.accessToken);
       localStorage.setItem("refreshToken", res.data.token.refreshToken);
+      return true;
     }
-    console.log(res.data.token.accessToken);
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const getRefreshToken = async (RT: string | null) => {
+  try {
+    const res = await axiosClient.get(`refresh-token`, {
+      headers: { Authorization: `Bearer ${RT}` },
+    });
+    if (res.status === 200) {
+      console.log(res);
+    }
   } catch (error) {
     console.log(error);
   }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
-import { axiosClient } from "@/hooks/useAuth";
+import { axiosClient, getRefreshToken } from "@/hooks/useAuth";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useState<UserInfo>({
@@ -9,6 +9,7 @@ export default function MyPageContainer() {
     status: "",
   });
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
   const headers = { Authorization: `Bearer ${accessToken}` };
   const getProfile = async () => {
     try {
@@ -16,6 +17,9 @@ export default function MyPageContainer() {
       if (res.status === 200) {
         setProfile({ nickName: res.data.nickName, status: res.data.status });
         console.log(res);
+      }
+      if (res.status === 401) {
+        getRefreshToken(refreshToken);
       }
     } catch (error) {
       console.log(error);

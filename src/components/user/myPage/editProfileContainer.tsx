@@ -10,7 +10,7 @@ export default function EditProfileContainer() {
     status: "",
     webSite: "",
   });
-  const [imgFile, setImgFile] = useState<string[]>([]);
+  const [imgFile, setImgFile] = useState<string[]>(["img/sample1.png"]);
   const upload = useRef<HTMLInputElement>(null);
   //const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
