@@ -99,7 +99,7 @@ export default function SearchInput({
         <input
           type="text"
           className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"
-          placeholder={type === "main" ? "지역/맛집 검색" : "음식점 검색"}
+          placeholder={type === "main" ? "지역 검색" : "음식점 검색"}
           onChange={(e) => handleOnClick(e)}
           onKeyDown={(e) => handleOnKeyDown(e)}
         ></input>
