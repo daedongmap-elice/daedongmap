@@ -94,7 +94,7 @@ export default function SearchInput({
   }, [map]);
 
   return (
-    <div className="relative h-full w-[320px]">
+    <div className="relative h-11 w-[320px]">
       <input
         type="text"
         className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"

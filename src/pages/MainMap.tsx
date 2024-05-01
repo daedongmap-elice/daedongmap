@@ -135,7 +135,7 @@ export function MainMap() {
         })
       }
     >
-      <div className="absolute left-1/2 top-10 z-10 h-11 w-fit -translate-x-1/2">
+      <div className="absolute left-1/2 top-10 z-10 -translate-x-1/2">
         <SearchInput
           setMarkers={setMarkers}
           map={map}
