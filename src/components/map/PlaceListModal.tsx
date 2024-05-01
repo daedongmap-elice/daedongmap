@@ -38,7 +38,7 @@ export default function PlaceListModal({
         </div>
       )}
       <div
-        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-12 transition-all duration-150 ${openListModal ? "top-0" : "top-[1000px]"}`}
+        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-28 transition-all duration-150 ${openListModal ? "top-0" : "top-[1000px]"}`}
       >
         <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3">
           {placeList === undefined ? (
