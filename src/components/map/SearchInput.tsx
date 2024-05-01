@@ -94,7 +94,7 @@ export default function SearchInput({
   }, [map]);
 
   return (
-    <div className="absolute left-1/2 top-10 z-10 h-11 w-10/12 -translate-x-1/2">
+    <div className="absolute left-1/2 top-10 z-10 h-11 w-[320px] -translate-x-1/2">
       <div className="relative h-full w-full">
         <input
           type="text"
