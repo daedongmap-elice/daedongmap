@@ -29,14 +29,6 @@ export function MainMap() {
     errMsg: null,
     isLoading: true,
   });
-  const [mapLocation, setMapLocation] = useState<{
-    center: {
-      lat: number;
-      lng: number;
-    };
-  }>({
-    center: { lat: 33.450701, lng: 126.570667 },
-  });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [markers, setMarkers] = useState<
@@ -69,10 +61,6 @@ export function MainMap() {
     const latlng = moushEvent.latLng;
     setSelectMarker({ lat: latlng.getLat(), lng: latlng.getLng() });
     setShowInfoCard(false);
-  };
-
-  const handleChangeMapLocation = (center: { lat: number; lng: number }) => {
-    setMapLocation({ center });
   };
 
   useEffect(() => {
@@ -110,16 +98,9 @@ export function MainMap() {
     }
   }, []);
 
-  useEffect(() => {
-    setMapLocation((prev) => ({
-      ...prev,
-      center: userLocation.center,
-    }));
-  }, [userLocation]);
-
   return (
     <Map
-      center={mapLocation.center}
+      center={userLocation.center}
       style={{
         width: "100%",
         height: "95.3vh",
@@ -128,12 +109,6 @@ export function MainMap() {
       onClick={handleClickMap}
       isPanto
       onCreate={setMap}
-      onCenterChanged={(map2) =>
-        handleChangeMapLocation({
-          lat: map2.getCenter().getLat(),
-          lng: map2.getCenter().getLng(),
-        })
-      }
     >
       <SearchInput
         setMarkers={setMarkers}
@@ -210,10 +185,7 @@ export function MainMap() {
       <div
         className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
       >
-        <NowPositionBtn
-          onClickEvent={handleChangeMapLocation}
-          userLocation={userLocation.center}
-        />
+        <NowPositionBtn userLocation={userLocation.center} map={map} />
       </div>
       <PlaceListModal
         openListModal={openListModal}
