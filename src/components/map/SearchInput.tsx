@@ -94,20 +94,18 @@ export default function SearchInput({
   }, [map]);
 
   return (
-    <div className="absolute left-1/2 top-10 z-10 h-11 w-[320px] -translate-x-1/2">
-      <div className="relative h-full w-full">
-        <input
-          type="text"
-          className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"
-          placeholder={type === "main" ? "지역/맛집 검색" : "음식점 검색"}
-          onChange={(e) => handleOnClick(e)}
-          onKeyDown={(e) => handleOnKeyDown(e)}
-        ></input>
-        <IoSearch
-          onClick={handleSearch}
-          className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2"
-        />
-      </div>
+    <div className="relative h-full w-[320px]">
+      <input
+        type="text"
+        className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"
+        placeholder={type === "main" ? "지역/맛집 검색" : "음식점 검색"}
+        onChange={(e) => handleOnClick(e)}
+        onKeyDown={(e) => handleOnKeyDown(e)}
+      ></input>
+      <IoSearch
+        onClick={handleSearch}
+        className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2"
+      />
     </div>
   );
 }
