@@ -208,7 +208,7 @@ export function MainMap() {
       )}
 
       <div
-        className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
+        className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
       >
         <NowPositionBtn
           onClickEvent={handleChangeMapLocation}
@@ -221,7 +221,7 @@ export function MainMap() {
         userLocation={userLocation}
       />
       <div
-        className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
+        className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-52" : "bottom-16"}`}
       >
         <ChangeViewBtn
           onClick={handleOpenModal}
