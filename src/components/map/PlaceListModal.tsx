@@ -1,4 +1,3 @@
-import { IoSearch } from "react-icons/io5";
 import { PlaceInfoCard } from "@/components/map/index";
 
 interface PlaceListModalProps {
@@ -36,11 +35,10 @@ export default function PlaceListModal({
       {openListModal && (
         <div className="absolute top-0 z-20 h-[5.3vh] w-full content-center bg-white">
           <img src="svg/logo.svg" alt="로고" className="mx-auto my-0 h-3/5" />
-          <IoSearch className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2" />
         </div>
       )}
       <div
-        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-16 transition-all duration-100 ${openListModal ? "top-0" : "top-[1000px]"}`}
+        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-12 transition-all duration-150 ${openListModal ? "top-0" : "top-[1000px]"}`}
       >
         <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3">
           {placeList === undefined ? (

@@ -135,14 +135,12 @@ export function MainMap() {
         })
       }
     >
-      <div className="absolute left-1/2 top-10 z-10 -translate-x-1/2">
-        <SearchInput
-          setMarkers={setMarkers}
-          map={map}
-          type="main"
-          setShowInfoCard={setShowInfoCard}
-        />
-      </div>
+      <SearchInput
+        setMarkers={setMarkers}
+        map={map}
+        type="main"
+        setShowInfoCard={setShowInfoCard}
+      />
       {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
         <></>
       ) : (
