@@ -1,5 +1,6 @@
 export default function ReviewImage() {
-  // TODO: 해당 게시글의 이미지를 조회해서 불러온 다음 map으로 그려내야 함 (ImageInput컴포넌트 참고)
+  // TODO: 해당 게시글의 이미지를 조회해서 불러온 다음 map으로 그려내야 함
+  //       base64형식의 string배열을 FileReader API를 통해 File 형식으로 변환해야 함
 
   return (
     <>
