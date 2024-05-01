@@ -15,6 +15,7 @@ export default function LoginContainer() {
   ) => {
     e.preventDefault();
     Login(formData);
+    //window.location.href = "/mypage";
     navigate("/mypage");
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

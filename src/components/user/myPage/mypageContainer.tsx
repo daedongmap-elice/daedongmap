@@ -8,13 +8,24 @@ export default function MyPageContainer() {
     nickName: "",
     status: "",
   });
+  const accessToken = localStorage.getItem("accessToken");
+  const headers = { Authorization: `Bearer ${accessToken}` };
   const getProfile = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const headers = { Authorization: `Bearer ${accessToken}` };
     try {
       const res = await axiosClient.get(`/user`, { headers });
       if (res.status === 200) {
         setProfile({ nickName: res.data.nickName, status: res.data.status });
+        console.log(res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getReview = async () => {
+    try {
+      const res = await axiosClient.get(`/reviews/users/me`, { headers });
+      if (res.status === 200) {
+        console.log(res);
       }
     } catch (error) {
       console.log(error);
@@ -22,6 +33,7 @@ export default function MyPageContainer() {
   };
   useEffect(() => {
     getProfile();
+    getReview();
   }, []);
 
   return <MyPagePresent profile={profile} />;
