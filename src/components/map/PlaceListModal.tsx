@@ -53,6 +53,7 @@ export default function PlaceListModal({
                   key={place.id}
                   place={place}
                   userLocation={userLocation}
+                  type="main"
                 />
               );
             })

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaLocationArrow } from "react-icons/fa6";
 
 interface PlaceInfoCardProps {
   place: {
@@ -21,11 +20,13 @@ interface PlaceInfoCardProps {
     errMsg: null | string;
     isLoading: boolean;
   };
+  type: "main" | "post";
 }
 
 export default function PlaceInfoCard({
   place,
   userLocation,
+  type,
 }: PlaceInfoCardProps) {
   if (!place || !userLocation) {
     return null;
@@ -55,75 +56,86 @@ export default function PlaceInfoCard({
   }, []);
 
   return (
-    <div className="flex h-fit w-full flex-col gap-0.5 rounded-lg bg-white p-2.5 shadow">
-      <div className="flex items-center gap-1">
-        <h2 className="text-base font-bold">{placeName}</h2>
-        <p className="text-xs text-subGray ">한식</p>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <h4 className="text-xs font-medium">4.5</h4>
-        <div className="rating rating-half rating-xs pointer-events-none">
-          <input
-            type="radio"
-            className="mask mask-half-1 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-2 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-1 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-2 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-1 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-2 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-1 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-2 mask-star-2 bg-mainY"
-          />
-          <input
-            type="radio"
-            className="mask mask-half-1 mask-star-2 bg-mainY"
-            defaultChecked={true}
-          />
-          <input
-            type="radio"
-            className="mask mask-half-2 mask-star-2 bg-mainY"
-          />
+    <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
+      <div className="flex justify-between">
+        <div className="flex flex-col gap-0.5">
+          <div>
+            <h2 className="text-base font-bold">
+              {placeName}
+              <p className="inline text-xs font-normal text-subGray">
+                &nbsp;한식
+              </p>
+            </h2>
+          </div>
+          {type === "main" && (
+            <div className="flex items-center gap-1.5">
+              <h4 className="text-xs font-medium">4.5</h4>
+              <div className="rating rating-half rating-xs pointer-events-none">
+                <input
+                  type="radio"
+                  className="mask mask-half-1 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-2 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-1 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-2 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-1 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-2 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-1 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-2 mask-star-2 bg-mainY"
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-1 mask-star-2 bg-mainY"
+                  defaultChecked={true}
+                />
+                <input
+                  type="radio"
+                  className="mask mask-half-2 mask-star-2 bg-mainY"
+                />
+              </div>
+              <p className="text-xs text-subGray">(265)</p>
+            </div>
+          )}
+
+          <p className="text-xs">{roadAddressName}</p>
+          <div className="flex gap-1">
+            {type === "main" && (
+              <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
+            )}
+            {type === "main" && phone && <p className="text-xs font-bold">|</p>}
+            {phone && <p className="text-xs text-mainG">{phone}</p>}
+          </div>
         </div>
-        <p className="text-xs text-subGray">(265)</p>
-      </div>
-      <p className="text-xs">{roadAddressName}</p>
-      <div className="flex gap-1">
-        <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
-        <p className="text-xs font-bold">|</p>
-        <p className="text-xs text-mainG">{phone}</p>
-      </div>
-      <div className="mt-0.5 flex justify-between">
-        <div className="h-[60px] w-[95px] bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fcfile%2F166DC3354E4DE28425')] bg-cover bg-center"></div>
-        <div className="h-[60px] w-[95px] bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
-        <div className="h-[60px] w-[95px] bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=https%3A%2F%2Fpostfiles.pstatic.net%2FMjAyNDA0MTdfMTEw%2FMDAxNzEzMzU2OTgyNTg0.R-8WU3e-khviuz6oOIK8UvI038ixpd1lwKdZMFykobMg.6uzd42BTrjFkgJPXlIMoL9xDmzXHWYtXTrxxDhwNxcMg.JPEG%2FIMG_3479.jpg%3Ftype%3Dw773')] bg-cover bg-center"></div>
+
+        {type === "main" && (
+          <div className="h-[80px] w-[80px] flex-none rounded bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
+        )}
       </div>
       <button
+        className="mt-1.5 inline-flex h-5 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
         onClick={handleClickKaKaoBtn}
-        className="btn btn-xs absolute right-2.5 w-fit gap-0 rounded-full border-[#258FFF] bg-white text-xs"
       >
-        kakao<strong>map</strong>
-        <FaLocationArrow className="text-mainY" />
+        kakao<strong>map</strong>으로 보기
       </button>
     </div>
   );
