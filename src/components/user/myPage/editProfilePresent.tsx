@@ -1,21 +1,36 @@
+import { RefObject } from "react";
+
 interface EditProfileProps {
   handleEditProfile: (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => void;
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  upload: RefObject<HTMLInputElement>;
+  imgUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  imgFile: string[];
 }
 const EditProfilePresnet: React.FC<EditProfileProps> = ({
   handleEditProfile,
   handleChange,
+  upload,
+  imgUpload,
+  imgFile,
 }) => {
   return (
     <>
       <div className="mt-[40px] flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
+        <input
+          ref={upload}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={imgUpload}
+        />
         <p className="absolute top-[130px] text-subLightGray">프로필 편집</p>
         <div className="avatar">
           <div className="w-24 rounded-full border border-solid  border-subGray">
-            <img src="/img/profile.jpg" alt="프로필 이미지 " />
+            <img src={imgFile[0]} alt="프로필 이미지 " />
           </div>
         </div>
         <button className="btn btn-link no-underline">사진 변경</button>
