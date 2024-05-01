@@ -23,8 +23,8 @@ export function MainMap() {
     isLoading: boolean;
   }>({
     center: {
-      lat: 33.450701,
-      lng: 126.570667,
+      lat: 37.5665851,
+      lng: 126.9782038,
     },
     errMsg: null,
     isLoading: true,
