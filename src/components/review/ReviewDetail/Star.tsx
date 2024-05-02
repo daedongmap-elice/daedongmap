@@ -1,6 +1,6 @@
 interface StarProps {
   name: string;
-  rating: number;
+  rating: number | undefined;
 }
 
 const Star: React.FC<StarProps> = ({ name, rating }) => {
