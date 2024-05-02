@@ -32,6 +32,7 @@ export function MainMap() {
   });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
+  const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
   const [markers, setMarkers] = useState<
     {
       addressName: string;
@@ -70,7 +71,8 @@ export function MainMap() {
     if (!map) {
       return;
     }
-
+    setIsLoadingMarker(true);
+    setMarkers([]);
     const bounds = map.getBounds();
     // 영역의 남서쪽 좌표를 얻어옵니다
     const swLatLng = bounds.getSouthWest();
@@ -81,21 +83,9 @@ export function MainMap() {
         `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}`
       );
       const data = res.data;
-      setMarkers([]);
+
       data.map(
-        ({
-          addressName,
-          averageRating,
-          categoryName,
-          id,
-          kakaoPlaceId,
-          phone,
-          placeName,
-          placeUrl,
-          roadAddressName,
-          x,
-          y,
-        }: {
+        (place: {
           addressName: string;
           averageRating: number;
           categoryName: string;
@@ -109,29 +99,16 @@ export function MainMap() {
           y: number;
         }) =>
           setMarkers((prev) => {
-            prev.push({
-              addressName,
-              averageRating,
-              categoryName,
-              id,
-              kakaoPlaceId,
-              phone,
-              placeName,
-              placeUrl,
-              roadAddressName,
-              x,
-              y,
-            });
+            prev.push(place);
             return prev;
           })
       );
-
+      setIsLoadingMarker(false);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   }
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -184,70 +161,71 @@ export function MainMap() {
         setShowInfoCard={setShowInfoCard}
         getPlaces={getPlaces}
       />
-      {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
-        <></>
-      ) : (
-        markers.map((place) => {
-          const { id, x: lng, y: lat } = place;
-          const isSelected =
-            selectMarker.lat === Number(lat) &&
-            selectMarker.lng === Number(lng);
-          return (
-            <React.Fragment key={id}>
-              <MapMarker
-                position={{
-                  lat: Number(lat),
-                  lng: Number(lng),
-                }}
-                image={
-                  isSelected
-                    ? {
-                        src: "svg/selectedMarker.svg",
-                        size: {
-                          width: 26,
-                          height: 32,
-                        },
-                        options: {
-                          offset: {
-                            x: 13,
-                            y: 32,
+      {!isLoadingMarker &&
+        (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
+          <></>
+        ) : (
+          markers.map((place) => {
+            const { id, x: lng, y: lat } = place;
+            const isSelected =
+              selectMarker.lat === Number(lat) &&
+              selectMarker.lng === Number(lng);
+            return (
+              <React.Fragment key={id}>
+                <MapMarker
+                  position={{
+                    lat: Number(lat),
+                    lng: Number(lng),
+                  }}
+                  image={
+                    isSelected
+                      ? {
+                          src: "svg/selectedMarker.svg",
+                          size: {
+                            width: 26,
+                            height: 32,
                           },
-                        },
-                      }
-                    : {
-                        src: "svg/marker.svg",
-                        size: {
-                          width: 21,
-                          height: 29,
-                        },
-                        options: {
-                          offset: {
-                            x: 10.5,
-                            y: 29,
+                          options: {
+                            offset: {
+                              x: 13,
+                              y: 32,
+                            },
                           },
-                        },
-                      }
-                }
-                onClick={() =>
-                  handleOnClick({ lat: Number(lat), lng: Number(lng) })
-                }
-              />
+                        }
+                      : {
+                          src: "svg/marker.svg",
+                          size: {
+                            width: 21,
+                            height: 29,
+                          },
+                          options: {
+                            offset: {
+                              x: 10.5,
+                              y: 29,
+                            },
+                          },
+                        }
+                  }
+                  onClick={() =>
+                    handleOnClick({ lat: Number(lat), lng: Number(lng) })
+                  }
+                />
 
-              {isSelected ? (
-                <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                  <PlaceInfoCard
-                    place={place}
-                    userLocation={userLocation}
-                    type="main"
-                  />
-                </div>
-              ) : (
-                <></>
-              )}
-            </React.Fragment>
-          );
-        })
-      )}
+                {isSelected ? (
+                  <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                    <PlaceInfoCard
+                      place={place}
+                      userLocation={userLocation}
+                      type="main"
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </React.Fragment>
+            );
+          })
+        ))}
 
       <div
         className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
