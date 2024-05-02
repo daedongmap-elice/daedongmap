@@ -17,7 +17,7 @@ export default function EditProfileContainer() {
   const headers = { Authorization: `Bearer ${accessToken}` };
   const editProfile = async (info: ProfileData) => {
     try {
-      const res = await axiosClient.put(`/user`, info, { headers });
+      const res = await axiosClient.patch(`/user`, info, { headers });
       if (res.status === 200) {
         console.log(res);
       }

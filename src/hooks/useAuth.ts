@@ -41,11 +41,25 @@ export const Login = async (info: LoginData) => {
 
 export const getRefreshToken = async (RT: string | null) => {
   try {
-    const res = await axiosClient.get(`refresh-token`, {
+    const res = await axiosClient.get(`/refresh-token`, {
       headers: { Authorization: `Bearer ${RT}` },
     });
     if (res.status === 200) {
       console.log(res);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const Logout = async (RT: string | null) => {
+  try {
+    const res = await axiosClient.get(`/logout`, {
+      headers: { Authorization: `Bearer ${RT}` },
+    });
+    if (res.status === 200) {
+      console.log(res);
+      localStorage.clear();
     }
   } catch (error) {
     console.log(error);

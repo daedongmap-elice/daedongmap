@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
-import { axiosClient, getRefreshToken } from "@/hooks/useAuth";
+import { Logout, axiosClient, getRefreshToken } from "@/hooks/useAuth";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useState<UserInfo>({
@@ -10,10 +10,12 @@ export default function MyPageContainer() {
   });
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const headers = { Authorization: `Bearer ${accessToken}` };
+
   const getProfile = async () => {
     try {
-      const res = await axiosClient.get(`/user`, { headers });
+      const res = await axiosClient.get(`/user`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       if (res.status === 200) {
         setProfile({ nickName: res.data.nickName, status: res.data.status });
         console.log(res);
@@ -27,7 +29,9 @@ export default function MyPageContainer() {
   };
   const getReview = async () => {
     try {
-      const res = await axiosClient.get(`/reviews/users/me`, { headers });
+      const res = await axiosClient.get(`/reviews/users/me`, {
+        headers: { Authorization: `Bearer: ${accessToken}` },
+      });
       if (res.status === 200) {
         console.log(res);
       }
@@ -35,10 +39,16 @@ export default function MyPageContainer() {
       console.log(error);
     }
   };
+  const isClickLogout = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    Logout(refreshToken);
+  };
   useEffect(() => {
     getProfile();
     getReview();
   }, []);
 
-  return <MyPagePresent profile={profile} />;
+  return <MyPagePresent profile={profile} isClickLogout={isClickLogout} />;
 }

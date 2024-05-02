@@ -1,10 +1,12 @@
 import { UserInfo } from "@/type/types";
+import { AiOutlineMore } from "react-icons/ai";
 
 interface MypageProps {
   profile: UserInfo;
+  isClickLogout: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const MyPagePresent: React.FC<MypageProps> = ({ profile }) => {
+const MyPagePresent: React.FC<MypageProps> = ({ profile, isClickLogout }) => {
   return (
     <>
       <div className="flex flex-col items-center">
@@ -21,6 +23,19 @@ const MyPagePresent: React.FC<MypageProps> = ({ profile }) => {
               <span className="text-xs">10</span>
             </div>
             <span className="text-sm">{profile.status}</span>
+          </div>
+          <div className="dropdown dropdown-end mr-1">
+            <div tabIndex={0} role="button">
+              <AiOutlineMore className="h-6 w-6" />
+            </div>
+            <ul className="menu dropdown-content z-[1] w-28 rounded-box bg-base-100 p-2 text-center shadow">
+              <li className="mb-2">
+                <button className="mx-auto text-center" onClick={isClickLogout}>
+                  로그아웃
+                </button>
+              </li>
+              <li className="">회원탈퇴</li>
+            </ul>
           </div>
         </div>
         <button className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText">
