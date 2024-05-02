@@ -20,21 +20,19 @@ export default function SearchInput({
     setText(e.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!map) return;
     const ps = new kakao.maps.services.Places();
 
     if (text !== "") {
       try {
-        ps.keywordSearch(`${text} 지역`, async (datas, status) => {
+        await ps.keywordSearch(`${text} 음식점`, (datas, status) => {
           if (status === kakao.maps.services.Status.OK) {
-            const bounds = map.getBounds();
-            bounds.extend(
+            map.setCenter(
               new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
             );
-            map.setBounds(bounds);
-            map.setLevel(7);
-            await getPlaces();
+            map.setLevel(5);
+            getPlaces();
           }
         });
       } catch (err) {
