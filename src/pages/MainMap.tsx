@@ -7,6 +7,7 @@ import {
   ChangeViewBtn,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -23,35 +24,30 @@ export function MainMap() {
     isLoading: boolean;
   }>({
     center: {
-      lat: 33.450701,
-      lng: 126.570667,
+      lat: 37.5665851,
+      lng: 126.9782038,
     },
     errMsg: null,
     isLoading: true,
   });
-  const [mapLocation, setMapLocation] = useState<{
-    center: {
-      lat: number;
-      lng: number;
-    };
-  }>({
-    center: { lat: 33.450701, lng: 126.570667 },
-  });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
+  const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
   const [markers, setMarkers] = useState<
     {
-      address_name: string;
-      category_name: string;
-      id: string;
-      phone: string;
-      place_name: string;
-      place_url: string;
-      road_address_name: string;
-      x: string;
-      y: string;
+      addressName: string;
+      averageRating: number;
+      categoryName: string;
+      id: number;
+      kakaoPlaceId: number;
+      phone: string | null;
+      placeName: string;
+      placeUrl: string;
+      roadAddressName: string;
+      x: number;
+      y: number;
     }[]
-  >();
+  >([]);
 
   const handleOnClick = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
@@ -71,27 +67,60 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
-  const handleChangeMapLocation = (center: { lat: number; lng: number }) => {
-    setMapLocation({ center });
-  };
+  async function getPlaces() {
+    if (!map) {
+      return;
+    }
+    setIsLoadingMarker(true);
+    setMarkers([]);
+    const bounds = map.getBounds();
+    // 영역의 남서쪽 좌표를 얻어옵니다
+    const swLatLng = bounds.getSouthWest();
+    // 영역의 북동쪽 좌표를 얻어옵니다
+    const neLatLng = bounds.getNorthEast();
+    try {
+      const res = await axios.get(
+        `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}`
+      );
+      const data = res.data;
 
+      data.map(
+        (place: {
+          addressName: string;
+          averageRating: number;
+          categoryName: string;
+          id: number;
+          kakaoPlaceId: number;
+          phone: string | null;
+          placeName: string;
+          placeUrl: string;
+          roadAddressName: string;
+          x: number;
+          y: number;
+        }) =>
+          setMarkers((prev) => {
+            prev.push(place);
+            return prev;
+          })
+      );
+      setIsLoadingMarker(false);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          if (
-            userLocation.center.lat !== position.coords.latitude &&
-            userLocation.center.lng !== position.coords.longitude
-          ) {
-            setUserLocation((prev) => ({
-              ...prev,
-              center: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              },
-              isLoading: false,
-            }));
-          }
+          setUserLocation((prev) => ({
+            ...prev,
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+            isLoading: false,
+          }));
         },
         (err) => {
           setUserLocation((prev) => ({
@@ -111,15 +140,12 @@ export function MainMap() {
   }, []);
 
   useEffect(() => {
-    setMapLocation((prev) => ({
-      ...prev,
-      center: userLocation.center,
-    }));
+    getPlaces();
   }, [userLocation]);
 
   return (
     <Map
-      center={mapLocation.center}
+      center={userLocation.center}
       style={{
         width: "100%",
         height: "95.3vh",
@@ -128,88 +154,83 @@ export function MainMap() {
       onClick={handleClickMap}
       isPanto
       onCreate={setMap}
-      onCenterChanged={(map2) =>
-        handleChangeMapLocation({
-          lat: map2.getCenter().getLat(),
-          lng: map2.getCenter().getLng(),
-        })
-      }
     >
       <SearchInput
-        setMarkers={setMarkers}
         map={map}
         type="main"
         setShowInfoCard={setShowInfoCard}
+        getPlaces={getPlaces}
       />
-      {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
-        <></>
-      ) : (
-        markers.map((place) => {
-          const { id, x: lng, y: lat } = place;
-          const isSelected =
-            selectMarker.lat === Number(lat) &&
-            selectMarker.lng === Number(lng);
-
-          return (
-            <React.Fragment key={id}>
-              <MapMarker
-                position={{
-                  lat: Number(lat),
-                  lng: Number(lng),
-                }}
-                image={
-                  isSelected
-                    ? {
-                        src: "svg/selectedMarker.svg",
-                        size: {
-                          width: 26,
-                          height: 32,
-                        },
-                        options: {
-                          offset: {
-                            x: 13,
-                            y: 32,
+      {!isLoadingMarker &&
+        (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
+          <></>
+        ) : (
+          markers.map((place) => {
+            const { id, x: lng, y: lat } = place;
+            const isSelected =
+              selectMarker.lat === Number(lat) &&
+              selectMarker.lng === Number(lng);
+            return (
+              <React.Fragment key={id}>
+                <MapMarker
+                  position={{
+                    lat: Number(lat),
+                    lng: Number(lng),
+                  }}
+                  image={
+                    isSelected
+                      ? {
+                          src: "svg/selectedMarker.svg",
+                          size: {
+                            width: 26,
+                            height: 32,
                           },
-                        },
-                      }
-                    : {
-                        src: "svg/marker.svg",
-                        size: {
-                          width: 21,
-                          height: 29,
-                        },
-                        options: {
-                          offset: {
-                            x: 10.5,
-                            y: 29,
+                          options: {
+                            offset: {
+                              x: 13,
+                              y: 32,
+                            },
                           },
-                        },
-                      }
-                }
-                onClick={() =>
-                  handleOnClick({ lat: Number(lat), lng: Number(lng) })
-                }
-              />
+                        }
+                      : {
+                          src: "svg/marker.svg",
+                          size: {
+                            width: 21,
+                            height: 29,
+                          },
+                          options: {
+                            offset: {
+                              x: 10.5,
+                              y: 29,
+                            },
+                          },
+                        }
+                  }
+                  onClick={() =>
+                    handleOnClick({ lat: Number(lat), lng: Number(lng) })
+                  }
+                />
 
-              {isSelected ? (
-                <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                  <PlaceInfoCard place={place} userLocation={userLocation} />
-                </div>
-              ) : (
-                <></>
-              )}
-            </React.Fragment>
-          );
-        })
-      )}
+                {isSelected ? (
+                  <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                    <PlaceInfoCard
+                      place={place}
+                      userLocation={userLocation}
+                      type="main"
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </React.Fragment>
+            );
+          })
+        ))}
 
       <div
-        className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-60" : "bottom-16"}`}
+        className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
       >
-        <NowPositionBtn
-          onClickEvent={handleChangeMapLocation}
-          userLocation={userLocation.center}
-        />
+        <NowPositionBtn userLocation={userLocation.center} map={map} />
       </div>
       <PlaceListModal
         openListModal={openListModal}
@@ -217,7 +238,7 @@ export function MainMap() {
         userLocation={userLocation}
       />
       <div
-        className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-60" : "bottom-16"}`}
+        className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-52" : "bottom-16"}`}
       >
         <ChangeViewBtn
           onClick={handleOpenModal}
