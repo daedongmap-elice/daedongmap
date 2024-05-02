@@ -1,7 +1,7 @@
 interface ImageInputProps {
   previewImgs: string[];
   setPreviewImgs: React.Dispatch<React.SetStateAction<string[]>>;
-  setPostImgs: React.Dispatch<React.SetStateAction<string[]>>;
+  setPostImgs: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
@@ -9,41 +9,16 @@ const ImageInput: React.FC<ImageInputProps> = ({
   setPreviewImgs,
   setPostImgs,
 }) => {
-  const getBase64 = (files: File[]) => {
-    const base64Imgs: string[] = [];
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        if (reader.result) {
-          base64Imgs.push(reader.result.toString());
-        }
-      };
-      reader.onerror = (error) => {
-        console.log("Error: ", error);
-      };
-    });
-    return base64Imgs;
-  };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation(); // 이벤트 버블링 방지
     // 미리보기 이미지 설정
     const files = Array.from(e.target.files as FileList);
-    const selectedImgs: string[] = files.map((img) => {
+    setPostImgs(files);
+
+    const selected: string[] = files.map((img) => {
       return URL.createObjectURL(img);
     });
-    setPreviewImgs(selectedImgs);
-
-    // 파일을 base64 형식으로 변환
-    const base64Imgs = getBase64(files);
-    setPostImgs(base64Imgs);
-    console.log("base64Imgs:", base64Imgs);
-  };
-
-  const handleDeleteImage = (index: number) => {
-    const newPreviewImgs = [...previewImgs];
-    newPreviewImgs.splice(index, 1); // 선택한 인덱스의 요소 제거
-    setPreviewImgs(newPreviewImgs);
+    setPreviewImgs(selected);
   };
 
   return (
@@ -55,6 +30,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           required
           multiple
           className="hidden"
+          onClick={(e) => e.stopPropagation()}
           onChange={handleImageChange}
           disabled={previewImgs.length > 0}
           accept="image/*"
@@ -62,19 +38,18 @@ const ImageInput: React.FC<ImageInputProps> = ({
           type="file"
           name="file"
         />
-        <div className="carousel h-52 min-h-52 w-52">
+        <div className="carousel h-52 min-h-52 w-52 border border-solid border-gray-300">
           {previewImgs.map((url, i) => (
             <div key={url} id={`item${i}`} className="carousel-item w-full">
               <img src={url} className="relative z-0 w-full" alt={`file${i}`} />
-              {/* <img
-                src="svg/deleteIcon.svg"
-                className="absolute z-10 h-5 w-5"
-                alt="deleteIcon"
-              /> */}
               <button
                 className="relative bottom-20 right-8"
-                onClick={() => handleDeleteImage(i)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPreviewImgs(previewImgs.filter((el) => el !== url));
+                }}
               >
+                {/* <img src="/svg/deleteIcon.svg" alt="deleteIcon" /> */}
                 <svg
                   width="20"
                   height="20"
@@ -106,6 +81,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
               href={`#item${i}`}
               className="btn btn-xs w-6 rounded-xl"
               key={url}
+              onClick={(e) => e.stopPropagation()}
             >
               {i + 1}
             </a>

@@ -4,76 +4,97 @@ import {
   FindPlaceModal,
 } from "@/components/review/index";
 import { useState } from "react";
+import FormData from "form-data";
 import axios from "axios";
 
-export default function ReviewPost() {
+const ReviewPost = () => {
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
-  const [postImgs, setPostImgs] = useState<string[]>([]);
+  const [postImgs, setPostImgs] = useState<File[]>([]);
   const [tasteRating, setTasteRating] = useState(5);
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
 
-  // TODO: place api와 riview api에 각 데이터 전송
+  // TODO: place api와 riview api에 각 데이터 전송 - api수정됨 review에만 요청 보내면 됨
   // TODO: 음식점 선택 모달 띄우고 지도에서 마커 선택 시 정보를 서버로 넘기기
   // TODO: ImageInput에서 이미지 크롭 기능(시간 되면)
-
-  const handleSubmit = async () => {
+  const appendFormData = (formData: FormData) => {
     // 평균 별점 계산
     const sum = tasteRating + hygieneRating + kindnessRating;
     const averageRating = Math.round((sum / 3) * 100) / 100;
 
-    // 음식점 등록
-    // 음식점의 id를 리뷰 등록의 placeId에 넣어서 보내기. 바뀔수도있음
+    // reviewRequest 데이터 추가
+    const reviewRequest = {
+      userId: 0,
+      content: "본문 내용용요요용",
+      tasteRating: tasteRating,
+      hygieneRating: hygieneRating,
+      kindnessRating: kindnessRating,
+      averageRating: averageRating,
+    };
+
+    // placeRequest 데이터 추가 (FindPlaceModal 컴포넌트에서 선택된 음식점 정보)
+    const placeRequest = {
+      kakaoPlaceId: 0,
+      placeName: "string",
+      placeUrl: "string",
+      categoryName: "string",
+      addressName: "string",
+      roadAddressName: "string",
+      phone: "string",
+      x: 0,
+      y: 0,
+    };
+
+    formData.append("file", postImgs);
+    // formData.append("reviewRequest", reviewRequest);
+    // formData.append("placeRequest", placeRequest);
+    formData.append(
+      "reviewRequest",
+      new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
+    );
+    formData.append(
+      "placeRequest",
+      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
+    );
+  };
+
+  const handleSubmit = async () => {
+    const formData: FormData = new FormData();
+    appendFormData(formData);
+
+    for (const key of formData.keys()) {
+      console.log(key, ":", formData.get(key));
+    }
+    if (previewImgs.length === 0) {
+      alert("사진을 1장 이상 첨부해주세요.");
+      return;
+    }
+    if (content === "") {
+      alert("본문 내용을 입력해주세요.");
+      return;
+    }
+
     try {
       const response = await axios.post(
-        "http://35.232.243.53:8080/api/place",
+        "http://35.232.243.53:8080/api/reviews",
+        formData,
         {
-          kakaoPlaceId: 0, // 음식점 중복 체크
-          placeName: "string",
-          placeUrl: "string",
-          categoryName: "string",
-          addressName: "string",
-          roadAddressName: "string",
-          phone: "string",
-          x: 0,
-          y: 0,
-        },
-        { withCredentials: true }
-      );
-      console.log("음식점 등록 성공:", response.data);
-    } catch (error) {
-      console.error("음식점 등록 실패:", error);
-
-      // 리뷰 등록
-      try {
-        const response = await axios.post(
-          "http://35.232.243.53:8080/api/review",
-          {
-            file: postImgs,
-            request: {
-              userId: 0,
-              kakaoPlaceId: 0,
-              content: content,
-              tasteRating: tasteRating,
-              hygieneRating: hygieneRating,
-              kindnessRating: kindnessRating,
-              averageRating: averageRating,
-            },
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-          { withCredentials: true }
-        );
-        console.log("리뷰 등록 성공:", response.data);
-      } catch (er) {
-        console.error("리뷰 등록 실패:", er);
-      }
+        }
+      );
+      console.log("응답 데이터:", response.data);
+    } catch (error) {
+      console.error("리뷰 등록 실패:", error);
     }
   };
 
   return (
     <div className="pb-16">
       <div className="mb-6 ml-5 mt-4 text-lg font-medium">새 리뷰 등록하기</div>
-      <div className="flex flex-col items-center justify-center gap-1">
+      <form className="flex flex-col items-center justify-center gap-1">
         <div className="flex justify-center">
           <ImageInput
             previewImgs={previewImgs}
@@ -106,19 +127,6 @@ export default function ReviewPost() {
         <dialog id="placeModal" className="modal modal-bottom">
           <FindPlaceModal />
         </dialog>
-        <select
-          required
-          className="select select-bordered select-sm mb-2 w-3/4 max-w-xs text-xs"
-        >
-          <option disabled defaultValue="default">
-            분류 선택
-          </option>
-          <option value="korean">한식</option>
-          <option value="chinese">중식</option>
-          <option value="japanese">일식</option>
-          <option value="Western">양식</option>
-          <option value="other">기타</option>
-        </select>
         <textarea
           required
           className="textarea textarea-bordered h-32 w-3/4 max-w-xs pt-3 text-xs"
@@ -127,12 +135,18 @@ export default function ReviewPost() {
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
         <button
-          onClick={handleSubmit}
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault(); // 기본적인 form submit 동작 방지
+            handleSubmit(); // handleSubmit 함수 호출
+          }}
           className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
         >
           리뷰 등록
         </button>
-      </div>
+      </form>
     </div>
   );
-}
+};
+
+export default ReviewPost;

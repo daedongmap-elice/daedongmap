@@ -1,43 +1,69 @@
-export default function ReviewImage() {
-  // TODO: 해당 게시글의 이미지를 조회해서 불러온 다음 map으로 그려내야 함
-  //       base64형식의 string배열을 FileReader API를 통해 File 형식으로 변환해야 함
+import { useState } from "react";
+
+interface ReviewImageProps {
+  fileLinks: string[];
+}
+
+const ReviewImage: React.FC<ReviewImageProps> = ({ fileLinks }) => {
+  const [slideIndex, setSlideIndex] = useState(1);
 
   return (
     <>
       <div className="carousel w-full">
-        <div id="item1" className="carousel-item w-full">
-          <img src="img/sample3.png" className="w-full" alt="item" />
-        </div>
-        <div id="item2" className="carousel-item w-full">
-          <img src="img/sample4.png" className="w-full" alt="item" />
-        </div>
-        <div id="item3" className="carousel-item w-full">
-          <img src="img/sample1.png" className="w-full" alt="item" />
-        </div>
-        <div id="item4" className="carousel-item w-full">
-          <img src="img/sample2.png" className="w-full" alt="item" />
-        </div>
-        <div id="item5" className="carousel-item w-full">
-          <img src="img/sample3.png" className="w-full" alt="item" />
-        </div>
+        {fileLinks.map((link, i) => (
+          <div
+            id={`slide${i}`}
+            key={`slide${i}`}
+            className="carousel-item relative w-full"
+          >
+            {fileLinks.length === 1 ? (
+              <img src={link} className="w-full" alt="item" />
+            ) : (
+              <>
+                <img src={link} className="w-full" alt="item" />
+                <div className="absolute left-1 right-1 top-1/2 flex -translate-y-1/2 transform justify-between opacity-50">
+                  <a
+                    href={i === 0 ? "/" : `#slide${i - 1}`}
+                    className={`btn btn-circle ${i === 0 ? "invisible" : ""}`}
+                    onClick={() =>
+                      i === 0 ? setSlideIndex(0) : setSlideIndex(i - 1)
+                    }
+                  >
+                    ❮
+                  </a>
+                  <a
+                    href={i === fileLinks.length - 1 ? "/" : `#slide${i + 1}`}
+                    className={`btn btn-circle ${i === fileLinks.length - 1 ? "invisible" : ""}`}
+                    onClick={() =>
+                      i === fileLinks.length - 1
+                        ? setSlideIndex(fileLinks.length - 1)
+                        : setSlideIndex(i + 1)
+                    }
+                  >
+                    ❯
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
       </div>
-      <div className="flex w-full justify-center gap-3 pb-2 pt-2">
-        <a href="#item1" className="btn btn-xs w-6 rounded-xl">
-          1
-        </a>
-        <a href="#item2" className="btn btn-xs w-6 rounded-xl">
-          2
-        </a>
-        <a href="#item3" className="btn btn-xs w-6 rounded-xl">
-          3
-        </a>
-        <a href="#item4" className="btn btn-xs w-6 rounded-xl">
-          4
-        </a>
-        <a href="#item5" className="btn btn-xs w-6 rounded-xl">
-          5
-        </a>
+      <div
+        id="slideIndex"
+        className="flex w-full items-center justify-center gap-1 pt-3"
+      >
+        {fileLinks.map((link, i) =>
+          fileLinks.length === 1 ? (
+            <></>
+          ) : (
+            <div
+              className={`rounded ${slideIndex === i ? "h-1.5 w-1.5 bg-mainG" : "h-1 w-1 rounded bg-subLightGray"}`}
+            ></div>
+          )
+        )}
       </div>
     </>
   );
-}
+};
+
+export default ReviewImage;

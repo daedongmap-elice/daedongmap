@@ -77,9 +77,19 @@ export default function FindPlace() {
           </Map>
         </div>
       </div>
-      <form method="dialog" className="modal-backdrop">
+      {/* <form method="dialog" className="modal-backdrop">
         <button>close</button>
-      </form>
+      </form> */}
+      <button
+        type="button"
+        className="btn btn-circle btn-ghost btn-sm absolute right-3 top-24"
+        onClick={() => {
+          // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
+          document.getElementById("placeModal")?.close();
+        }}
+      >
+        <img src="/svg/deleteIcon.svg" alt="deleteIcon" />
+      </button>
     </>
   );
 }
