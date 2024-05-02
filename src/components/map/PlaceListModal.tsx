@@ -2,19 +2,19 @@ import { PlaceInfoCard } from "@/components/map/index";
 
 interface PlaceListModalProps {
   openListModal: boolean;
-  placeList:
-    | {
-        place_name: string;
-        place_url: string;
-        category_name: string;
-        address_name: string;
-        road_address_name: string;
-        id: string;
-        phone: string;
-        x: string;
-        y: string;
-      }[]
-    | undefined;
+  placeList: {
+    addressName: string;
+    averageRating: number;
+    categoryName: string;
+    id: number;
+    kakaoPlaceId: number;
+    phone: string | null;
+    placeName: string;
+    placeUrl: string;
+    roadAddressName: string;
+    x: number;
+    y: number;
+  }[];
   userLocation: {
     center: {
       lat: number;

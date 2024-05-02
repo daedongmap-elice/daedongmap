@@ -7,6 +7,7 @@ import {
   ChangeViewBtn,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -33,17 +34,19 @@ export function MainMap() {
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [markers, setMarkers] = useState<
     {
-      address_name: string;
-      category_name: string;
-      id: string;
-      phone: string;
-      place_name: string;
-      place_url: string;
-      road_address_name: string;
-      x: string;
-      y: string;
+      addressName: string;
+      averageRating: number;
+      categoryName: string;
+      id: number;
+      kakaoPlaceId: number;
+      phone: string | null;
+      placeName: string;
+      placeUrl: string;
+      roadAddressName: string;
+      x: number;
+      y: number;
     }[]
-  >();
+  >([]);
 
   const handleOnClick = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
@@ -63,23 +66,84 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
+  async function getPlaces() {
+    if (!map) {
+      return;
+    }
+
+    const bounds = map.getBounds();
+    // 영역의 남서쪽 좌표를 얻어옵니다
+    const swLatLng = bounds.getSouthWest();
+    // 영역의 북동쪽 좌표를 얻어옵니다
+    const neLatLng = bounds.getNorthEast();
+    try {
+      const res = await axios.get(
+        `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}`
+      );
+      const data = res.data;
+      setMarkers([]);
+      data.map(
+        ({
+          addressName,
+          averageRating,
+          categoryName,
+          id,
+          kakaoPlaceId,
+          phone,
+          placeName,
+          placeUrl,
+          roadAddressName,
+          x,
+          y,
+        }: {
+          addressName: string;
+          averageRating: number;
+          categoryName: string;
+          id: number;
+          kakaoPlaceId: number;
+          phone: string | null;
+          placeName: string;
+          placeUrl: string;
+          roadAddressName: string;
+          x: number;
+          y: number;
+        }) =>
+          setMarkers((prev) => {
+            prev.push({
+              addressName,
+              averageRating,
+              categoryName,
+              id,
+              kakaoPlaceId,
+              phone,
+              placeName,
+              placeUrl,
+              roadAddressName,
+              x,
+              y,
+            });
+            return prev;
+          })
+      );
+
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          if (
-            userLocation.center.lat !== position.coords.latitude &&
-            userLocation.center.lng !== position.coords.longitude
-          ) {
-            setUserLocation((prev) => ({
-              ...prev,
-              center: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              },
-              isLoading: false,
-            }));
-          }
+          setUserLocation((prev) => ({
+            ...prev,
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+            isLoading: false,
+          }));
         },
         (err) => {
           setUserLocation((prev) => ({
@@ -98,6 +162,10 @@ export function MainMap() {
     }
   }, []);
 
+  useEffect(() => {
+    getPlaces();
+  }, [userLocation]);
+
   return (
     <Map
       center={userLocation.center}
@@ -111,10 +179,10 @@ export function MainMap() {
       onCreate={setMap}
     >
       <SearchInput
-        setMarkers={setMarkers}
         map={map}
         type="main"
         setShowInfoCard={setShowInfoCard}
+        getPlaces={getPlaces}
       />
       {markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
         <></>
@@ -124,7 +192,6 @@ export function MainMap() {
           const isSelected =
             selectMarker.lat === Number(lat) &&
             selectMarker.lng === Number(lng);
-
           return (
             <React.Fragment key={id}>
               <MapMarker

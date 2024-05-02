@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 
 interface PlaceInfoCardProps {
   place: {
-    place_name: string;
-    place_url: string;
-    category_name: string;
-    address_name: string;
-    road_address_name: string;
-    id: string;
-    phone: string;
-    x: string;
-    y: string;
+    addressName: string;
+    averageRating: number;
+    categoryName: string;
+    id: number;
+    kakaoPlaceId: number;
+    phone: string | null;
+    placeName: string;
+    placeUrl: string;
+    roadAddressName: string;
+    x: number;
+    y: number;
   };
   userLocation: {
     center: {
@@ -33,11 +35,12 @@ export default function PlaceInfoCard({
   }
   const [distance, setDistance] = useState(0);
   const {
-    place_name: placeName,
-    place_url: placeUrl,
-    // category_name: categoryName,
-    road_address_name: roadAddressName,
+    averageRating,
+    categoryName,
     phone,
+    placeName,
+    placeUrl,
+    roadAddressName,
   } = place;
 
   const handleClickKaKaoBtn = () => {
@@ -63,13 +66,13 @@ export default function PlaceInfoCard({
             <h2 className="text-base font-bold">
               {placeName}
               <p className="inline text-xs font-normal text-subGray">
-                &nbsp;한식
+                &nbsp;{categoryName}
               </p>
             </h2>
           </div>
           {type === "main" && (
             <div className="flex items-center gap-1.5">
-              <h4 className="text-xs font-medium">4.5</h4>
+              <h4 className="text-xs font-medium">{averageRating}</h4>
               <div className="rating rating-half rating-xs pointer-events-none">
                 <input
                   type="radio"
