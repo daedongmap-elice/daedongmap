@@ -10,6 +10,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
   setPostImgs,
 }) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation(); // 이벤트 버블링 방지
     // 미리보기 이미지 설정
     const files = Array.from(e.target.files as FileList);
     setPostImgs(files);
@@ -29,6 +30,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           required
           multiple
           className="hidden"
+          onClick={(e) => e.stopPropagation()}
           onChange={handleImageChange}
           disabled={previewImgs.length > 0}
           accept="image/*"
@@ -42,9 +44,10 @@ const ImageInput: React.FC<ImageInputProps> = ({
               <img src={url} className="relative z-0 w-full" alt={`file${i}`} />
               <button
                 className="relative bottom-20 right-8"
-                onClick={() =>
-                  setPreviewImgs(previewImgs.filter((el) => el !== url))
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPreviewImgs(previewImgs.filter((el) => el !== url));
+                }}
               >
                 {/* <img src="/svg/deleteIcon.svg" alt="deleteIcon" /> */}
                 <svg
@@ -78,6 +81,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
               href={`#item${i}`}
               className="btn btn-xs w-6 rounded-xl"
               key={url}
+              onClick={(e) => e.stopPropagation()}
             >
               {i + 1}
             </a>
