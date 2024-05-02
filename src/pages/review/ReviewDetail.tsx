@@ -37,8 +37,6 @@ interface ReviewDetailResponse {
   updatedAt: string;
 }
 
-// TODO: 페이지 진입 시 /api/review/detail과 /api/like에 get요청
-//       데이터 받아서 ReviewProfile, ReviewImage, DateCreated, Star에 뿌리기
 const ReviewDetail = () => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
   const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
@@ -68,18 +66,6 @@ const ReviewDetail = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  // TODO: ReviewProfile 클릭 시 해당 유저의 '마이페이지'로 이동
-  // TODO: EditButton 클릭 시 ReviewEdit으로 가야 함
-
-  // TODO: EditButton에서 수정 버튼 클릭 시 현재 리뷰아이디를 ReviewEdit에 전달하기
-  // TODO: EditButton에서 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
-  //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
-  // TODO: 로그인되어있는 userID와 현재 글의 userID가 일치할 경우에만 EditButton 표시
-
-  // TODO: 페이지 진입 시 ‘나의 좋아요 클릭 여부’와 '해당 리뷰의 좋아요 개수'를 조회(GET) 후
-  //       반영 - isLiked 여부, N명이 좋아합니다
-  //       좋아요 버튼을 클릭하면 isLiked의 여부를 전환하며 서버에 POST 또는 DELETE 요청보내기
 
   return (
     <div className="pb-16">
