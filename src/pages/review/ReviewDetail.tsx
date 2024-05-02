@@ -43,12 +43,23 @@ const ReviewDetail = () => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
   const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
   const [data, setData] = useState<ReviewDetailResponse | null>(null);
+  const [fileLinks, setFileLinks] = useState<string[]>([]);
+
   const getData = async () => {
     try {
       const response = await axios.get(
         "http://35.232.243.53:8080/api/reviews/4"
       );
       setData(response.data);
+      const filePaths = response.data.reviewImageDtoList.map(
+        (imageDto: {
+          id: number;
+          userId: number;
+          reviewId: number;
+          filePath: string;
+        }) => imageDto.filePath
+      );
+      setFileLinks(filePaths);
     } catch (error) {
       console.error("리뷰상세 get요청 에러", error);
     }
@@ -82,7 +93,7 @@ const ReviewDetail = () => {
           <EditButton />
         </div>
       </div>
-      <ReviewImage />
+      <ReviewImage fileLinks={fileLinks} />
       <div className="mt-2 flex items-center justify-between">
         <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
         <DateCreated createdAt={data?.createdAt} />
