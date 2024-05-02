@@ -36,7 +36,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           type="file"
           name="file"
         />
-        <div className="carousel h-52 min-h-52 w-52 border border-solid border-gray-200">
+        <div className="carousel h-52 min-h-52 w-52 border border-solid border-gray-300">
           {previewImgs.map((url, i) => (
             <div key={url} id={`item${i}`} className="carousel-item w-full">
               <img src={url} className="relative z-0 w-full" alt={`file${i}`} />
