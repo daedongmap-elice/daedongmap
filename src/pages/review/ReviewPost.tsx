@@ -66,6 +66,14 @@ const ReviewPost = () => {
     for (const key of formData.keys()) {
       console.log(key, ":", formData.get(key));
     }
+    if (previewImgs.length === 0) {
+      alert("사진을 1장 이상 첨부해주세요.");
+      return;
+    }
+    if (content === "") {
+      alert("본문 내용을 입력해주세요.");
+      return;
+    }
 
     try {
       const response = await axios.post(
