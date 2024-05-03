@@ -4,13 +4,11 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = ({ items }) => {
   return (
-    <>
-      <select className="select select-ghost h-8 min-h-8 w-fit max-w-xs">
-        {items.map((item, i) => (
-          <option key={`${i}${item}`}>{item}</option>
-        ))}
-      </select>
-    </>
+    <select className="select select-ghost mt-1 h-8 min-h-8 w-fit max-w-xs">
+      {items.map((item, i) => (
+        <option key={`${i}${item}`}>{item}</option>
+      ))}
+    </select>
   );
 };
 
