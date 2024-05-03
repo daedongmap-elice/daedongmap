@@ -10,10 +10,11 @@ const ImageInput: React.FC<ImageInputProps> = ({
   setPostImgs,
 }) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation(); // 이벤트 버블링 방지
     // 미리보기 이미지 설정
+    // if (!e.target.files) return;
     const files = Array.from(e.target.files as FileList);
     setPostImgs(files);
+    // setPostImgs([e.target.files[0]]);
 
     const selected: string[] = files.map((img) => {
       return URL.createObjectURL(img);
@@ -27,10 +28,8 @@ const ImageInput: React.FC<ImageInputProps> = ({
       {/* label태그 내에 div를 넣었을 때의 오류 해결을 위함 */}
       <label htmlFor="file">
         <input
-          required
           multiple
           className="hidden"
-          onClick={(e) => e.stopPropagation()}
           onChange={handleImageChange}
           disabled={previewImgs.length > 0}
           accept="image/*"
@@ -43,16 +42,19 @@ const ImageInput: React.FC<ImageInputProps> = ({
             <div key={url} id={`item${i}`} className="carousel-item w-full">
               <img src={url} className="relative z-0 w-full" alt={`file${i}`} />
               <button
-                className="relative bottom-20 right-8"
-                onClick={(e) => {
-                  e.stopPropagation();
+                className="relative right-9 top-2 z-10 h-8 w-8"
+                onClick={() => {
                   setPreviewImgs(previewImgs.filter((el) => el !== url));
                 }}
               >
-                {/* <img src="/svg/deleteIcon.svg" alt="deleteIcon" /> */}
+                {/* <img
+                  src="/svg/deleteIcon.svg"
+                  alt="deleteIcon"
+                  className="z-20 h-7 w-7 max-w-12"
+                /> */}
                 <svg
-                  width="20"
-                  height="20"
+                  width="24"
+                  height="24"
                   viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +83,6 @@ const ImageInput: React.FC<ImageInputProps> = ({
               href={`#item${i}`}
               className="btn btn-xs w-6 rounded-xl"
               key={url}
-              onClick={(e) => e.stopPropagation()}
             >
               {i + 1}
             </a>
