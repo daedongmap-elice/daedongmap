@@ -90,21 +90,18 @@ export function MainMap() {
       return;
     }
     setIsLoadingMarker(true);
-    setMarkers([]);
     const bounds = map.getBounds();
     // 영역의 남서쪽 좌표를 얻어옵니다
     const swLatLng = bounds.getSouthWest();
     // 영역의 북동쪽 좌표를 얻어옵니다
     const neLatLng = bounds.getNorthEast();
-
     try {
       const res = await axios.get(
         `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}`
       );
-      const data = res.data;
-
-      data.map(
-        (place: {
+      const data = await res.data;
+      if (res.status === 200) {
+        const placeArr: {
           addressName: string;
           averageRating: number;
           categoryName: string;
@@ -116,17 +113,30 @@ export function MainMap() {
           roadAddressName: string;
           x: number;
           y: number;
-        }) =>
-          setMarkers((prev) => {
-            prev.push(place);
-            return prev;
-          })
-      );
+        }[] = [];
+
+        data.map(
+          (place: {
+            addressName: string;
+            averageRating: number;
+            categoryName: string;
+            id: number;
+            kakaoPlaceId: number;
+            phone: string | null;
+            placeName: string;
+            placeUrl: string;
+            roadAddressName: string;
+            x: number;
+            y: number;
+          }) => placeArr.push(place)
+        );
+        setMarkers(placeArr);
+      }
+
       setIsLoadingMarker(false);
       const latlng = map.getCenter();
       setNowCenter({ lat: latlng.getLat(), lng: latlng.getLng() });
       setSearchLocation({ lat: latlng.getLat(), lng: latlng.getLng() });
-      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -164,6 +174,10 @@ export function MainMap() {
   useEffect(() => {
     getPlaces();
   }, [userLocation]);
+
+  // useEffect(() => {
+  //   console.log("d", markers, markers.length);
+  // }, [markers]);
 
   return (
     <Map
@@ -272,7 +286,8 @@ export function MainMap() {
         />
       </div>
       {nowCenter?.lat !== searchLocation?.lat &&
-        nowCenter?.lng !== searchLocation?.lng && (
+        nowCenter?.lng !== searchLocation?.lng &&
+        !isLoadingMarker && (
           <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
             <ReSearchBtn getPlaces={getPlaces} />
           </div>
