@@ -1,26 +1,26 @@
 import { useState } from "react";
 
 interface ReviewImageProps {
-  fileLinks: string[];
+  imgUrls: string[];
 }
 
-const ReviewImage: React.FC<ReviewImageProps> = ({ fileLinks }) => {
+const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
   const [slideIndex, setSlideIndex] = useState(1);
 
   return (
     <>
       <div className="carousel w-full">
-        {fileLinks.map((link, i) => (
+        {imgUrls.map((url, i) => (
           <div
             id={`slide${i}`}
-            key={`slide${i}`}
+            key={url}
             className="carousel-item relative w-full"
           >
-            {fileLinks.length === 1 ? (
-              <img src={link} className="w-full" alt="item" />
+            {imgUrls.length === 1 ? (
+              <img src={url} className="w-full" alt="item" />
             ) : (
               <>
-                <img src={link} className="w-full" alt="item" />
+                <img src={url} className="w-full" alt="item" />
                 <div className="absolute left-1 right-1 top-1/2 flex -translate-y-1/2 transform justify-between opacity-50">
                   <a
                     href={i === 0 ? "/" : `#slide${i - 1}`}
@@ -32,11 +32,11 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ fileLinks }) => {
                     ❮
                   </a>
                   <a
-                    href={i === fileLinks.length - 1 ? "/" : `#slide${i + 1}`}
-                    className={`btn btn-circle ${i === fileLinks.length - 1 ? "invisible" : ""}`}
+                    href={i === imgUrls.length - 1 ? "/" : `#slide${i + 1}`}
+                    className={`btn btn-circle ${i === imgUrls.length - 1 ? "invisible" : ""}`}
                     onClick={() =>
-                      i === fileLinks.length - 1
-                        ? setSlideIndex(fileLinks.length - 1)
+                      i === imgUrls.length - 1
+                        ? setSlideIndex(imgUrls.length - 1)
                         : setSlideIndex(i + 1)
                     }
                   >
@@ -48,15 +48,13 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ fileLinks }) => {
           </div>
         ))}
       </div>
-      <div
-        id="slideIndex"
-        className="flex w-full items-center justify-center gap-1 pt-3"
-      >
-        {fileLinks.map((link, i) =>
-          fileLinks.length === 1 ? (
-            <></>
+      <div className="flex w-full items-center justify-center gap-1 pt-3">
+        {imgUrls.map((url, i) =>
+          imgUrls.length === 1 ? (
+            <div key="empty"></div>
           ) : (
             <div
+              key={url}
               className={`rounded ${slideIndex === i ? "h-1.5 w-1.5 bg-mainG" : "h-1 w-1 rounded bg-subLightGray"}`}
             ></div>
           )

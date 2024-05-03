@@ -3,8 +3,8 @@ interface DateCreatedProps {
 }
 
 const DateCreated: React.FC<DateCreatedProps> = ({ createdAt }) => {
-  // @ts-expect-error NOTE: created의 타입 추론이 이상하여 any로 처리
-  const formatDate = (created) => {
+  const formatDate = (created?: string) => {
+    if (!created) return;
     const dateObject = new Date(created);
     const year: number = dateObject.getFullYear();
     const month: number = dateObject.getMonth() + 1;
