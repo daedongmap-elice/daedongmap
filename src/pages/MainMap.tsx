@@ -175,10 +175,6 @@ export function MainMap() {
     getPlaces();
   }, [userLocation]);
 
-  // useEffect(() => {
-  //   console.log("d", markers, markers.length);
-  // }, [markers]);
-
   return (
     <Map
       center={userLocation.center}
@@ -287,7 +283,8 @@ export function MainMap() {
       </div>
       {nowCenter?.lat !== searchLocation?.lat &&
         nowCenter?.lng !== searchLocation?.lng &&
-        !isLoadingMarker && (
+        !isLoadingMarker &&
+        !openListModal && (
           <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
             <ReSearchBtn getPlaces={getPlaces} />
           </div>
