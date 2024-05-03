@@ -20,13 +20,13 @@ export default function SearchInput({
     setText(e.target.value);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (!map) return;
     const ps = new kakao.maps.services.Places();
 
     if (text !== "") {
       try {
-        await ps.keywordSearch(`${text} 음식점`, (datas, status) => {
+        ps.keywordSearch(`${text} 음식점`, (datas, status) => {
           if (status === kakao.maps.services.Status.OK) {
             map.setCenter(
               new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
@@ -48,6 +48,7 @@ export default function SearchInput({
   const handleOnKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
+      (e.currentTarget as HTMLInputElement).blur();
     }
   };
 
