@@ -5,6 +5,7 @@ import {
   NowPositionBtn,
   SearchInput,
   ChangeViewBtn,
+  ReSearchBtn,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -33,6 +34,14 @@ export function MainMap() {
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
+  const [nowCenter, setNowCenter] = useState<{
+    lat: number;
+    lng: number;
+  }>();
+  const [searchLocation, setSearchLocation] = useState<{
+    lat: number;
+    lng: number;
+  }>();
   const [markers, setMarkers] = useState<
     {
       addressName: string;
@@ -67,6 +76,15 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
+  const handleOnCenterChanged = (mapInfo: kakao.maps.Map) => {
+    const latlng = mapInfo.getCenter();
+
+    setNowCenter({
+      lat: latlng.getLat(),
+      lng: latlng.getLng(),
+    });
+  };
+
   async function getPlaces() {
     if (!map) {
       return;
@@ -78,6 +96,7 @@ export function MainMap() {
     const swLatLng = bounds.getSouthWest();
     // 영역의 북동쪽 좌표를 얻어옵니다
     const neLatLng = bounds.getNorthEast();
+
     try {
       const res = await axios.get(
         `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}`
@@ -104,6 +123,9 @@ export function MainMap() {
           })
       );
       setIsLoadingMarker(false);
+      const latlng = map.getCenter();
+      setNowCenter({ lat: latlng.getLat(), lng: latlng.getLng() });
+      setSearchLocation({ lat: latlng.getLat(), lng: latlng.getLng() });
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -154,6 +176,7 @@ export function MainMap() {
       onClick={handleClickMap}
       isPanto
       onCreate={setMap}
+      onCenterChanged={handleOnCenterChanged}
     >
       <SearchInput
         map={map}
@@ -232,11 +255,14 @@ export function MainMap() {
       >
         <NowPositionBtn userLocation={userLocation.center} map={map} />
       </div>
-      <PlaceListModal
-        openListModal={openListModal}
-        placeList={markers}
-        userLocation={userLocation}
-      />
+      {openListModal && (
+        <PlaceListModal
+          openListModal={openListModal}
+          placeList={markers}
+          userLocation={userLocation}
+        />
+      )}
+
       <div
         className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-52" : "bottom-16"}`}
       >
@@ -245,6 +271,12 @@ export function MainMap() {
           btnType={openListModal ? "listView" : "mapView"}
         />
       </div>
+      {nowCenter?.lat !== searchLocation?.lat &&
+        nowCenter?.lng !== searchLocation?.lng && (
+          <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
+            <ReSearchBtn getPlaces={getPlaces} />
+          </div>
+        )}
     </Map>
   );
 }

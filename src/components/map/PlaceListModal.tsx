@@ -30,6 +30,7 @@ export default function PlaceListModal({
   placeList,
   userLocation,
 }: PlaceListModalProps) {
+  console.log(placeList);
   return (
     <div>
       {openListModal && (
