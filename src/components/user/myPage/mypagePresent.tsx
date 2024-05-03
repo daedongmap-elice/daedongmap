@@ -30,11 +30,16 @@ const MyPagePresent: React.FC<MypageProps> = ({ profile, isClickLogout }) => {
             </div>
             <ul className="menu dropdown-content z-[1] w-28 rounded-box bg-base-100 p-2 text-center shadow">
               <li className="mb-2">
-                <button className="mx-auto text-center" onClick={isClickLogout}>
+                <button
+                  className="btn btn-outline btn-success mx-auto text-center"
+                  onClick={isClickLogout}
+                >
                   로그아웃
                 </button>
               </li>
-              <button className="mx-auto text-center">회원탈퇴</button>
+              <button className="btn btn-outline btn-error mx-auto text-center">
+                회원탈퇴
+              </button>
             </ul>
           </div>
         </div>

@@ -8,13 +8,18 @@ const KakaoOauth = () => {
   const code: string | null = searchParams.get("code");
 
   useEffect(() => {
-    console.log(code);
     const kakao = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5137/oauth/token/kakao/oauth?code=${code}`
+          `http://35.232.243.53:8080/login/oauth2/kakao`,
+          {
+            params: {
+              code: code,
+            },
+          }
         );
         console.log(res);
+        localStorage.setItem("accessToken", res.data.accessToken);
         navigate("/");
       } catch (error) {
         console.error("Error fetching OAuth token:", error);

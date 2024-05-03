@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <LoginContainer /> },
       { path: "/naver/oauth", element: <NaverOAuth /> },
       { path: "/kakao/oauth", element: <KakaoOauth /> },
-      { path: "/kakao/oauth", element: <GoogleOauth /> },
+      { path: "/google/oauth", element: <GoogleOauth /> },
       { path: "/mypage", element: <MyPageContainer /> },
       { path: "/editprofile", element: <EditProfileContainer /> },
     ],

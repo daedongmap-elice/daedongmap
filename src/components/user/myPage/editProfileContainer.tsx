@@ -48,6 +48,12 @@ export default function EditProfileContainer() {
       setImgFile([URL.createObjectURL(file)]);
     }
   };
+  const handleButtonClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (upload.current) return upload.current.click();
+  };
   return (
     <EditProfilePresnet
       handleEditProfile={handleEditProfile}
@@ -55,6 +61,7 @@ export default function EditProfileContainer() {
       upload={upload}
       imgUpload={imgUpload}
       imgFile={imgFile}
+      handleButtonClick={handleButtonClick}
     />
   );
 }
