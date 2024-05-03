@@ -15,7 +15,7 @@ export function MainMap() {
   const [selectMarker, setSelectMarker] = useState<{
     lat: number;
     lng: number;
-  }>({ lat: 0, lng: 0 });
+  }>();
   const [userLocation, setUserLocation] = useState<{
     center: {
       lat: number;
@@ -137,6 +137,7 @@ export function MainMap() {
       const latlng = map.getCenter();
       setNowCenter({ lat: latlng.getLat(), lng: latlng.getLng() });
       setSearchLocation({ lat: latlng.getLat(), lng: latlng.getLng() });
+      setSelectMarker({ lat: 0, lng: 0 });
     } catch (err) {
       console.log(err);
     }
@@ -201,8 +202,8 @@ export function MainMap() {
           markers.map((place) => {
             const { id, x: lng, y: lat } = place;
             const isSelected =
-              selectMarker.lat === Number(lat) &&
-              selectMarker.lng === Number(lng);
+              selectMarker?.lat === Number(lat) &&
+              selectMarker?.lng === Number(lng);
             return (
               <React.Fragment key={id}>
                 <MapMarker
