@@ -14,10 +14,14 @@ const NaverOAuth = () => {
     const naver = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5137/v1/nid/me/naver/oauth?code=${code}&state=${state}`
+          `http://35.232.243.53:8080/login/oauth2/naver`,
+          {
+            params: {
+              code: code,
+            },
+          }
         );
-        const authorizationHeader = res.headers.authorization;
-        localStorage.setItem("Token", authorizationHeader);
+        localStorage.setItem("accessToken", res.data.accessToken);
         navigate("/");
       } catch (error) {
         console.error("Error fetching OAuth token:", error);

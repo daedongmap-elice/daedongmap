@@ -15,7 +15,7 @@ const LoginPresent: React.FC<LoginProps> = ({
 }) => {
   return (
     <>
-      <div className="mt-[70px] flex w-full flex-col items-center">
+      <div className="mt-7 flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
         <form
           className="flex w-[280px] max-w-xs flex-col"
@@ -45,13 +45,13 @@ const LoginPresent: React.FC<LoginProps> = ({
             <button
               type="submit"
               disabled={isbuttonDisabled}
-              className="btn mt-[30px] h-[30px] w-[280px] bg-mainG text-GbtnText"
+              className="btn my-5 h-[30px] w-[280px] bg-mainG text-GbtnText"
             >
               로그인
             </button>
           </div>
         </form>
-        <p className="custom-line mt-[15px] text-center text-xs">
+        <p className="custom-line my-2 text-center text-xs">
           소셜 계정으로 간편 로그인
         </p>
         <Naver></Naver>
