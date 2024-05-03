@@ -34,7 +34,7 @@ const MyPagePresent: React.FC<MypageProps> = ({ profile, isClickLogout }) => {
                   로그아웃
                 </button>
               </li>
-              <li className="">회원탈퇴</li>
+              <button className="mx-auto text-center">회원탈퇴</button>
             </ul>
           </div>
         </div>
