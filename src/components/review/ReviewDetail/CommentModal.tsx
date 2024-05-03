@@ -1,5 +1,8 @@
 import Comment from "./Comment";
 
+// TODO: 댓글api에 get요청 보내고 데이터 뿌리기
+// TODO: CommentModal에서도 각 댓글에서 로그인userID와 댓글userID가 일치할 경우에만 EditButton 표시
+
 export default function CommentModal() {
   return (
     <>

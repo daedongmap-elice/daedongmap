@@ -7,7 +7,7 @@ import { getToken } from "../../hooks/useToken";
 export default function BottomNavbar() {
   const isToken = getToken();
   return (
-    <div className="btm-nav z-[100] h-9">
+    <div className="btm-nav z-[100] h-9 border border-x-0 border-b-0 border-solid border-gray-200">
       <button className="rounded-none border-none bg-white pb-0">
         <a href="/">
           <BiSolidHome className="h-5 w-5" />
