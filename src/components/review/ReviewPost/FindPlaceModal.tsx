@@ -2,6 +2,22 @@ import { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { SearchInput } from "@/components/map/index";
 
+interface FindPlaceProps {
+  setPlace: React.Dispatch<
+    React.SetStateAction<{
+      kakaoPlaceId: number;
+      placeName: string;
+      placeUrl: string;
+      categoryName: string;
+      addressName: string;
+      roadAddressName: string;
+      phone: string;
+      x: number;
+      y: number;
+    }>
+  >;
+}
+
 interface Marker {
   position: {
     lat: string;
@@ -10,7 +26,8 @@ interface Marker {
   content: string;
 }
 
-export default function FindPlace() {
+// 인자에 { setPlace } 넣어주세요 (eslint의 defined but never used 에러 때문에 빼둠)
+const FindPlaceModal: React.FC<FindPlaceProps> = () => {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [map, setMap] = useState();
@@ -92,4 +109,6 @@ export default function FindPlace() {
       </button>
     </>
   );
-}
+};
+
+export default FindPlaceModal;

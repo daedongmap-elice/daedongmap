@@ -14,6 +14,27 @@ const ReviewPost = () => {
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
+  const [place, setPlace] = useState<{
+    kakaoPlaceId: number;
+    placeName: string;
+    placeUrl: string;
+    categoryName: string;
+    addressName: string;
+    roadAddressName: string;
+    phone: string;
+    x: number;
+    y: number;
+  }>({
+    kakaoPlaceId: 0,
+    placeName: "string",
+    placeUrl: "string",
+    categoryName: "string",
+    addressName: "string",
+    roadAddressName: "string",
+    phone: "string",
+    x: 0,
+    y: 0,
+  });
 
   // TODO: place api와 riview api에 각 데이터 전송 - api수정됨 review에만 요청 보내면 됨
   // TODO: 음식점 선택 모달 띄우고 지도에서 마커 선택 시 정보를 서버로 넘기기
@@ -34,39 +55,29 @@ const ReviewPost = () => {
     };
 
     // placeRequest 데이터 추가 (FindPlaceModal 컴포넌트에서 선택된 음식점 정보)
-    const placeRequest = {
-      kakaoPlaceId: 0,
-      placeName: "string",
-      placeUrl: "string",
-      categoryName: "string",
-      addressName: "string",
-      roadAddressName: "string",
-      phone: "string",
-      x: 0,
-      y: 0,
-    };
+    const placeRequest = place;
 
     formData.append("file", postImgs);
-    // formData.append("reviewRequest", reviewRequest);
-    // formData.append("placeRequest", placeRequest);
-    formData.append(
-      "reviewRequest",
-      new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
-    );
-    formData.append(
-      "placeRequest",
-      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
-    );
+    formData.append("reviewRequest", JSON.stringify(reviewRequest));
+    formData.append("placeRequest", JSON.stringify(placeRequest));
+    // formData.append(
+    //   "reviewRequest",
+    //   new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
+    // );
+    // formData.append(
+    //   "placeRequest",
+    //   new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
+    // );
   };
 
   const handleSubmit = async () => {
     const formData: FormData = new FormData();
     appendFormData(formData);
 
-    for (const key of formData.keys()) {
-      console.log(key, ":", formData.get(key));
-    }
-    if (previewImgs.length === 0) {
+    // for (const key of formData.keys()) {
+    //   console.log(key, ":", formData.get(key));
+    // }
+    if (postImgs.length === 0) {
       alert("사진을 1장 이상 첨부해주세요.");
       return;
     }
@@ -125,7 +136,7 @@ const ReviewPost = () => {
           음식점 선택
         </button>
         <dialog id="placeModal" className="modal modal-bottom">
-          <FindPlaceModal />
+          <FindPlaceModal setPlace={setPlace} />
         </dialog>
         <textarea
           required
