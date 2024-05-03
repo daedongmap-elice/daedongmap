@@ -104,13 +104,16 @@ const ReviewDetail = () => {
         >
           {data?.content}
         </p>
-
-        <button
-          onClick={() => setIsSeeMoreClicked(true)}
-          className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
-        >
-          <span>...&nbsp; 더 보기</span>
-        </button>
+        {data?.content && data?.content.length >= 110 ? (
+          <button
+            onClick={() => setIsSeeMoreClicked(true)}
+            className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
+          >
+            <span>...&nbsp; 더 보기</span>
+          </button>
+        ) : (
+          ""
+        )}
       </div>
       <div className="mb-6 px-5 pt-2 text-sm text-subGray">
         <button
