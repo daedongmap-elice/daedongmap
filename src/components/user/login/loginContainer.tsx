@@ -17,7 +17,7 @@ export default function LoginContainer() {
     const loginState = await Login(formData);
     //window.location.href = "/mypage";
     if (loginState) {
-      navigate("/mypage");
+      navigate("/");
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

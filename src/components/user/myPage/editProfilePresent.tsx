@@ -8,6 +8,9 @@ interface EditProfileProps {
   upload: RefObject<HTMLInputElement>;
   imgUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   imgFile: string[];
+  handleButtonClick: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 const EditProfilePresnet: React.FC<EditProfileProps> = ({
   handleEditProfile,
@@ -15,12 +18,14 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
   upload,
   imgUpload,
   imgFile,
+  handleButtonClick,
 }) => {
   return (
     <>
       <div className="mt-[40px] flex w-full flex-col items-center">
         <img src="img/Logo.jpg" alt="로고 이미지" />
         <input
+          className="invisible hidden"
           ref={upload}
           type="file"
           accept="image/*"
@@ -33,7 +38,12 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
             <img src={imgFile[0]} alt="프로필 이미지 " />
           </div>
         </div>
-        <button className="btn btn-link no-underline">사진 변경</button>
+        <button
+          className="btn btn-link no-underline"
+          onClick={handleButtonClick}
+        >
+          사진 변경
+        </button>
         <form onSubmit={handleEditProfile} className="w-full max-w-xs">
           <div className="label">
             <span className="label-text">닉네임</span>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
-import { Logout, axiosClient, getRefreshToken } from "@/hooks/useAuth";
+import { axiosClient, getRefreshToken } from "@/hooks/useAuth";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useState<UserInfo>({
@@ -30,10 +30,23 @@ export default function MyPageContainer() {
   const getReview = async () => {
     try {
       const res = await axiosClient.get(`/reviews/users/me`, {
-        headers: { Authorization: `Bearer: ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (res.status === 200) {
         console.log(res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const logout = async () => {
+    try {
+      const res = await axiosClient.post(`/logout`, null, {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      });
+      if (res.status === 200) {
+        console.log(res);
+        localStorage.clear();
       }
     } catch (error) {
       console.log(error);
@@ -43,7 +56,8 @@ export default function MyPageContainer() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    Logout(refreshToken);
+    console.log(refreshToken);
+    logout();
   };
   useEffect(() => {
     getProfile();

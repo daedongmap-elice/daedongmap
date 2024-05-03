@@ -54,7 +54,7 @@ export const getRefreshToken = async (RT: string | null) => {
 
 export const Logout = async (RT: string | null) => {
   try {
-    const res = await axiosClient.get(`/logout`, {
+    const res = await axiosClient.post(`/logout`, {
       headers: { Authorization: `Bearer ${RT}` },
     });
     if (res.status === 200) {
