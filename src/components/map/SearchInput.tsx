@@ -48,6 +48,7 @@ export default function SearchInput({
   const handleOnKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
+      (e.currentTarget as HTMLInputElement).blur();
     }
   };
 
