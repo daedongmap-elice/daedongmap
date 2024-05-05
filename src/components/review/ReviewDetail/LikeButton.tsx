@@ -10,8 +10,7 @@ const LikeButton: React.FC<LikeProps> = ({ isLiked, setIsLiked }) => {
     <div className="flex items-center">
       <button
         onClick={() => {
-          if (isLiked) setIsLiked(false);
-          else setIsLiked(true);
+          setIsLiked((prev) => !prev);
         }}
       >
         {isLiked ? (
