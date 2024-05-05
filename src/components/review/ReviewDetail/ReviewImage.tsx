@@ -6,6 +6,7 @@ interface ReviewImageProps {
 
 const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
   const [slideIndex, setSlideIndex] = useState(1);
+  const isImgOnlyOne = imgUrls.length === 1;
 
   return (
     <>
@@ -16,7 +17,7 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
             key={url}
             className="carousel-item relative w-full"
           >
-            {imgUrls.length === 1 ? (
+            {isImgOnlyOne ? (
               <img src={url} className="w-full" alt="item" />
             ) : (
               <>
@@ -49,15 +50,14 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
         ))}
       </div>
       <div className="flex w-full items-center justify-center gap-1 pt-3">
-        {imgUrls.map((url, i) =>
-          imgUrls.length === 1 ? (
-            <div key="empty"></div>
-          ) : (
-            <div
-              key={url}
-              className={`rounded ${slideIndex === i ? "h-1.5 w-1.5 bg-mainG" : "h-1 w-1 rounded bg-subLightGray"}`}
-            ></div>
-          )
+        {imgUrls.map(
+          (url, i) =>
+            !isImgOnlyOne && (
+              <div
+                key={url}
+                className={`rounded ${slideIndex === i ? "h-1.5 w-1.5 bg-mainG" : "h-1 w-1 rounded bg-subLightGray"}`}
+              ></div>
+            )
         )}
       </div>
     </>
