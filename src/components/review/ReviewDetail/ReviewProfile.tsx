@@ -4,16 +4,15 @@ interface ReviewProfileProps {
   placeName: string | undefined;
 }
 
+// TODO: 백엔드 수정되면 프로필사진도 prop로 넘겨받아서 뿌리기
 const ReviewProfile: React.FC<ReviewProfileProps> = ({
-  // userId,
+  userId,
   nickName,
   placeName,
 }) => {
-  // TODO: ReviewProfile 클릭하면 userId를 가지고(?) '마이페이지'로 넘어가서 '사용자별 리뷰 조회'
-
   return (
     <>
-      <a href="/">
+      <a href={`/mypage/#${userId}`}>
         <div className="mb-3 mt-4 flex">
           <div>
             <img
