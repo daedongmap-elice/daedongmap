@@ -1,24 +1,10 @@
+import { LatLngData, PlaceData } from "@/type/types";
 import { useEffect, useState } from "react";
 
 interface PlaceInfoCardProps {
-  place: {
-    addressName: string;
-    averageRating: number;
-    categoryName: string;
-    id: number;
-    kakaoPlaceId: number;
-    phone: string | null;
-    placeName: string;
-    placeUrl: string;
-    roadAddressName: string;
-    x: number;
-    y: number;
-  };
+  place: PlaceData;
   userLocation: {
-    center: {
-      lat: number;
-      lng: number;
-    };
+    center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
   };

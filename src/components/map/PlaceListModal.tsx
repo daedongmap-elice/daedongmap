@@ -1,25 +1,11 @@
 import { PlaceInfoCard } from "@/components/map/index";
+import { LatLngData, PlaceData } from "@/type/types";
 
 interface PlaceListModalProps {
   openListModal: boolean;
-  placeList: {
-    addressName: string;
-    averageRating: number;
-    categoryName: string;
-    id: number;
-    kakaoPlaceId: number;
-    phone: string | null;
-    placeName: string;
-    placeUrl: string;
-    roadAddressName: string;
-    x: number;
-    y: number;
-  }[];
+  placeList: PlaceData[];
   userLocation: {
-    center: {
-      lat: number;
-      lng: number;
-    };
+    center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
   };

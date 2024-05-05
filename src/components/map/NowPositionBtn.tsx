@@ -1,10 +1,8 @@
+import { LatLngData } from "@/type/types";
 import { MdMyLocation } from "react-icons/md";
 
 interface NowPositionBtnProps {
-  userLocation: {
-    lat: number;
-    lng: number;
-  };
+  userLocation: LatLngData;
   map: kakao.maps.Map | undefined;
 }
 
