@@ -42,7 +42,7 @@ const ReviewDetail = () => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
   const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
   const [likeCount, setLikeCount] = useState(0);
-  // const [commentCount, setCommentCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
   const [data, setData] = useState<ReviewDetailResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   // const [isSameUser, setIsSameUser] = useState<boolean>(false);
@@ -50,6 +50,10 @@ const ReviewDetail = () => {
 
   // TODO: 현재 리뷰의 userId와 로컬스토리지의 id???가 일치하는지 확인하고 EditButton 표시
   //       로컬스토리지에는 토큰만 들어있어서 본인의 id를 알 수가 없음!
+
+  const handleCommentCount = (count: number) => {
+    setCommentCount(count);
+  };
 
   const getData = async () => {
     try {
@@ -138,10 +142,10 @@ const ReviewDetail = () => {
           // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
           onClick={() => document.getElementById("commentModal").showModal()}
         >
-          댓글 0개 보기
+          댓글 {commentCount}개 보기
         </button>
         <dialog id="commentModal" className="modal modal-bottom text-black">
-          <CommentModal />
+          <CommentModal handleCommentCount={handleCommentCount} />
         </dialog>
       </div>
     </div>
