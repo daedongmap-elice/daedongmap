@@ -6,11 +6,7 @@ interface LikeProps {
   likeCount: number;
 }
 
-const LikeButton: React.FC<LikeProps> = ({
-  isLiked,
-  setIsLiked,
-  likeCount,
-}) => {
+const LikeBtn: React.FC<LikeProps> = ({ isLiked, setIsLiked, likeCount }) => {
   return (
     <div className="flex items-center">
       <button
@@ -31,4 +27,4 @@ const LikeButton: React.FC<LikeProps> = ({
   );
 };
 
-export default LikeButton;
+export default LikeBtn;
