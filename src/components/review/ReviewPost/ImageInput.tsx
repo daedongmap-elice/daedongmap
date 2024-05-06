@@ -1,19 +1,30 @@
+import { useEffect, useState } from "react";
+
 interface ImageInputProps {
-  previewImgs: string[];
-  setPreviewImgs: React.Dispatch<React.SetStateAction<string[]>>;
-  setPostImgs: React.Dispatch<React.SetStateAction<File[]>>;
+  prevImgUrls: string[];
+  handlePostImgs: (Imgs: File[]) => void;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
-  previewImgs,
-  setPreviewImgs,
-  setPostImgs,
+  prevImgUrls,
+  handlePostImgs,
 }) => {
+  const [previewImgs, setPreviewImgs] = useState<string[]>([]);
+
+  // TODO: 이미 올라간 이미지를 삭제한 경우, 새로운 이미지들로 대체되어야 함 (post요청))
+  //       이미 올라간 이미지를 그대로 둔 경우 변경이 없음 (put?)
+
+  const putPrevImg = () => {
+    if (prevImgUrls.length !== 0) {
+      setPreviewImgs(prevImgUrls);
+    }
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 미리보기 이미지 설정
-    // if (!e.target.files) return;
+    if (!e.target.files) return;
     const files = Array.from(e.target.files as FileList);
-    setPostImgs(files);
+    handlePostImgs(files);
     // setPostImgs([e.target.files[0]]);
 
     const selected: string[] = files.map((img) => {
@@ -21,6 +32,10 @@ const ImageInput: React.FC<ImageInputProps> = ({
     });
     setPreviewImgs(selected);
   };
+
+  useEffect(() => {
+    putPrevImg();
+  }, [prevImgUrls]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
