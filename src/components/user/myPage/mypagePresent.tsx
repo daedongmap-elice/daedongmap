@@ -7,6 +7,8 @@ interface MypageProps {
   isClickModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   isModal: boolean;
   isClickDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  buttonDisabled: boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
@@ -15,6 +17,8 @@ const MyPagePresent: React.FC<MypageProps> = ({
   isClickModal,
   isModal,
   isClickDelete,
+  handleChange,
+  buttonDisabled,
 }) => {
   return (
     <>
@@ -78,11 +82,14 @@ const MyPagePresent: React.FC<MypageProps> = ({
 
             <input
               type="text"
+              name="message"
               placeholder="회원탈퇴를 입력해주세요."
+              onChange={handleChange}
               className="input input-sm input-bordered w-full max-w-xs"
             />
             <button
               className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText"
+              disabled={buttonDisabled}
               onClick={isClickDelete}
             >
               회원탈퇴

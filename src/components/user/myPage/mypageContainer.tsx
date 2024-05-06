@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
 import { DeleteUser, axiosClient, getRefreshToken } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { isCheckDelete } from "@/utils/authUtils";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useState<UserInfo>({
@@ -10,6 +11,7 @@ export default function MyPageContainer() {
     status: "",
   });
   const [isModal, setIsModal] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const naviagte = useNavigate();
@@ -77,6 +79,12 @@ export default function MyPageContainer() {
     DeleteUser(refreshToken);
     naviagte("/");
   };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+  const buttonDisabled = useMemo(() => {
+    return !isCheckDelete(message);
+  }, [message]);
   useEffect(() => {
     getProfile();
     getReview();
@@ -89,6 +97,8 @@ export default function MyPageContainer() {
       isClickModal={isClickModal}
       isModal={isModal}
       isClickDelete={isClickDelete}
+      buttonDisabled={buttonDisabled}
+      handleChange={handleChange}
     />
   );
 }
