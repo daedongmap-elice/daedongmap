@@ -65,3 +65,19 @@ export const Logout = async (RT: string | null) => {
     console.log(error);
   }
 };
+
+export const DeleteUser = async (RT: string | null) => {
+  try {
+    const res = await axiosClient.delete(`/user`, {
+      headers: {
+        Authorization: `Bearer ${RT}`,
+      },
+    });
+    if (res.status === 200) {
+      alert("회원이 탈퇴되었습니다.");
+      localStorage.clear();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
