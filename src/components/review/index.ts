@@ -3,6 +3,7 @@
 
 export { default as Comment } from "./ReviewDetail/Comment";
 export { default as CommentModal } from "./ReviewDetail/CommentModal";
+export { default as CommentPost } from "./ReviewDetail/CommentPost";
 export { default as LikeButton } from "./ReviewDetail/LikeButton";
 export { default as ReviewImage } from "./ReviewDetail/ReviewImage";
 export { default as ReviewProfile } from "./ReviewDetail/ReviewProfile";
