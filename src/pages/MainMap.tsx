@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LatLngData, PlaceData } from "@/type/types";
+import Toast from "@/components/common/Toast";
 
 export function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -29,6 +30,7 @@ export function MainMap() {
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
+  const [toast, setToast] = useState<boolean>(false);
   const [nowCenter, setNowCenter] = useState<LatLngData>();
   const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [markers, setMarkers] = useState<PlaceData[]>([]);
@@ -80,10 +82,14 @@ export function MainMap() {
       );
       const data = await res.data;
       if (res.status === 200) {
-        const placeArr: PlaceData[] = [];
+        if (data.length === 0) {
+          setToast(true);
+        } else {
+          const placeArr: PlaceData[] = [];
 
-        data.map((place: PlaceData) => placeArr.push(place));
-        setMarkers(placeArr);
+          data.map((place: PlaceData) => placeArr.push(place));
+          setMarkers(placeArr);
+        }
       }
 
       setIsLoadingMarker(false);
@@ -241,6 +247,7 @@ export function MainMap() {
             <ReSearchBtn getPlaces={getPlaces} />
           </div>
         )}
+      {toast && <Toast setToast={setToast} />}
     </Map>
   );
 }
