@@ -4,14 +4,14 @@ import { IoSearch } from "react-icons/io5";
 interface SearchInputProps {
   map: kakao.maps.Map | undefined;
   type: "main" | "post";
-  setShowInfoCard?: React.Dispatch<React.SetStateAction<boolean>>;
+  handleToggleShowInfoCard?: (state: boolean) => void;
   getPlaces: () => Promise<void>;
 }
 
 export default function SearchInput({
   map,
   type,
-  setShowInfoCard,
+  handleToggleShowInfoCard,
   getPlaces,
 }: SearchInputProps) {
   const [text, setText] = useState<string>("");
@@ -39,8 +39,8 @@ export default function SearchInput({
         console.log(err);
       }
 
-      if (setShowInfoCard) {
-        setShowInfoCard(false);
+      if (handleToggleShowInfoCard) {
+        handleToggleShowInfoCard(false);
       }
     }
   };
