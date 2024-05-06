@@ -1,7 +1,7 @@
 import {
-  EditButton,
+  ReviewEditBtn,
   ReviewImage,
-  LikeButton,
+  LikeBtn,
   DateCreated,
   Star,
   ReviewProfile,
@@ -90,12 +90,12 @@ const ReviewDetail = () => {
           profileImagePath={data?.user.profileImagePath}
         />
         <div className="mb-3 mr-3 mt-4">
-          <EditButton currentReviewId={currentReviewId} />
+          <ReviewEditBtn currentReviewId={currentReviewId} />
         </div>
       </div>
       <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
-        <LikeButton
+        <LikeBtn
           isLiked={isLiked}
           setIsLiked={setIsLiked}
           likeCount={likeCount}
