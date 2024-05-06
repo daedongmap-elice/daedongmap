@@ -2,7 +2,7 @@ import { BiSolidHome } from "react-icons/bi";
 import { BiSolidGridAlt } from "react-icons/bi";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { getToken } from "../../hooks/useToken";
+import { getToken } from "../../utils/useToken";
 import { useEffect, useState } from "react";
 
 export default function BottomNavbar() {
