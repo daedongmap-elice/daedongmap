@@ -18,6 +18,7 @@ interface ReviewDetailResponse {
     id: number;
     nickName: string;
     email: string;
+    profileImagePath: string;
   };
   content: string;
   reviewImageDtoList: [
@@ -40,12 +41,18 @@ interface ReviewDetailResponse {
 const ReviewDetail = () => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
   const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
+  const [likeCount, setLikeCount] = useState(0);
+  // const [commentCount, setCommentCount] = useState(0);
   const [data, setData] = useState<ReviewDetailResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
+  // const [isSameUser, setIsSameUser] = useState<boolean>(false);
+  const currentReviewId = window.location.hash.substring(1);
+
+  // TODO: 현재 리뷰의 userId와 로컬스토리지의 id???가 일치하는지 확인하고 EditButton 표시
+  //       로컬스토리지에는 토큰만 들어있어서 본인의 id를 알 수가 없음!
 
   const getData = async () => {
     try {
-      const currentReviewId = window.location.hash.substring(1);
       const response = await axios.get(
         `http://35.232.243.53:8080/api/reviews/${currentReviewId}`
       );
@@ -59,6 +66,7 @@ const ReviewDetail = () => {
         }) => imageDto.filePath
       );
       setImgUrls(filePaths);
+      setLikeCount(response.data.likeCount);
     } catch (error) {
       console.error("리뷰상세 get요청 에러", error);
     }
@@ -75,14 +83,19 @@ const ReviewDetail = () => {
           userId={data?.user.id}
           nickName={data?.user.nickName}
           placeName={data?.placeName}
+          profileImagePath={data?.user.profileImagePath}
         />
         <div className="mb-3 mr-3 mt-4">
-          <EditButton />
+          <EditButton currentReviewId={currentReviewId} />
         </div>
       </div>
       <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
-        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+        <LikeButton
+          isLiked={isLiked}
+          setIsLiked={setIsLiked}
+          likeCount={likeCount}
+        />
         <DateCreated createdAt={data?.createdAt} />
       </div>
       <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
