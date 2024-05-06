@@ -9,18 +9,14 @@ import {
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { LatLngData, PlaceData } from "@/type/types";
+import Toast from "@/components/common/Toast";
 
 export function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
-  const [selectMarker, setSelectMarker] = useState<{
-    lat: number;
-    lng: number;
-  }>();
+  const [selectMarker, setSelectMarker] = useState<LatLngData>();
   const [userLocation, setUserLocation] = useState<{
-    center: {
-      lat: number;
-      lng: number;
-    };
+    center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
   }>({
@@ -34,33 +30,18 @@ export function MainMap() {
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
-  const [nowCenter, setNowCenter] = useState<{
-    lat: number;
-    lng: number;
-  }>();
-  const [searchLocation, setSearchLocation] = useState<{
-    lat: number;
-    lng: number;
-  }>();
-  const [markers, setMarkers] = useState<
-    {
-      addressName: string;
-      averageRating: number;
-      categoryName: string;
-      id: number;
-      kakaoPlaceId: number;
-      phone: string | null;
-      placeName: string;
-      placeUrl: string;
-      roadAddressName: string;
-      x: number;
-      y: number;
-    }[]
-  >([]);
+  const [toast, setToast] = useState<boolean>(false);
+  const [nowCenter, setNowCenter] = useState<LatLngData>();
+  const [searchLocation, setSearchLocation] = useState<LatLngData>();
+  const [markers, setMarkers] = useState<PlaceData[]>([]);
 
-  const handleOnClick = (position: { lat: number; lng: number }) => {
+  const handleOnClickMarker = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
     setShowInfoCard(true);
+  };
+
+  const handleToggleShowInfoCard = (state: boolean) => {
+    setShowInfoCard(state);
   };
 
   const handleOpenModal = () => {
@@ -101,36 +82,14 @@ export function MainMap() {
       );
       const data = await res.data;
       if (res.status === 200) {
-        const placeArr: {
-          addressName: string;
-          averageRating: number;
-          categoryName: string;
-          id: number;
-          kakaoPlaceId: number;
-          phone: string | null;
-          placeName: string;
-          placeUrl: string;
-          roadAddressName: string;
-          x: number;
-          y: number;
-        }[] = [];
+        if (data.length === 0) {
+          setToast(true);
+        } else {
+          const placeArr: PlaceData[] = [];
 
-        data.map(
-          (place: {
-            addressName: string;
-            averageRating: number;
-            categoryName: string;
-            id: number;
-            kakaoPlaceId: number;
-            phone: string | null;
-            placeName: string;
-            placeUrl: string;
-            roadAddressName: string;
-            x: number;
-            y: number;
-          }) => placeArr.push(place)
-        );
-        setMarkers(placeArr);
+          data.map((place: PlaceData) => placeArr.push(place));
+          setMarkers(placeArr);
+        }
       }
 
       setIsLoadingMarker(false);
@@ -192,7 +151,7 @@ export function MainMap() {
       <SearchInput
         map={map}
         type="main"
-        setShowInfoCard={setShowInfoCard}
+        handleToggleShowInfoCard={handleToggleShowInfoCard}
         getPlaces={getPlaces}
       />
       {!isLoadingMarker &&
@@ -241,11 +200,11 @@ export function MainMap() {
                         }
                   }
                   onClick={() =>
-                    handleOnClick({ lat: Number(lat), lng: Number(lng) })
+                    handleOnClickMarker({ lat: Number(lat), lng: Number(lng) })
                   }
                 />
 
-                {isSelected ? (
+                {isSelected && (
                   <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
                     <PlaceInfoCard
                       place={place}
@@ -253,8 +212,6 @@ export function MainMap() {
                       type="main"
                     />
                   </div>
-                ) : (
-                  <></>
                 )}
               </React.Fragment>
             );
@@ -290,6 +247,7 @@ export function MainMap() {
             <ReSearchBtn getPlaces={getPlaces} />
           </div>
         )}
+      {toast && <Toast setToast={setToast} />}
     </Map>
   );
 }
