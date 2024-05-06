@@ -8,7 +8,6 @@ import FormData from "form-data";
 import axios from "axios";
 
 const ReviewPost = () => {
-  const [previewImgs, setPreviewImgs] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const [tasteRating, setTasteRating] = useState(5);
   const [hygieneRating, setHygieneRating] = useState(5);
@@ -26,19 +25,21 @@ const ReviewPost = () => {
     y: number;
   }>({
     kakaoPlaceId: 0,
-    placeName: "string",
-    placeUrl: "string",
-    categoryName: "string",
-    addressName: "string",
-    roadAddressName: "string",
-    phone: "string",
+    placeName: "",
+    placeUrl: "",
+    categoryName: "",
+    addressName: "",
+    roadAddressName: "",
+    phone: "",
     x: 0,
     y: 0,
   });
 
-  // TODO: place api와 riview api에 각 데이터 전송 - api수정됨 review에만 요청 보내면 됨
-  // TODO: 음식점 선택 모달 띄우고 지도에서 마커 선택 시 정보를 서버로 넘기기
-  // TODO: ImageInput에서 이미지 크롭 기능(시간 되면)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handlePostImgs = (imgs: any) => {
+    setPostImgs(imgs);
+  };
+
   const appendFormData = (formData: FormData) => {
     // 평균 별점 계산
     const sum = tasteRating + hygieneRating + kindnessRating;
@@ -46,8 +47,8 @@ const ReviewPost = () => {
 
     // reviewRequest 데이터 추가
     const reviewRequest = {
-      userId: 0,
-      content: "본문 내용용요요용",
+      userId: 2,
+      content: content,
       tasteRating: tasteRating,
       hygieneRating: hygieneRating,
       kindnessRating: kindnessRating,
@@ -58,33 +59,42 @@ const ReviewPost = () => {
     const placeRequest = place;
 
     formData.append("file", postImgs);
-    formData.append("reviewRequest", JSON.stringify(reviewRequest));
-    formData.append("placeRequest", JSON.stringify(placeRequest));
-    // formData.append(
-    //   "reviewRequest",
-    //   new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
-    // );
-    // formData.append(
-    //   "placeRequest",
-    //   new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
-    // );
+    for (let i = 0; i < postImgs.length; i++) {
+      formData.append("file", postImgs[i]);
+    }
+    // formData.append("reviewRequest", JSON.stringify(reviewRequest));
+    // formData.append("placeRequest", JSON.stringify(placeRequest));
+    formData.append(
+      "reviewRequest",
+      new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
+    );
+    formData.append(
+      "placeRequest",
+      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
+    );
+    // console.log(postImgs);
   };
 
   const handleSubmit = async () => {
+    // if (postImgs.length === 0) {
+    //   alert("사진을 1장 이상 첨부해주세요.");
+    //   return;
+    // }
+    // if (!content) {
+    //   alert("본문 내용을 입력해주세요.");
+    //   return;
+    // }
+    // if (!place?.kakaoPlaceId) {
+    //   alert("음식점 정보를 선택해주세요.");
+    //   return;
+    // }
+
     const formData: FormData = new FormData();
     appendFormData(formData);
 
-    // for (const key of formData.keys()) {
-    //   console.log(key, ":", formData.get(key));
+    // for (const key of newFormData.keys()) {
+    //   console.log(key, ":", newFormData.get(key));
     // }
-    if (postImgs.length === 0) {
-      alert("사진을 1장 이상 첨부해주세요.");
-      return;
-    }
-    if (content === "") {
-      alert("본문 내용을 입력해주세요.");
-      return;
-    }
 
     try {
       const response = await axios.post(
@@ -107,24 +117,32 @@ const ReviewPost = () => {
       <div className="mb-6 ml-5 mt-4 text-lg font-medium">새 리뷰 등록하기</div>
       <form className="flex flex-col items-center justify-center gap-1">
         <div className="flex justify-center">
-          <ImageInput
-            previewImgs={previewImgs}
-            setPreviewImgs={setPreviewImgs}
-            setPostImgs={setPostImgs}
-          />
+          <ImageInput prevImgUrls={[]} handlePostImgs={handlePostImgs} />
         </div>
         <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
           <div className="mb-0.5 flex items-center gap-1">
             <span className="min-w-6 text-center">맛</span>
-            <RatingStar name="taste" setRating={setTasteRating} />
+            <RatingStar
+              name="taste"
+              initialValue={tasteRating}
+              setRating={setTasteRating}
+            />
           </div>
           <div className="mb-0.5 flex items-center gap-1">
             <span className="min-w-6">위생</span>
-            <RatingStar name="hygiene" setRating={setHygieneRating} />
+            <RatingStar
+              name="hygiene"
+              initialValue={hygieneRating}
+              setRating={setHygieneRating}
+            />
           </div>
           <div className="mb-3 flex items-center gap-1">
             <span className="min-w-6">친절</span>
-            <RatingStar name="kindness" setRating={setKindnessRating} />
+            <RatingStar
+              name="kindness"
+              initialValue={kindnessRating}
+              setRating={setKindnessRating}
+            />
           </div>
         </div>
         <button
@@ -142,7 +160,6 @@ const ReviewPost = () => {
           required
           className="textarea textarea-bordered h-32 w-3/4 max-w-xs pt-3 text-xs"
           placeholder="리뷰 내용 입력..."
-          value={content}
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
         <button

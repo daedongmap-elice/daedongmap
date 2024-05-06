@@ -17,7 +17,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ reviewIds, imgUrls }) => {
     <>
       {idAndUrl.map((el, i) => (
         <a href={`/detail#${el.id}`} key={`thumbnail${i}`}>
-          <img src={el.url} alt="thumbnail" className="w-full" />
+          <img src={el.url} alt="thumbnail" className="h-full w-full" />
         </a>
       ))}
     </>

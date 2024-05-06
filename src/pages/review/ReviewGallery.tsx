@@ -10,9 +10,10 @@ interface ReviewGalleryResponse {
     id: number;
     nickName: string;
     email: string;
+    profileImagePath: string;
   };
   content: string;
-  reviewImageDtoList: [
+  reviewImageList: [
     {
       id: number;
       userId: number;
@@ -44,7 +45,7 @@ const ReviewGallery = () => {
 
       // response로부터 썸네일이미지url, reviewId 추출
       response.data.forEach((review: ReviewGalleryResponse) => {
-        firstFilePaths.push(review.reviewImageDtoList[0].filePath);
+        firstFilePaths.push(review.reviewImageList?.[0].filePath);
         ids.push(review.id);
       });
 

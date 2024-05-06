@@ -2,23 +2,23 @@ interface ReviewProfileProps {
   userId: number | undefined;
   nickName: string | undefined;
   placeName: string | undefined;
+  profileImagePath: string | undefined;
 }
 
 const ReviewProfile: React.FC<ReviewProfileProps> = ({
-  // userId,
+  userId,
   nickName,
   placeName,
+  profileImagePath,
 }) => {
-  // TODO: ReviewProfile 클릭하면 userId를 가지고(?) '마이페이지'로 넘어가서 '사용자별 리뷰 조회'
-
   return (
     <>
-      <a href="/">
+      <a href={`/mypage/#${userId}`}>
         <div className="mb-3 mt-4 flex">
           <div>
             <img
               className="mask mask-circle ml-3 mr-3 w-9"
-              src="img/sample3.png"
+              src={profileImagePath}
               alt="user-profile"
             />
           </div>
