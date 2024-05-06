@@ -7,40 +7,25 @@ import axios from "axios";
 
 interface CommentModalResponse {
   id: number;
-  kakaoPlaceId: number;
-  placeName: string;
   user: {
     id: number;
     nickName: string;
     email: string;
+    profileImagePath: string;
   };
   content: string;
-  reviewImageDtoList: [
-    {
-      id: number;
-      userId: number;
-      reviewId: number;
-      filePath: string;
-    },
-  ];
-  tasteRating: number;
-  hygieneRating: number;
-  kindnessRating: number;
-  averageRating: number;
-  likeCount: number;
-  createdAt: string | undefined;
-  updatedAt: string;
+  createdAt: string;
 }
 
 export default function CommentModal() {
-  const [data, setData] = useState<CommentModalResponse | null>(null);
-  console.log(data);
+  const [data, setData] = useState<CommentModalResponse[]>([]);
+  console.log("댓글창에서받아온데이터", data);
 
   const getData = async () => {
     try {
       const currentReviewId = window.location.hash.substring(1);
       const response = await axios.get(
-        `http://35.232.243.53:8080//api/comments/reviews/${currentReviewId}`
+        `http://35.232.243.53:8080/api/comments/reviews/${currentReviewId}`
       );
       setData(response.data);
     } catch (error) {
@@ -51,13 +36,21 @@ export default function CommentModal() {
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <>
       <div className="modal-box h-5/6 w-full rounded-b-none pl-1.5">
         <h3 className="text-center text-base font-bold">댓글</h3>
-        <Comment />
-        <Comment />
-        <Comment />
+        {data.map((comment, i) => (
+          <Comment
+            key={`comment${i}`}
+            userId={comment.user.id}
+            profileImagePath={comment.user.profileImagePath}
+            nickName={comment.user.nickName}
+            content={comment.content}
+            createdAt={comment.createdAt}
+          />
+        ))}
         <div className="fixed bottom-7 w-full">
           <div className="flex justify-center">
             <form className="flex w-10/12 gap-2">
