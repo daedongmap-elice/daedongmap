@@ -80,7 +80,7 @@ const ReviewDetail = () => {
     getData();
   }, []);
 
-  return (
+  return imgUrls.length !== 0 ? (
     <div className="pb-16">
       <div className="flex items-center justify-between">
         <ReviewProfile
@@ -148,6 +148,17 @@ const ReviewDetail = () => {
           <CommentModal handleCommentCount={handleCommentCount} />
         </dialog>
       </div>
+    </div>
+  ) : (
+    <div className="ml-4 mt-4 flex w-11/12 flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <div className="skeleton h-10 w-10 shrink-0 rounded-full"></div>
+        <div className="flex flex-col gap-2">
+          <div className="skeleton h-4 w-28"></div>
+          <div className="skeleton h-4 w-16"></div>
+        </div>
+      </div>
+      <div className="skeleton h-80 w-full"></div>
     </div>
   );
 };
