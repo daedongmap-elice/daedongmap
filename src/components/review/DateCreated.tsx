@@ -13,7 +13,7 @@ const DateCreated: React.FC<DateCreatedProps> = ({ createdAt }) => {
   };
 
   return (
-    <span className="mr-4 text-sm text-subGray">{formatDate(createdAt)}</span>
+    <span className="mr-4 text-sm text-gray-300">{formatDate(createdAt)}</span>
   );
 };
 
