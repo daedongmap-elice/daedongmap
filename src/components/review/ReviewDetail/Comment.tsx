@@ -1,6 +1,8 @@
 import DateCreated from "../DateCreated";
 
-export default function Comment() {
+// 닉네임, 댓글내용, 작성일을 prop로 내려받기
+
+const Comment = () => {
   return (
     <>
       <a href="/">
@@ -15,7 +17,7 @@ export default function Comment() {
           <div className="max-w-64 text-xs">
             <p className="mb-2 flex items-center justify-between">
               <b>유저닉네임</b>
-              <DateCreated />
+              <DateCreated createdAt={""} />
             </p>
             <p className="">
               나중에 가봐야겠네요 헌법개정안은 국회가 의결한 후 30일 이내에
@@ -27,4 +29,6 @@ export default function Comment() {
       </a>
     </>
   );
-}
+};
+
+export default Comment;
