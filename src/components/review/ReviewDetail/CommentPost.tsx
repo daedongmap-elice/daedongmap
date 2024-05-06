@@ -1,22 +1,63 @@
+import { useRef, useState } from "react";
+import axios from "axios";
+
 interface CommentProps {
   reviewId: string;
+  onPostSuccess: () => void;
 }
 
-const CommentPost: React.FC<CommentProps> = ({ reviewId }) => {
-  console.log("CommentPost reviewId:", reviewId);
+const CommentPost: React.FC<CommentProps> = ({ reviewId, onPostSuccess }) => {
+  const [content, setContent] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // 나의 유저아이디 가져와야 함
+  const handleSubmit = async () => {
+    console.log(content);
+    try {
+      const response = await axios.post(
+        "http://35.232.243.53:8080/api/comments",
+        {
+          userId: 1,
+          reviewId: reviewId,
+          content: content,
+          parentId: null,
+        }
+      );
+      console.log("응답 데이터:", response.data);
+      onPostSuccess();
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("댓글등록 실패:", error);
+    }
+  };
+
   return (
     <div className="fixed bottom-7 w-full">
       <div className="flex justify-center">
-        <form className="flex w-10/12 gap-2">
+        <div className="flex w-10/12 gap-2">
           <input
+            required
             type="text"
             placeholder="댓글 달기..."
             className="input input-bordered h-8 w-full text-xs"
+            onChange={(e) => setContent(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit();
+              }
+            }}
+            ref={inputRef}
           />
-          <button className="btn btn-sm mr-2 h-4 bg-mainG text-xs text-GbtnText">
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="btn btn-sm mr-2 h-4 bg-mainG text-xs text-GbtnText"
+          >
             확인
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

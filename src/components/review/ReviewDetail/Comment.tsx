@@ -1,41 +1,52 @@
 import DateCreated from "../DateCreated";
+import CommentEditBtn from "./CommentEditBtn";
 
 // 아이디, 프로필사진, 닉네임, 댓글내용, 작성일을 prop로 내려받기
 interface CommentProps {
+  commentId: number;
   userId: number;
   profileImagePath: string;
   nickName: string;
   content: string;
   createdAt: string;
+  onDeleteSuccess: () => void;
 }
 
 const Comment: React.FC<CommentProps> = ({
+  commentId,
   userId,
   profileImagePath,
   nickName,
   content,
   // createdAt,
+  onDeleteSuccess,
 }) => {
   return (
     <>
-      <a href={`/mypage/#${userId}`}>
-        <div className="mb-3 mt-4 flex">
+      <div className="mb-6 mt-4 flex justify-between">
+        <div className="flex">
           <div>
-            <img
-              className="mask mask-circle ml-3 mr-3 w-9"
-              src={profileImagePath}
-              alt="user-profile"
-            />
+            <a href={`/mypage/#${userId}`}>
+              <img
+                className="mask mask-circle ml-3 mr-3 w-9"
+                src={profileImagePath}
+                alt="user-profile"
+              />
+            </a>
           </div>
-          <div className="max-w-64 text-xs">
-            <div className="mb-2 flex items-center justify-between">
-              <b className="mr-4">{nickName}</b>
+          <div className="text-xs">
+            <div className="mb-2 flex w-64 items-center justify-between">
+              <b>{nickName}</b>
               <DateCreated createdAt={"1111-11-11"} />
             </div>
-            <p className="">{content} </p>
+            <p className="w-64">{content} </p>
           </div>
         </div>
-      </a>
+        <CommentEditBtn
+          onDeleteSuccess={onDeleteSuccess}
+          commentId={commentId}
+        />
+      </div>
     </>
   );
 };
