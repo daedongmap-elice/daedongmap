@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
 import { axiosClient, getRefreshToken } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useState<UserInfo>({
@@ -10,6 +11,7 @@ export default function MyPageContainer() {
   });
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
+  const naviagte = useNavigate();
 
   const getProfile = async () => {
     try {
@@ -46,7 +48,9 @@ export default function MyPageContainer() {
       });
       if (res.status === 200) {
         console.log(res);
+        alert(`${res.data}`);
         localStorage.clear();
+        naviagte("/");
       }
     } catch (error) {
       console.log(error);
