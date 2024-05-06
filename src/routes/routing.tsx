@@ -7,14 +7,14 @@ import ReviewDetail from "../pages/review/ReviewDetail";
 import ReviewFeed from "@/pages/review/ReviewFeed";
 import ReviewEdit from "@/pages/review/ReviewEdit";
 import PreLoginPresent from "../components/user/preLoginPresnt";
-//import SignUpPresent from "../components/user/signupPresent";
-//import LoginPresent from "../components/user/login/loginPresent";
-import MyPagePresent from "../components/user/mypagePresent";
-import EditProfilePresnet from "../components/user/editProfilePresent";
+import MyPageContainer from "@/components/user/myPage/mypageContainer";
+import EditProfileContainer from "@/components/user/myPage/editProfileContainer";
 import NotFoundPresent from "../components/notFound";
 import SignUpContainer from "@/components/user/signUP/signupContainer";
 import LoginContainer from "@/components/user/login/loginContainer";
-import OAuth from "@/components/user/login/loginNaver";
+import KakaoOauth from "@/components/user/login/loginKakao";
+import NaverOAuth from "@/components/user/login/loginNaver";
+import GoogleOauth from "@/components/user/login/loginGoogle";
 
 const router = createBrowserRouter([
   {
@@ -33,9 +33,11 @@ const router = createBrowserRouter([
       { path: "/prelogin", element: <PreLoginPresent /> },
       { path: "/signup", element: <SignUpContainer /> },
       { path: "/login", element: <LoginContainer /> },
-      { path: "/user/login", element: <OAuth /> },
-      { path: "/mypage", element: <MyPagePresent /> },
-      { path: "/editprofile", element: <EditProfilePresnet /> },
+      { path: "/naver/oauth", element: <NaverOAuth /> },
+      { path: "/kakao/oauth", element: <KakaoOauth /> },
+      { path: "/google/oauth", element: <GoogleOauth /> },
+      { path: "/mypage", element: <MyPageContainer /> },
+      { path: "/editprofile", element: <EditProfileContainer /> },
     ],
   },
 ]);

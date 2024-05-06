@@ -111,12 +111,12 @@ const SignUpPresent: React.FC<SignUpProps> = ({
           </div>
           <input
             type="text"
-            name="nickname"
+            name="nickName"
             placeholder="닉네임을 입력해주세요."
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />
-          <div className="flex w-full flex-col items-center">
+          <div className="flex w-full items-center">
             <button
               type="submit"
               disabled={buttonDisabled}

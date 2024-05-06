@@ -3,64 +3,126 @@ import {
   ReviewImage,
   LikeButton,
   DateCreated,
-  RatingStar,
+  Star,
   ReviewProfile,
   CommentModal,
 } from "@/components/review/index";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function ReviewDetail() {
-  const handleSeeMore = (event: React.MouseEvent) => {
-    const button = event.target as HTMLButtonElement;
-    button.style.display = "none";
+interface ReviewDetailResponse {
+  id: number;
+  kakaoPlaceId: number;
+  placeName: string;
+  user: {
+    id: number;
+    nickName: string;
+    email: string;
+  };
+  content: string;
+  reviewImageDtoList: [
+    {
+      id: number;
+      userId: number;
+      reviewId: number;
+      filePath: string;
+    },
+  ];
+  tasteRating: number;
+  hygieneRating: number;
+  kindnessRating: number;
+  averageRating: number;
+  likeCount: number;
+  createdAt: string | undefined;
+  updatedAt: string;
+}
 
-    const content = document.getElementById("content") as HTMLDivElement;
-    content.style.overflow = "visible";
-    content.style.whiteSpace = "normal";
-    content.style.textOverflow = "initial";
+const ReviewDetail = () => {
+  const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
+  const [data, setData] = useState<ReviewDetailResponse | null>(null);
+  const [imgUrls, setImgUrls] = useState<string[]>([]);
+
+  const getData = async () => {
+    try {
+      const currentReviewId = window.location.hash.substring(1);
+      const response = await axios.get(
+        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`
+      );
+      setData(response.data);
+      const filePaths = response.data.reviewImageDtoList.map(
+        (imageDto: {
+          id: number;
+          userId: number;
+          reviewId: number;
+          filePath: string;
+        }) => imageDto.filePath
+      );
+      setImgUrls(filePaths);
+    } catch (error) {
+      console.error("리뷰상세 get요청 에러", error);
+    }
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
-    <>
+    <div className="pb-16">
       <div className="flex items-center justify-between">
-        <ReviewProfile />
+        <ReviewProfile
+          userId={data?.user.id}
+          nickName={data?.user.nickName}
+          placeName={data?.placeName}
+        />
         <div className="mb-3 mr-3 mt-4">
           <EditButton />
         </div>
       </div>
-      <ReviewImage />
+      <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
-        <LikeButton />
-        <DateCreated />
+        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+        <DateCreated createdAt={data?.createdAt} />
       </div>
       <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
         <div className="flex items-center gap-1">
           <span className="min-w-fit">맛</span>
-          <RatingStar item="taste" />
+          <Star name="taste" rating={data?.tasteRating} />
         </div>
         <div className="flex items-center gap-1">
           <span className="min-w-fit">위생</span>
-          <RatingStar item="clean" />
+          <Star name="hygiene" rating={data?.hygieneRating} />
         </div>
         <div className="flex items-center gap-1">
           <span className="min-w-fit">친절</span>
-          <RatingStar item="kind" />
+          <Star name="kindness" rating={data?.kindnessRating} />
         </div>
       </div>
       <div className="flex w-full justify-between px-5 pt-4 text-sm">
-        <p id="content" className="overflow-hidden text-clip whitespace-nowrap">
-          오늘 여기 식당에서 점심 먹었는데 제육덮밥 맛있었어요! 헌법개정안은
-          국회가 의결한 후 30일 이내에 국민투표에 붙여 국회의원선거권자 과반수의
-          투표와 투표자 과반수의 찬성을 얻어야 한다.
-        </p>
-        <button
-          onClick={handleSeeMore}
-          className="min-w-fit cursor-pointer text-subGray"
-        >
-          <span>...&nbsp; 더 보기</span>
-        </button>
+        {data?.content && data?.content.length >= 110 ? (
+          <p
+            className={`${isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"} ${isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"} ${isSeeMoreClicked ? "" : "text-clip"}`}
+          >
+            {data?.content}
+          </p>
+        ) : (
+          <p>{data?.content}</p>
+        )}
+        {data?.content && data?.content.length >= 110 ? (
+          <button
+            onClick={() => setIsSeeMoreClicked(true)}
+            className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
+          >
+            <span>...&nbsp; 더 보기</span>
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="mb-6 px-5 pt-2 text-sm text-subGray">
         <button
+          // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
           onClick={() => document.getElementById("commentModal").showModal()}
         >
           댓글 0개 보기
@@ -69,6 +131,8 @@ export default function ReviewDetail() {
           <CommentModal />
         </dialog>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default ReviewDetail;

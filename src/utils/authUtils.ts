@@ -15,3 +15,10 @@ export const isCheckPassword = (
   }
   return false;
 };
+
+export const isCheckDelete = (message: string) => {
+  if (message === "회원탈퇴") {
+    return true;
+  }
+  return false;
+};

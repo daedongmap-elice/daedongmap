@@ -1,4 +1,16 @@
-export default function ReviewProfile() {
+interface ReviewProfileProps {
+  userId: number | undefined;
+  nickName: string | undefined;
+  placeName: string | undefined;
+}
+
+const ReviewProfile: React.FC<ReviewProfileProps> = ({
+  // userId,
+  nickName,
+  placeName,
+}) => {
+  // TODO: ReviewProfile 클릭하면 userId를 가지고(?) '마이페이지'로 넘어가서 '사용자별 리뷰 조회'
+
   return (
     <>
       <a href="/">
@@ -12,12 +24,14 @@ export default function ReviewProfile() {
           </div>
           <div>
             <p className="mb-0.5 text-xs">
-              <b>유저닉네임</b>
+              <b>{nickName}</b>
             </p>
-            <p className="text-xxs">식당 이름</p>
+            <p className="text-xxs">{placeName}</p>
           </div>
         </div>
       </a>
     </>
   );
-}
+};
+
+export default ReviewProfile;

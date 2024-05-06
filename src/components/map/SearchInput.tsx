@@ -2,26 +2,18 @@ import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 
 interface SearchInputProps {
-  setMarkers: React.Dispatch<
-    React.SetStateAction<
-      | {
-          address_name: string;
-          category_name: string;
-          id: string;
-          phone: string;
-          place_name: string;
-          place_url: string;
-          road_address_name: string;
-          x: string;
-          y: string;
-        }[]
-      | undefined
-    >
-  >;
   map: kakao.maps.Map | undefined;
+  type: "main" | "post";
+  handleToggleShowInfoCard?: (state: boolean) => void;
+  getPlaces: () => Promise<void>;
 }
 
-export default function SearchInput({ setMarkers, map }: SearchInputProps) {
+export default function SearchInput({
+  map,
+  type,
+  handleToggleShowInfoCard,
+  getPlaces,
+}: SearchInputProps) {
   const [text, setText] = useState<string>("");
 
   const handleOnClick = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,39 +24,31 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
     if (!map) return;
     const ps = new kakao.maps.services.Places();
 
-    setText((prev) => prev + " 음식점");
-
-    ps.keywordSearch(`${text}`, (data, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        const bounds = new kakao.maps.LatLngBounds();
-        const places = [];
-
-        for (let i = 0; i < data.length; i++) {
-          places.push({
-            address_name: data[i].address_name,
-            category_name: data[i].category_name,
-            id: data[i].id,
-            phone: data[i].phone,
-            place_name: data[i].place_name,
-            place_url: data[i].place_url,
-            road_address_name: data[i].road_address_name,
-            x: data[i].x,
-            y: data[i].y,
-          });
-          bounds.extend(
-            new kakao.maps.LatLng(Number(data[i].y), Number(data[i].x))
-          );
-        }
-
-        setMarkers(places);
-        map.setBounds(bounds);
+    if (text !== "") {
+      try {
+        ps.keywordSearch(`${text} 음식점`, (datas, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            map.setCenter(
+              new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
+            );
+            map.setLevel(5);
+            getPlaces();
+          }
+        });
+      } catch (err) {
+        console.log(err);
       }
-    });
+
+      if (handleToggleShowInfoCard) {
+        handleToggleShowInfoCard(false);
+      }
+    }
   };
 
   const handleOnKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
+      (e.currentTarget as HTMLInputElement).blur();
     }
   };
 
@@ -73,12 +57,12 @@ export default function SearchInput({ setMarkers, map }: SearchInputProps) {
   }, [map]);
 
   return (
-    <div className="absolute left-1/2 top-10 z-10 h-11 w-10/12 -translate-x-1/2">
-      <div className="relative h-full w-full">
+    <div className="absolute left-1/2 top-12 z-30 -translate-x-1/2">
+      <div className="relative h-11 w-[320px]">
         <input
           type="text"
           className="absolute h-full w-full rounded-md p-2.5 text-sm shadow"
-          placeholder="지역/맛집 검색"
+          placeholder={type === "main" ? "지역 검색" : "음식점 검색"}
           onChange={(e) => handleOnClick(e)}
           onKeyDown={(e) => handleOnKeyDown(e)}
         ></input>

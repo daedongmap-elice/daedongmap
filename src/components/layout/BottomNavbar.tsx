@@ -2,12 +2,17 @@ import { BiSolidHome } from "react-icons/bi";
 import { BiSolidGridAlt } from "react-icons/bi";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { getCookie } from "../../hooks/useCookie";
+import { getToken } from "../../utils/useToken";
+import { useEffect, useState } from "react";
 
 export default function BottomNavbar() {
-  const getCookies = getCookie();
+  const [isToken, setIsToken] = useState<boolean>(false);
+  useEffect(() => {
+    setIsToken(getToken());
+    console.log(isToken);
+  }, [isToken]);
   return (
-    <div className="btm-nav z-[100] h-9">
+    <div className="btm-nav z-[100] h-9 border border-x-0 border-b-0 border-solid border-gray-200">
       <button className="rounded-none border-none bg-white pb-0">
         <a href="/">
           <BiSolidHome className="h-5 w-5" />
@@ -19,12 +24,12 @@ export default function BottomNavbar() {
         </a>
       </button>
       <button className="rounded-none border-none bg-white pb-0">
-        <a href={getCookies ? "/post" : "/login"}>
+        <a href={isToken ? "/post" : "/login"}>
           <BsFillPlusCircleFill />
         </a>
       </button>
       <button className="rounded-none border-none bg-white pb-0">
-        <a href={getCookies ? "/mypage" : "/prelogin"}>
+        <a href={isToken ? "/mypage" : "/prelogin"}>
           <BiSolidUserCircle className="h-5 w-5" />
         </a>
       </button>

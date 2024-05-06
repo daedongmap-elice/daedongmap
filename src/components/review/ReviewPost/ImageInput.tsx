@@ -1,63 +1,84 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+interface ImageInputProps {
+  previewImgs: string[];
+  setPreviewImgs: React.Dispatch<React.SetStateAction<string[]>>;
+  setPostImgs: React.Dispatch<React.SetStateAction<File[]>>;
+}
 
-export default function ImageInput() {
-  const [images, setImages] = useState<string[]>([]);
-  const navigate = useNavigate();
-  const guide = document.getElementById("guide") as HTMLElement;
+const ImageInput: React.FC<ImageInputProps> = ({
+  previewImgs,
+  setPreviewImgs,
+  setPostImgs,
+}) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const imgsArray = Array.from(e.target.files as FileList);
-    const selectedImgs: string[] = imgsArray.map((img) => {
+    // 미리보기 이미지 설정
+    // if (!e.target.files) return;
+    const files = Array.from(e.target.files as FileList);
+    setPostImgs(files);
+    // setPostImgs([e.target.files[0]]);
+
+    const selected: string[] = files.map((img) => {
       return URL.createObjectURL(img);
     });
-    setImages(selectedImgs);
-
-    // 파일이 선택되면 guide 요소 숨기기
-    guide.classList.add("hidden");
-    navigate("/post/#item0");
+    setPreviewImgs(selected);
   };
-
-  // TODO: 삭제 버튼, 삭제 기능 만들기
-  // const deleteImage = () => {};
-
-  // useEffect(() => {
-  //   if (images.length === 0 && guide) {
-  //     guide.className = originalClass;
-  //   }
-  // }, [images]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+      {/* label태그 내에 div를 넣었을 때의 오류 해결을 위함 */}
       <label htmlFor="file">
         <input
-          required
           multiple
           className="hidden"
           onChange={handleImageChange}
-          disabled={images.length === 5}
-          accept=".jpg, .jpeg, .png, .svg"
+          disabled={previewImgs.length > 0}
+          accept="image/*"
           id="file"
           type="file"
           name="file"
         />
-        <div className="carousel h-52 min-h-52 w-52">
-          {images.map((url, i) => (
+        <div className="carousel h-52 min-h-52 w-52 border border-solid border-gray-300">
+          {previewImgs.map((url, i) => (
             <div key={url} id={`item${i}`} className="carousel-item w-full">
-              <img src={url} className="w-full" alt={`file${i}`} />
-              <div className="relative left-3/4 top-9 ml-4 h-5 w-5 bg-[url('svg/deleteIcon.svg')]"></div>
+              <img src={url} className="relative z-0 w-full" alt={`file${i}`} />
+              <button
+                className="relative right-9 top-2 z-10 h-8 w-8"
+                onClick={() => {
+                  setPreviewImgs(previewImgs.filter((el) => el !== url));
+                }}
+              >
+                {/* <img
+                  src="/svg/deleteIcon.svg"
+                  alt="deleteIcon"
+                  className="z-20 h-7 w-7 max-w-12"
+                /> */}
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M17.3088 1.22279C17.3094 1.22297 17.3099 1.22325 17.3109 1.22429L18.7757 2.68907C18.7768 2.69012 18.7771 2.6906 18.7772 2.69121C18.7774 2.69178 18.7774 2.69239 18.7772 2.69296C18.7771 2.69354 18.7768 2.69403 18.7757 2.69507L11.4708 10L18.7757 17.305C18.7768 17.306 18.7771 17.3065 18.7772 17.3071C18.7774 17.3077 18.7774 17.3083 18.7772 17.3089C18.7771 17.3094 18.7768 17.3099 18.7757 17.311L17.3109 18.7758C17.3099 18.7768 17.3094 18.7771 17.3088 18.7773C17.3082 18.7774 17.3076 18.7774 17.3071 18.7773C17.3065 18.7771 17.306 18.7768 17.305 18.7758L10 11.4708L2.69504 18.7758C2.69402 18.7768 2.69351 18.7771 2.69293 18.7773C2.69235 18.7774 2.69173 18.7774 2.69115 18.7773C2.69059 18.7771 2.69008 18.7768 2.68904 18.7758L1.22426 17.311C1.22322 17.3099 1.22294 17.3095 1.22276 17.3088C1.22259 17.3083 1.22259 17.3077 1.22276 17.3071C1.22294 17.3065 1.22322 17.306 1.22426 17.305L8.52919 10L1.22426 2.69507C1.22322 2.69405 1.22294 2.69354 1.22276 2.69296C1.22258 2.69238 1.22258 2.69176 1.22276 2.69118C1.22294 2.69062 1.22322 2.69012 1.22426 2.68907L2.68904 1.22429C2.69008 1.22325 2.69057 1.22297 2.69118 1.22279C2.69175 1.22262 2.69236 1.22262 2.69293 1.22279C2.69351 1.22297 2.69399 1.22325 2.69504 1.22429L10 8.52922L17.305 1.22429C17.306 1.22325 17.3065 1.22297 17.3071 1.22279C17.3076 1.22261 17.3083 1.22261 17.3088 1.22279H17.3088Z"
+                    fill="black"
+                    stroke="white"
+                  />
+                </svg>
+              </button>
             </div>
           ))}
           <div
-            id="guide"
-            className="carousel-item flex h-full w-full flex-col items-center justify-center bg-subLightGray text-base text-subGray"
+            className={`${previewImgs.length > 0 ? "hidden" : ""} carousel-item flex h-full w-full flex-col items-center justify-center bg-subLightGray text-base text-subGray`}
           >
             사진 추가
             <div className="text-sm">(최대 5장까지 첨부 가능)</div>
           </div>
         </div>
         <div className="flex w-full justify-center gap-3 pb-2 pt-2">
-          {images.map((url, i) => (
+          {previewImgs.map((url, i) => (
             <a
               href={`#item${i}`}
               className="btn btn-xs w-6 rounded-xl"
@@ -70,10 +91,6 @@ export default function ImageInput() {
       </label>
     </div>
   );
-}
+};
 
-/*
-사용자가 이미지 추가
-이미지를 1개 첨부하면, 
-처리된 문자열을 images배열에 push함
-*/
+export default ImageInput;
