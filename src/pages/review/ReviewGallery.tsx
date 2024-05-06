@@ -80,9 +80,17 @@ const ReviewGallery = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-px">
-        <Thumbnail reviewIds={reviewIds} imgUrls={imgUrls} />
-      </div>
+      {imgUrls.length !== 0 ? (
+        <div className="grid grid-cols-3 gap-px">
+          <Thumbnail reviewIds={reviewIds} imgUrls={imgUrls} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-px">
+          <div className="skeleton h-full w-full"></div>
+          <div className="skeleton h-full w-full"></div>
+          <div className="skeleton h-28 w-full"></div>
+        </div>
+      )}
     </div>
   );
 };
