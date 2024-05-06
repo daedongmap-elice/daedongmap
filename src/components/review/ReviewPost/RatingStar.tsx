@@ -1,46 +1,28 @@
 interface RatingStarProps {
   name: string;
+  initialValue: number;
   setRating: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const RatingStar: React.FC<RatingStarProps> = ({ name, setRating }) => {
+const RatingStar: React.FC<RatingStarProps> = ({
+  name,
+  initialValue,
+  setRating,
+}) => {
+  const ratingScore = [1, 2, 3, 4, 5];
   return (
     <div className="rating rating-sm">
-      <input
-        type="radio"
-        name={name}
-        value={1}
-        onChange={() => setRating(1)}
-        className="mask mask-star-2 bg-mainY"
-      />
-      <input
-        type="radio"
-        name={name}
-        value={2}
-        onChange={() => setRating(2)}
-        className="mask mask-star-2 bg-mainY"
-      />
-      <input
-        type="radio"
-        name={name}
-        value={3}
-        onChange={() => setRating(3)}
-        className="mask mask-star-2 bg-mainY"
-      />
-      <input
-        type="radio"
-        name={name}
-        value={4}
-        onChange={() => setRating(4)}
-        className="mask mask-star-2 bg-mainY"
-      />
-      <input
-        type="radio"
-        name={name}
-        value={5}
-        onChange={() => setRating(5)}
-        className="mask mask-star-2 bg-mainY"
-      />
+      {ratingScore.map((score, index) => (
+        <input
+          key={index}
+          type="radio"
+          name={name}
+          value={score}
+          checked={initialValue === score}
+          onChange={() => setRating(score)}
+          className="mask mask-star-2 bg-mainY"
+        />
+      ))}
     </div>
   );
 };
