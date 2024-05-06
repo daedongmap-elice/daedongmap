@@ -35,7 +35,8 @@ const ReviewPost = () => {
     y: 0,
   });
 
-  const handlePostImgs = (imgs: File[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handlePostImgs = (imgs: any) => {
     setPostImgs(imgs);
   };
 
@@ -46,7 +47,7 @@ const ReviewPost = () => {
 
     // reviewRequest 데이터 추가
     const reviewRequest = {
-      userId: 0,
+      userId: 2,
       content: content,
       tasteRating: tasteRating,
       hygieneRating: hygieneRating,
@@ -58,43 +59,46 @@ const ReviewPost = () => {
     const placeRequest = place;
 
     formData.append("file", postImgs);
-    formData.append("reviewRequest", JSON.stringify(reviewRequest));
-    formData.append("placeRequest", JSON.stringify(placeRequest));
-    // formData.append(
-    //   "reviewRequest",
-    //   new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
-    // );
-    // formData.append(
-    //   "placeRequest",
-    //   new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
-    // );
+    for (let i = 0; i < postImgs.length; i++) {
+      formData.append("file", postImgs[i]);
+    }
+    // formData.append("reviewRequest", JSON.stringify(reviewRequest));
+    // formData.append("placeRequest", JSON.stringify(placeRequest));
+    formData.append(
+      "reviewRequest",
+      new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
+    );
+    formData.append(
+      "placeRequest",
+      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
+    );
     // console.log(postImgs);
   };
 
   const handleSubmit = async () => {
-    if (postImgs.length === 0) {
-      alert("사진을 1장 이상 첨부해주세요.");
-      return;
-    }
-    if (!content) {
-      alert("본문 내용을 입력해주세요.");
-      return;
-    }
-    if (!place?.kakaoPlaceId) {
-      alert("음식점 정보를 선택해주세요.");
-      return;
-    }
+    // if (postImgs.length === 0) {
+    //   alert("사진을 1장 이상 첨부해주세요.");
+    //   return;
+    // }
+    // if (!content) {
+    //   alert("본문 내용을 입력해주세요.");
+    //   return;
+    // }
+    // if (!place?.kakaoPlaceId) {
+    //   alert("음식점 정보를 선택해주세요.");
+    //   return;
+    // }
 
     const formData: FormData = new FormData();
     appendFormData(formData);
 
-    for (const key of formData.keys()) {
-      console.log(key, ":", formData.get(key));
-    }
+    // for (const key of newFormData.keys()) {
+    //   console.log(key, ":", newFormData.get(key));
+    // }
 
     try {
       const response = await axios.post(
-        "http://35.232.243.53:8080/api/reviews/test",
+        "http://35.232.243.53:8080/api/reviews",
         formData,
         {
           headers: {

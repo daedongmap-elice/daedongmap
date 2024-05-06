@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 interface ImageInputProps {
   prevImgUrls: string[];
-  handlePostImgs: (Imgs: File[]) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handlePostImgs: (Imgs: any) => void;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
@@ -23,14 +24,16 @@ const ImageInput: React.FC<ImageInputProps> = ({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 미리보기 이미지 설정
     if (!e.target.files) return;
-    const files = Array.from(e.target.files as FileList);
+    // const files = Array.from(e.target.files as FileList);
+    const files = e.target.files;
     handlePostImgs(files);
-    // setPostImgs([e.target.files[0]]);
+    // handlePostImgs([e.target.files[0]]);
 
-    const selected: string[] = files.map((img) => {
-      return URL.createObjectURL(img);
-    });
-    setPreviewImgs(selected);
+    // const selected: string[] = files.map((img) => {
+    //   return URL.createObjectURL(img);
+    // });
+    // setPreviewImgs(selected);
+    // console.log(selected);
   };
 
   useEffect(() => {
