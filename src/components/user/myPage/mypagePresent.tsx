@@ -4,9 +4,18 @@ import { AiOutlineMore } from "react-icons/ai";
 interface MypageProps {
   profile: UserInfo;
   isClickLogout: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isClickModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isModal: boolean;
+  isClickDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const MyPagePresent: React.FC<MypageProps> = ({ profile, isClickLogout }) => {
+const MyPagePresent: React.FC<MypageProps> = ({
+  profile,
+  isClickLogout,
+  isClickModal,
+  isModal,
+  isClickDelete,
+}) => {
   return (
     <>
       <div className="flex flex-col items-center">
@@ -37,7 +46,10 @@ const MyPagePresent: React.FC<MypageProps> = ({ profile, isClickLogout }) => {
                   로그아웃
                 </button>
               </li>
-              <button className="btn btn-outline btn-error mx-auto text-center">
+              <button
+                className="btn btn-outline btn-error mx-auto text-center"
+                onClick={isClickModal}
+              >
                 회원탈퇴
               </button>
             </ul>
@@ -48,6 +60,36 @@ const MyPagePresent: React.FC<MypageProps> = ({ profile, isClickLogout }) => {
         </button>
         <hr className="mt-5 w-10/12 border-t border-solid border-subLightGray" />
       </div>
+      {isModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <form method="dialog">
+              <button
+                className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+                onClick={isClickModal}
+              >
+                ✕
+              </button>
+            </form>
+            <h3 className="text-bg-error text-center text-lg font-bold">
+              회원탈퇴
+            </h3>
+            <p className="py-4 text-center">회원탈퇴 하시겠습니까?</p>
+
+            <input
+              type="text"
+              placeholder="회원탈퇴를 입력해주세요."
+              className="input input-sm input-bordered w-full max-w-xs"
+            />
+            <button
+              className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText"
+              onClick={isClickDelete}
+            >
+              회원탈퇴
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

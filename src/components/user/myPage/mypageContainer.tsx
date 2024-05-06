@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
-import { axiosClient, getRefreshToken } from "@/hooks/useAuth";
+import { DeleteUser, axiosClient, getRefreshToken } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function MyPageContainer() {
@@ -9,6 +9,7 @@ export default function MyPageContainer() {
     nickName: "",
     status: "",
   });
+  const [isModal, setIsModal] = useState<boolean>(false);
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const naviagte = useNavigate();
@@ -63,10 +64,31 @@ export default function MyPageContainer() {
     console.log(refreshToken);
     logout();
   };
+  const isClickModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    console.log(isModal);
+    setIsModal(!isModal);
+  };
+  const isClickDelete = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setIsModal(!isModal);
+    DeleteUser(refreshToken);
+    naviagte("/");
+  };
   useEffect(() => {
     getProfile();
     getReview();
   }, []);
 
-  return <MyPagePresent profile={profile} isClickLogout={isClickLogout} />;
+  return (
+    <MyPagePresent
+      profile={profile}
+      isClickLogout={isClickLogout}
+      isClickModal={isClickModal}
+      isModal={isModal}
+      isClickDelete={isClickDelete}
+    />
+  );
 }
