@@ -2,6 +2,7 @@ import { RatingStar, ImageInput } from "@/components/review/index";
 import { useEffect, useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // interface ReviewDetailResponse {
 //   id: number;
@@ -40,6 +41,7 @@ const ReviewEdit = () => {
   const [prevImgUrls, setPrevImgUrls] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const currentReviewId = window.location.hash.substring(1);
+  const navigate = useNavigate();
 
   const getData = async () => {
     try {
@@ -127,6 +129,7 @@ const ReviewEdit = () => {
         }
       );
       console.log("응답 데이터:", response.data);
+      navigate(`/detail#${currentReviewId}/`);
     } catch (error) {
       console.error("리뷰 등록 실패:", error);
     }

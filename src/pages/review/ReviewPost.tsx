@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ReviewPost = () => {
   const [postImgs, setPostImgs] = useState<File[]>([]);
@@ -35,6 +36,7 @@ const ReviewPost = () => {
     y: 0,
   });
 
+  const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePostImgs = (imgs: any) => {
     setPostImgs(imgs);
@@ -62,8 +64,6 @@ const ReviewPost = () => {
     for (let i = 0; i < postImgs.length; i++) {
       formData.append("file", postImgs[i]);
     }
-    // formData.append("reviewRequest", JSON.stringify(reviewRequest));
-    // formData.append("placeRequest", JSON.stringify(placeRequest));
     formData.append(
       "reviewRequest",
       new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
@@ -107,6 +107,7 @@ const ReviewPost = () => {
         }
       );
       console.log("응답 데이터:", response.data);
+      navigate("/review");
     } catch (error) {
       console.error("리뷰 등록 실패:", error);
     }
