@@ -23,7 +23,6 @@ interface CommentModalResponse {
 const CommentModal: React.FC<CommentModalProps> = ({ handleCommentCount }) => {
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const currentReviewId = window.location.hash.substring(1);
-  console.log("댓글창에서받아온데이터", data);
 
   const getData = async () => {
     try {
@@ -43,19 +42,23 @@ const CommentModal: React.FC<CommentModalProps> = ({ handleCommentCount }) => {
 
   return (
     <>
-      <div className="modal-box h-5/6 w-full rounded-b-none pl-1.5">
+      <div className="modal-box h-5/6 w-full rounded-b-none pl-4">
         <h3 className="text-center text-base font-bold">댓글</h3>
-        {data.map((comment, i) => (
-          <Comment
-            key={`comment${i}`}
-            userId={comment.user.id}
-            profileImagePath={comment.user.profileImagePath}
-            nickName={comment.user.nickName}
-            content={comment.content}
-            createdAt={comment.createdAt}
-          />
-        ))}
-        <CommentPost reviewId={currentReviewId} />
+        <div className="h-5/6 overflow-auto">
+          {data.map((comment, i) => (
+            <Comment
+              key={`comment${i}`}
+              commentId={comment.id}
+              userId={comment.user.id}
+              profileImagePath={comment.user.profileImagePath}
+              nickName={comment.user.nickName}
+              content={comment.content}
+              createdAt={comment.createdAt}
+              onDeleteSuccess={getData}
+            />
+          ))}
+        </div>
+        <CommentPost reviewId={currentReviewId} onPostSuccess={getData} />
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
