@@ -45,7 +45,7 @@ const ReviewGallery = () => {
 
       // response로부터 썸네일이미지url, reviewId 추출
       response.data.forEach((review: ReviewGalleryResponse) => {
-        firstFilePaths.push(review.reviewImageList?.[0].filePath);
+        firstFilePaths.push(review.reviewImageList?.[0]?.filePath);
         ids.push(review.id);
       });
 
@@ -66,6 +66,7 @@ const ReviewGallery = () => {
         <Logo />
         <div>
           <Select items={["추천순", "인기순", "최신순"]} />
+          <Select items={["음식 종류", "한식", "중식", "양식", "기타"]} />
           <Select
             items={[
               "전국",
