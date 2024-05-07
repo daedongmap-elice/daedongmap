@@ -22,7 +22,7 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
             ) : (
               <>
                 <img src={url} className="w-full" alt="item" />
-                <div className="absolute left-1 right-1 top-1/2 flex -translate-y-1/2 transform justify-between opacity-50">
+                <div className="absolute left-1.5 right-1.5 top-1/2 flex -translate-y-1/2 transform justify-between opacity-70">
                   <a
                     href={i === 0 ? "/" : `#slide${i - 1}`}
                     className={`btn btn-circle ${i === 0 ? "invisible" : ""}`}
@@ -49,7 +49,7 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
           </div>
         ))}
       </div>
-      <div className="flex w-full items-center justify-center gap-1 pt-3">
+      <div className="flex w-full items-center justify-center gap-1.5 pt-3">
         {imgUrls.map(
           (url, i) =>
             !isImgOnlyOne && (
