@@ -26,7 +26,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
         <div className="mt-16 flex flex-row">
           <div className="avatar mr-4">
             <div className="w-23 rounded-full border border-solid  border-subGray">
-              <img src="img/profile.jpg" alt="프로필 이미지 " />
+              <img src={profile.profileImage} alt="프로필 이미지 " />
             </div>
           </div>
           <div className="flex flex-col justify-center">

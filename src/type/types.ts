@@ -15,12 +15,13 @@ export interface LoginData {
 }
 
 export interface ProfileData {
-  nickname: string;
+  nickName: string;
   status: string;
   webSite: string; //선택
 }
 
 export interface UserInfo {
+  profileImage: string;
   nickName: string;
   status: string;
 }
