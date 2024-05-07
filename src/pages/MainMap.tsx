@@ -88,6 +88,7 @@ export function MainMap() {
       if (res.status === 200) {
         if (data.length === 0) {
           setToast(true);
+          setMarkers([]);
         } else {
           const placeArr: PlaceData[] = [];
 
@@ -138,6 +139,12 @@ export function MainMap() {
   useEffect(() => {
     getPlaces();
   }, [userLocation]);
+
+  useEffect(() => {
+    if (selectMarker?.lat === 0 && selectMarker.lng === 0) {
+      setShowInfoCard(false);
+    }
+  }, [selectMarker]);
 
   return (
     <Map
