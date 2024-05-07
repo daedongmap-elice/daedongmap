@@ -52,96 +52,102 @@ export default function PlaceInfoCard({
   }, []);
 
   return (
-    <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-0.5">
-          <div>
-            <h2 className="text-base font-bold">
-              {placeName}
-              <p className="inline text-xs font-normal text-subGray">
-                &nbsp;{categoryName}
-              </p>
-            </h2>
-          </div>
-          {type === "main" && (
-            <div className="flex items-center gap-1.5">
-              <h4 className="text-xs font-medium">{averageRating}</h4>
-              <div className="rating rating-half rating-xs pointer-events-none">
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                  defaultChecked={true}
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-              </div>
-              <p className="text-xs text-subGray">(265)</p>
+    <div
+      className={`absolute ${type === "main" ? "bottom-16" : "bottom-8"} left-1/2 z-10 w-[320px] -translate-x-1/2`}
+    >
+      <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-0.5">
+            <div>
+              <h2 className="text-base font-bold">
+                {placeName}
+                <p className="inline text-xs font-normal text-subGray">
+                  &nbsp;{categoryName}
+                </p>
+              </h2>
             </div>
-          )}
-
-          <p className="text-xs">{roadAddressName}</p>
-          <div className="flex gap-1">
             {type === "main" && (
-              <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
+              <div className="flex items-center gap-1.5">
+                <h4 className="text-xs font-medium">{averageRating}</h4>
+                <div className="rating rating-half rating-xs pointer-events-none">
+                  <input
+                    type="radio"
+                    className="mask mask-half-1 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-2 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-1 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-2 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-1 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-2 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-1 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-2 mask-star-2 bg-mainY"
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-1 mask-star-2 bg-mainY"
+                    defaultChecked={true}
+                  />
+                  <input
+                    type="radio"
+                    className="mask mask-half-2 mask-star-2 bg-mainY"
+                  />
+                </div>
+                <p className="text-xs text-subGray">(265)</p>
+              </div>
             )}
-            {type === "main" && phone && <p className="text-xs font-bold">|</p>}
-            {phone && <p className="text-xs text-mainG">{phone}</p>}
-          </div>
-        </div>
 
-        {type === "main" && (
-          <div className="h-[80px] w-[80px] flex-none rounded bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
-        )}
-      </div>
-      <div className="flex gap-3">
-        <button
-          className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
-          onClick={handleClickKaKaoBtn}
-        >
-          kakao<strong>map</strong>으로 보기
-        </button>
-        {type === "post" && (
+            <p className="text-xs">{roadAddressName}</p>
+            <div className="flex gap-1">
+              {type === "main" && (
+                <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
+              )}
+              {type === "main" && phone && (
+                <p className="text-xs font-bold">|</p>
+              )}
+              {phone && <p className="text-xs text-mainG">{phone}</p>}
+            </div>
+          </div>
+
+          {type === "main" && (
+            <div className="h-[80px] w-[80px] flex-none rounded bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
+          )}
+        </div>
+        <div className="flex gap-3">
           <button
-            className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
-            onClick={handleSetPlace}
+            className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
+            onClick={handleClickKaKaoBtn}
           >
-            선택하기
+            kakao<strong>map</strong>으로 보기
           </button>
-        )}
+          {type === "post" && (
+            <button
+              className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
+              onClick={handleSetPlace}
+            >
+              선택하기
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
