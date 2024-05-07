@@ -1,12 +1,17 @@
 import { useRef, useState } from "react";
 import axios from "axios";
 
-interface CommentProps {
+interface CommentPostProps {
+  loginUserId: number;
   reviewId: string;
   onPostSuccess: () => void;
 }
 
-const CommentPost: React.FC<CommentProps> = ({ reviewId, onPostSuccess }) => {
+const CommentPost: React.FC<CommentPostProps> = ({
+  loginUserId,
+  reviewId,
+  onPostSuccess,
+}) => {
   const [content, setContent] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -17,7 +22,7 @@ const CommentPost: React.FC<CommentProps> = ({ reviewId, onPostSuccess }) => {
       const response = await axios.post(
         "http://35.232.243.53:8080/api/comments",
         {
-          userId: 1,
+          userId: loginUserId,
           reviewId: reviewId,
           content: content,
           parentId: null,
