@@ -247,7 +247,12 @@ export function MainMap() {
             <ReSearchBtn getPlaces={getPlaces} />
           </div>
         )}
-      {toast && <Toast setToast={setToast} />}
+      {toast && (
+        <Toast
+          setToast={setToast}
+          message="해당 지역에는 리뷰가 등록된 맛집이 없습니다."
+        />
+      )}
     </Map>
   );
 }
