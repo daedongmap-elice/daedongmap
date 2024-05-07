@@ -18,7 +18,7 @@ const Comment: React.FC<CommentProps> = ({
   profileImagePath,
   nickName,
   content,
-  // createdAt,
+  createdAt,
   onDeleteSuccess,
 }) => {
   return (
@@ -37,7 +37,7 @@ const Comment: React.FC<CommentProps> = ({
           <div className="text-xs">
             <div className="mb-2 flex w-64 items-center justify-between">
               <b>{nickName}</b>
-              <DateCreated createdAt={"1111-11-11"} />
+              <DateCreated createdAt={createdAt} />
             </div>
             <p className="w-64">{content} </p>
           </div>
