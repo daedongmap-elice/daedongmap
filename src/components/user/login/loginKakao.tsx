@@ -18,9 +18,10 @@ const KakaoOauth = () => {
             },
           }
         );
-        console.log(res);
-        localStorage.setItem("accessToken", res.data.accessToken);
-        navigate("/");
+        if (res.status === 202) {
+          console.log(res);
+          navigate("/");
+        }
       } catch (error) {
         console.error("Error fetching OAuth token:", error);
       }

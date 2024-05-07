@@ -10,14 +10,34 @@ export default function EditProfileContainer() {
     status: "",
     webSite: "",
   });
+  const formData = new FormData();
   const [imgFile, setImgFile] = useState<string[]>(["img/sample1.png"]);
   const upload = useRef<HTMLInputElement>(null);
   //const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
-  const headers = { Authorization: `Bearer ${accessToken}` };
-  const editProfile = async (info: ProfileData) => {
+
+  const editProfile = async () => {
+    if (!formData) {
+      return console.error("formData가 유효하지 않습니다.");
+    }
     try {
-      const res = await axiosClient.patch(`/user`, info, { headers });
+      const res = await axiosClient.put(
+        `/user`,
+        {
+          file: formData.get("file"),
+          userUpdateDto: {
+            nickName: profile.nickname,
+            status: profile.status,
+            webSite: profile.webSite,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       if (res.status === 200) {
         console.log(res);
       }
@@ -29,7 +49,7 @@ export default function EditProfileContainer() {
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    editProfile(profile);
+    editProfile();
     //navigate("/mypage");
     console.log(profile);
   };
@@ -43,9 +63,13 @@ export default function EditProfileContainer() {
     e.preventDefault();
     if (upload.current && upload.current.files) {
       const file = upload.current.files[0];
-      console.log(upload.current.files);
       console.log(imgFile);
+      console.log(upload.current.files);
       setImgFile([URL.createObjectURL(file)]);
+      formData.append("file", file);
+      // formData.append("nickName", profile.nickname);
+      // formData.append("status", profile.status);
+      // formData.append("webSite", profile.webSite);
     }
   };
   const handleButtonClick = (

@@ -28,8 +28,8 @@ export const Login = async (info: LoginData) => {
     const res = await axiosClient.post("/login", info);
     if (res.status === 202) {
       //LoginSuccess(res);
-      localStorage.setItem("accessToken", res.data.token.accessToken);
-      localStorage.setItem("refreshToken", res.data.token.refreshToken);
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
       return true;
     }
     return false;
