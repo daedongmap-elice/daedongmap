@@ -17,6 +17,7 @@ module.exports = {
   plugins: ["react", "prettier"],
   rules: {
     "import/extensions": ["off"],
+    "@typescript-eslint/no-explicit-any": "off",
     "import/no-extraneous-dependencies": 0,
     "react/jsx-filename-extension": [
       1,

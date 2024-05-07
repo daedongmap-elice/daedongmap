@@ -7,6 +7,7 @@ import { isCheckDelete } from "@/utils/authUtils";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useState<UserInfo>({
+    profileImage: "",
     nickName: "",
     status: "",
   });
@@ -22,7 +23,11 @@ export default function MyPageContainer() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (res.status === 200) {
-        setProfile({ nickName: res.data.nickName, status: res.data.status });
+        setProfile({
+          profileImage: res.data.profileImage,
+          nickName: res.data.nickName,
+          status: res.data.status,
+        });
         console.log(res);
       }
       if (res.status === 401) {
