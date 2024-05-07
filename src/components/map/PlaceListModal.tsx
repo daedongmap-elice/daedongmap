@@ -23,10 +23,12 @@ export default function PlaceListModal({
           <img src="svg/logo.svg" alt="로고" className="mx-auto my-0 h-3/5" />
         </div>
       )}
+
       <div
-        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-28 transition-all duration-150 ${openListModal ? "top-0" : "top-[1000px]"}`}
+        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-28 transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
       >
-        <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3">
+        <div className="fixed top-0 z-10 h-28 w-full bg-[#F7F7F9]"></div>
+        <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pt-2">
           {placeList === undefined ? (
             //맛집이 없는 경우 메세지로 알림 추가
             <></>
