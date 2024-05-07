@@ -81,3 +81,14 @@ export const DeleteUser = async (RT: string | null) => {
     console.log(error);
   }
 };
+
+export const FindEmail = async (phoneNumber: string) => {
+  try {
+    const res = await axiosClient.post(`/accountId`, phoneNumber);
+    if (res.status === 200) {
+      console.log(res.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
