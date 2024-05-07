@@ -22,18 +22,18 @@ const ImageInput: React.FC<ImageInputProps> = ({
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 미리보기 이미지 설정
     if (!e.target.files) return;
-    // const files = Array.from(e.target.files as FileList);
+    // files ==> 서버에 전송할 이미지
     const files = e.target.files;
     handlePostImgs(files);
-    // handlePostImgs([e.target.files[0]]);
 
-    // const selected: string[] = files.map((img) => {
-    //   return URL.createObjectURL(img);
-    // });
-    // setPreviewImgs(selected);
-    // console.log(selected);
+    // previews ==> 미리보기 이미지
+    const fileList = Array.from(e.target.files as FileList);
+    const previews: string[] = fileList.map((img) => {
+      return URL.createObjectURL(img);
+    });
+    setPreviewImgs(previews);
+    console.log("previews:", previews);
   };
 
   useEffect(() => {
@@ -55,12 +55,16 @@ const ImageInput: React.FC<ImageInputProps> = ({
           type="file"
           name="file"
         />
-        <div className="carousel h-52 min-h-52 w-52 border border-solid border-gray-300">
+        <div className="carousel h-52 w-52 border border-solid border-gray-300">
           {previewImgs.map((url, i) => (
-            <div key={url} id={`item${i}`} className="carousel-item w-full">
-              <img src={url} className="relative z-0 w-full" alt={`file${i}`} />
+            <div
+              key={url}
+              id={`item${i}`}
+              className="carousel-item relative w-full overflow-hidden"
+            >
+              <img src={url} className="absolute h-52 w-52" alt={`file${i}`} />
               <button
-                className="relative right-9 top-2 z-10 h-8 w-8"
+                className="absolute right-2 top-3 h-8 w-8"
                 onClick={() => {
                   setPreviewImgs(previewImgs.filter((el) => el !== url));
                 }}
@@ -89,10 +93,11 @@ const ImageInput: React.FC<ImageInputProps> = ({
             </div>
           ))}
           <div
-            className={`${previewImgs.length > 0 ? "hidden" : ""} carousel-item flex h-full w-full flex-col items-center justify-center bg-subLightGray text-base text-subGray`}
+            className={`${previewImgs.length > 0 ? "hidden" : ""} carousel-item flex h-full w-full flex-col items-center justify-center gap-1 bg-subLightGray text-base text-subGray`}
           >
             사진 추가
-            <div className="text-sm">(최대 5장까지 첨부 가능)</div>
+            <div className="text-xs">1MB 미만의 파일만 업로드 가능합니다</div>
+            <div className="text-xs">(최대 5장까지 첨부 가능)</div>
           </div>
         </div>
         <div className="flex w-full justify-center gap-3 pb-2 pt-2">
