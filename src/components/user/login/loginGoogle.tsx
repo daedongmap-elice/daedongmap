@@ -11,7 +11,12 @@ const GoogleOauth = () => {
     const google = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5137/oauth/token/google/oauth?code=${code}`
+          `http://35.232.243.53:8080/login/oauth2/google`,
+          {
+            params: {
+              code: code,
+            },
+          }
         );
         console.log(res);
         navigate("/");
