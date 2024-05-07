@@ -9,12 +9,14 @@ interface PlaceInfoCardProps {
     isLoading: boolean;
   };
   type: "main" | "post";
+  handleSetPlace?: () => void;
 }
 
 export default function PlaceInfoCard({
   place,
   userLocation,
   type,
+  handleSetPlace,
 }: PlaceInfoCardProps) {
   if (!place) {
     return null;
@@ -125,12 +127,22 @@ export default function PlaceInfoCard({
           <div className="h-[80px] w-[80px] flex-none rounded bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
         )}
       </div>
-      <button
-        className="mt-1.5 inline-flex h-5 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
-        onClick={handleClickKaKaoBtn}
-      >
-        kakao<strong>map</strong>으로 보기
-      </button>
+      <div className="flex gap-3">
+        <button
+          className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
+          onClick={handleClickKaKaoBtn}
+        >
+          kakao<strong>map</strong>으로 보기
+        </button>
+        {type === "post" && (
+          <button
+            className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
+            onClick={handleSetPlace}
+          >
+            선택하기
+          </button>
+        )}
+      </div>
     </div>
   );
 }

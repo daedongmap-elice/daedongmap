@@ -14,17 +14,20 @@ const ReviewPost = () => {
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
-  const [place, setPlace] = useState<{
-    kakaoPlaceId: number;
-    placeName: string;
-    placeUrl: string;
-    categoryName: string;
-    addressName: string;
-    roadAddressName: string;
-    phone: string | null;
-    x: number;
-    y: number;
-  }>();
+  const [place, setPlace] = useState<
+    | {
+        kakaoPlaceId: number;
+        placeName: string;
+        placeUrl: string;
+        categoryName: string;
+        addressName: string;
+        roadAddressName: string;
+        phone: string | null;
+        x: number;
+        y: number;
+      }
+    | undefined
+  >(undefined);
 
   const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -142,7 +145,7 @@ const ReviewPost = () => {
           // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
           onClick={() => document.getElementById("placeModal").showModal()}
         >
-          음식점 선택
+          {place === undefined ? "음식점 선택" : place.placeName}
         </button>
         <dialog id="placeModal" className="modal modal-bottom">
           <FindPlaceModal setPlace={setPlace} />

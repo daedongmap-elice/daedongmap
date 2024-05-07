@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { PlaceInfoCard, SearchInput } from "@/components/map/index";
-import { LatLngData, PlaceData } from "@/type/types";
+import { PlaceData } from "@/type/types";
 import React from "react";
 
 interface FindPlaceProps {
@@ -23,19 +23,38 @@ interface FindPlaceProps {
   >;
 }
 
-// 인자에 { setPlace } 넣어주세요 (eslint의 defined but never used 에러 때문에 빼둠)
-const FindPlaceModal: React.FC<FindPlaceProps> = () => {
+const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
   const [markers, setMarkers] = useState<PlaceData[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
-  const [selectMarker, setSelectMarker] = useState<LatLngData>();
+  const [selectMarker, setSelectMarker] = useState<{
+    kakaoPlaceId: number;
+    placeName: string;
+    addressName: string;
+    categoryName: string;
+    roadAddressName: string;
+    placeUrl: string;
+    phone: string | null;
+    x: number;
+    y: number;
+  }>();
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
 
   const handleSetMarkers = (places: PlaceData[]) => {
     setMarkers(places);
   };
 
-  const handleOnClickMarker = (position: { lat: number; lng: number }) => {
-    setSelectMarker(position);
+  const handleOnClickMarker = (place: {
+    kakaoPlaceId: number;
+    placeName: string;
+    addressName: string;
+    categoryName: string;
+    roadAddressName: string;
+    placeUrl: string;
+    phone: string | null;
+    x: number;
+    y: number;
+  }) => {
+    setSelectMarker(place);
     setShowInfoCard(true);
   };
 
@@ -44,12 +63,18 @@ const FindPlaceModal: React.FC<FindPlaceProps> = () => {
   };
 
   const handleResetSelectMarker = () => {
-    setSelectMarker({ lat: 0, lng: 0 });
+    setSelectMarker(undefined);
   };
 
   const handleClickMap = () => {
     handleResetSelectMarker();
     setShowInfoCard(false);
+  };
+
+  const handleSetPlace = () => {
+    setPlace(selectMarker);
+    // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
+    document.getElementById("placeModal")?.close();
   };
 
   return (
@@ -82,8 +107,8 @@ const FindPlaceModal: React.FC<FindPlaceProps> = () => {
             {markers.map((place) => {
               const { id, x: lng, y: lat } = place;
               const isSelected =
-                selectMarker?.lat === Number(lat) &&
-                selectMarker?.lng === Number(lng);
+                selectMarker?.y === Number(lat) &&
+                selectMarker?.x === Number(lng);
 
               return (
                 <React.Fragment key={id}>
@@ -121,17 +146,16 @@ const FindPlaceModal: React.FC<FindPlaceProps> = () => {
                             },
                           }
                     }
-                    onClick={() =>
-                      handleOnClickMarker({
-                        lat: Number(lat),
-                        lng: Number(lng),
-                      })
-                    }
+                    onClick={() => handleOnClickMarker(place)}
                   />
 
                   {isSelected && showInfoCard && (
                     <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                      <PlaceInfoCard place={place} type="post" />
+                      <PlaceInfoCard
+                        place={place}
+                        type="post"
+                        handleSetPlace={handleSetPlace}
+                      />
                     </div>
                   )}
                 </React.Fragment>
