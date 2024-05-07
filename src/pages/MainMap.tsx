@@ -66,6 +66,10 @@ export function MainMap() {
     });
   };
 
+  const handleResetSelectMarker = () => {
+    setSelectMarker({ lat: 0, lng: 0 });
+  };
+
   async function getPlaces() {
     if (!map) {
       return;
@@ -96,7 +100,7 @@ export function MainMap() {
       const latlng = map.getCenter();
       setNowCenter({ lat: latlng.getLat(), lng: latlng.getLng() });
       setSearchLocation({ lat: latlng.getLat(), lng: latlng.getLng() });
-      setSelectMarker({ lat: 0, lng: 0 });
+      handleResetSelectMarker();
     } catch (err) {
       console.log(err);
     }
@@ -153,6 +157,7 @@ export function MainMap() {
         type="main"
         handleToggleShowInfoCard={handleToggleShowInfoCard}
         getPlaces={getPlaces}
+        handleResetSelectMarker={handleResetSelectMarker}
       />
       {!isLoadingMarker &&
         (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
@@ -204,7 +209,7 @@ export function MainMap() {
                   }
                 />
 
-                {isSelected && (
+                {isSelected && showInfoCard && (
                   <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
                     <PlaceInfoCard
                       place={place}

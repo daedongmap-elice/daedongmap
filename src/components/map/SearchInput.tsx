@@ -5,7 +5,8 @@ import Toast from "../common/Toast";
 interface SearchInputProps {
   map: kakao.maps.Map | undefined;
   type: "main" | "post";
-  handleToggleShowInfoCard?: (state: boolean) => void;
+  handleToggleShowInfoCard: (state: boolean) => void;
+  handleResetSelectMarker: () => void;
   getPlaces: () => Promise<void>;
 }
 
@@ -14,6 +15,7 @@ export default function SearchInput({
   type,
   handleToggleShowInfoCard,
   getPlaces,
+  handleResetSelectMarker,
 }: SearchInputProps) {
   const [text, setText] = useState<string>("");
   const [toast, setToast] = useState<boolean>(false);
@@ -28,7 +30,6 @@ export default function SearchInput({
 
     if (text !== "") {
       try {
-        console.log(text);
         ps.keywordSearch(`${text} 음식점`, (datas, status) => {
           if (status === kakao.maps.services.Status.ZERO_RESULT) {
             setToast(true);
@@ -44,10 +45,8 @@ export default function SearchInput({
       } catch (err) {
         console.log(err);
       }
-
-      if (handleToggleShowInfoCard) {
-        handleToggleShowInfoCard(false);
-      }
+      handleResetSelectMarker();
+      handleToggleShowInfoCard(false);
     }
   };
 
