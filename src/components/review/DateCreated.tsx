@@ -9,7 +9,7 @@ const DateCreated: React.FC<DateCreatedProps> = ({ createdAt }) => {
     const year: number = dateObject.getFullYear();
     const month: number = dateObject.getMonth() + 1;
     const day: number = dateObject.getDate();
-    return `${year}-${month < 10 ? `0${month}` : month}-${day}`;
+    return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
   };
 
   return (
