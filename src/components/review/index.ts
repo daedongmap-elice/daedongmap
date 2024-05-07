@@ -3,9 +3,12 @@
 
 export { default as Comment } from "./ReviewDetail/Comment";
 export { default as CommentModal } from "./ReviewDetail/CommentModal";
-export { default as LikeButton } from "./ReviewDetail/LikeButton";
+export { default as CommentPost } from "./ReviewDetail/CommentPost";
+export { default as CommentEditBtn } from "./ReviewDetail/CommentEditBtn";
+export { default as LikeBtn } from "./ReviewDetail/LikeBtn";
 export { default as ReviewImage } from "./ReviewDetail/ReviewImage";
 export { default as ReviewProfile } from "./ReviewDetail/ReviewProfile";
+export { default as ReviewEditBtn } from "./ReviewDetail/ReviewEditBtn";
 export { default as Star } from "./ReviewDetail/Star";
 export { default as Logo } from "./ReviewGallery/Logo";
 export { default as Select } from "./ReviewGallery/Select";
@@ -14,4 +17,3 @@ export { default as FindPlaceModal } from "./ReviewPost/FindPlaceModal";
 export { default as ImageInput } from "./ReviewPost/ImageInput";
 export { default as RatingStar } from "./ReviewPost/RatingStar";
 export { default as DateCreated } from "./DateCreated";
-export { default as EditButton } from "./EditButton";

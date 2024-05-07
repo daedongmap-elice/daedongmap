@@ -1,7 +1,7 @@
 import {
-  EditButton,
+  ReviewEditBtn,
   ReviewImage,
-  LikeButton,
+  LikeBtn,
   DateCreated,
   Star,
   ReviewProfile,
@@ -42,7 +42,7 @@ const ReviewDetail = () => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
   const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
   const [likeCount, setLikeCount] = useState(0);
-  // const [commentCount, setCommentCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
   const [data, setData] = useState<ReviewDetailResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   // const [isSameUser, setIsSameUser] = useState<boolean>(false);
@@ -50,6 +50,10 @@ const ReviewDetail = () => {
 
   // TODO: 현재 리뷰의 userId와 로컬스토리지의 id???가 일치하는지 확인하고 EditButton 표시
   //       로컬스토리지에는 토큰만 들어있어서 본인의 id를 알 수가 없음!
+
+  const handleCommentCount = (count: number) => {
+    setCommentCount(count);
+  };
 
   const getData = async () => {
     try {
@@ -76,7 +80,7 @@ const ReviewDetail = () => {
     getData();
   }, []);
 
-  return (
+  return imgUrls.length !== 0 ? (
     <div className="pb-16">
       <div className="flex items-center justify-between">
         <ReviewProfile
@@ -86,12 +90,12 @@ const ReviewDetail = () => {
           profileImagePath={data?.user.profileImagePath}
         />
         <div className="mb-3 mr-3 mt-4">
-          <EditButton currentReviewId={currentReviewId} />
+          <ReviewEditBtn currentReviewId={currentReviewId} />
         </div>
       </div>
       <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
-        <LikeButton
+        <LikeBtn
           isLiked={isLiked}
           setIsLiked={setIsLiked}
           likeCount={likeCount}
@@ -138,12 +142,23 @@ const ReviewDetail = () => {
           // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
           onClick={() => document.getElementById("commentModal").showModal()}
         >
-          댓글 0개 보기
+          댓글 {commentCount}개 보기
         </button>
         <dialog id="commentModal" className="modal modal-bottom text-black">
-          <CommentModal />
+          <CommentModal handleCommentCount={handleCommentCount} />
         </dialog>
       </div>
+    </div>
+  ) : (
+    <div className="ml-4 mt-4 flex w-11/12 flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <div className="skeleton h-10 w-10 shrink-0 rounded-full"></div>
+        <div className="flex flex-col gap-2">
+          <div className="skeleton h-4 w-28"></div>
+          <div className="skeleton h-4 w-16"></div>
+        </div>
+      </div>
+      <div className="skeleton h-80 w-full"></div>
     </div>
   );
 };
