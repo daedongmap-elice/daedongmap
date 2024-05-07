@@ -45,22 +45,31 @@ const ReviewDetail = () => {
   const [commentCount, setCommentCount] = useState(0);
   const [data, setData] = useState<ReviewDetailResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-  // const [isSameUser, setIsSameUser] = useState<boolean>(false);
+  const [loginUserId, setLoginUserId] = useState<number>(0);
+  const [reviewUserId, setReviewUserId] = useState<number>(0);
   const currentReviewId = window.location.hash.substring(1);
-
-  // TODO: 현재 리뷰의 userId와 로컬스토리지의 id???가 일치하는지 확인하고 EditButton 표시
-  //       로컬스토리지에는 토큰만 들어있어서 본인의 id를 알 수가 없음!
+  const token = localStorage.getItem("accessToken");
 
   const handleCommentCount = (count: number) => {
     setCommentCount(count);
   };
 
+  // 내 유저아이디를 알려달라고 요청을 보낼거임 - 땡땡땡(수정삭제)버튼 표시여부 결정
+  // 내가 이 글에 좋아요 눌렀는지 여부 (isLiked)
+
   const getData = async () => {
     try {
       const response = await axios.get(
-        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`
+        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setData(response.data);
+      setReviewUserId(response.data.user.id);
       const filePaths = response.data.reviewImageDtoList.map(
         (imageDto: {
           id: number;
@@ -76,9 +85,28 @@ const ReviewDetail = () => {
     }
   };
 
+  const getUserId = async () => {
+    try {
+      const id: number = await axios.post(
+        "http://35.232.243.53:8080/api/user",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoginUserId(id);
+    } catch (error) {
+      console.error("로그인 유저id 요청 에러:", error);
+    }
+  };
+
   useEffect(() => {
     getData();
+    getUserId();
   }, []);
+
+  console.log("loginUserId", loginUserId, "reviewUserId", reviewUserId);
 
   return imgUrls.length !== 0 ? (
     <div className="pb-16">
@@ -89,9 +117,11 @@ const ReviewDetail = () => {
           placeName={data?.placeName}
           profileImagePath={data?.user.profileImagePath}
         />
-        <div className="mb-3 mr-3 mt-4">
-          <ReviewEditBtn currentReviewId={currentReviewId} />
-        </div>
+        {reviewUserId === loginUserId && (
+          <div className="mb-3 mr-3 mt-4">
+            <ReviewEditBtn currentReviewId={currentReviewId} />
+          </div>
+        )}
       </div>
       <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
