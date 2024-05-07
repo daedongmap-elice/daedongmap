@@ -7,7 +7,8 @@ interface SearchInputProps {
   type: "main" | "post";
   handleToggleShowInfoCard: (state: boolean) => void;
   handleResetSelectMarker: () => void;
-  getPlaces: () => Promise<void>;
+  getPlaces?: () => Promise<void>;
+  handleSetMarkers?: (places: any) => void;
 }
 
 export default function SearchInput({
@@ -16,6 +17,7 @@ export default function SearchInput({
   handleToggleShowInfoCard,
   getPlaces,
   handleResetSelectMarker,
+  handleSetMarkers,
 }: SearchInputProps) {
   const [text, setText] = useState<string>("");
   const [toast, setToast] = useState<boolean>(false);
@@ -35,11 +37,65 @@ export default function SearchInput({
             setToast(true);
           }
           if (status === kakao.maps.services.Status.OK) {
-            map.setCenter(
-              new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
-            );
-            map.setLevel(5);
-            getPlaces();
+            if (type === "main") {
+              map.setCenter(
+                new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
+              );
+              map.setLevel(5);
+              if (getPlaces) {
+                getPlaces();
+              }
+            }
+
+            if (type === "post") {
+              const bounds = new kakao.maps.LatLngBounds();
+              const newMarkers: {
+                kakaoPlaceId: number;
+                placeName: string;
+                addressName: string;
+                categoryName: string;
+                roadAddressName: string;
+                placeUrl: string;
+                phone: string | null;
+                x: number;
+                y: number;
+              }[] = [];
+
+              datas.map((data) => {
+                const {
+                  address_name: addressName,
+                  category_name: categoryName,
+                  id: kakaoPlaceId,
+                  phone,
+                  place_name: placeName,
+                  place_url: placeUrl,
+                  road_address_name: roadAddressName,
+                  x,
+                  y,
+                } = data;
+                const category = categoryName.split(">")[1].trim();
+
+                newMarkers.push({
+                  addressName,
+                  categoryName: category,
+                  kakaoPlaceId: Number(kakaoPlaceId),
+                  phone,
+                  placeName,
+                  placeUrl,
+                  roadAddressName,
+                  x: Number(x),
+                  y: Number(y),
+                });
+
+                bounds.extend(new kakao.maps.LatLng(Number(y), Number(x)));
+              });
+
+              if (handleSetMarkers) {
+                handleSetMarkers(newMarkers);
+              }
+
+              map.setBounds(bounds);
+            }
           }
         });
       } catch (err) {

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 interface PlaceInfoCardProps {
   place: PlaceData;
-  userLocation: {
+  userLocation?: {
     center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
@@ -16,7 +16,7 @@ export default function PlaceInfoCard({
   userLocation,
   type,
 }: PlaceInfoCardProps) {
-  if (!place || !userLocation) {
+  if (!place) {
     return null;
   }
   const [distance, setDistance] = useState(0);
@@ -34,14 +34,19 @@ export default function PlaceInfoCard({
   };
 
   useEffect(() => {
-    const pos = new kakao.maps.Polyline({
-      path: [
-        new kakao.maps.LatLng(userLocation.center.lat, userLocation.center.lng),
-        new kakao.maps.LatLng(Number(place.y), Number(place.x)),
-      ],
-    });
-    const dist = Math.round(pos.getLength());
-    setDistance(dist);
+    if (userLocation) {
+      const pos = new kakao.maps.Polyline({
+        path: [
+          new kakao.maps.LatLng(
+            userLocation.center.lat,
+            userLocation.center.lng
+          ),
+          new kakao.maps.LatLng(Number(place.y), Number(place.x)),
+        ],
+      });
+      const dist = Math.round(pos.getLength());
+      setDistance(dist);
+    }
   }, []);
 
   return (

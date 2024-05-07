@@ -48,12 +48,12 @@ export function MainMap() {
     setOpenListModal((prev) => !prev);
   };
 
-  const handleClickMap = (
-    _: kakao.maps.Map,
-    moushEvent: kakao.maps.event.MouseEvent
-  ) => {
-    const latlng = moushEvent.latLng;
-    setSelectMarker({ lat: latlng.getLat(), lng: latlng.getLng() });
+  const handleResetSelectMarker = () => {
+    setSelectMarker({ lat: 0, lng: 0 });
+  };
+
+  const handleClickMap = () => {
+    handleResetSelectMarker();
     setShowInfoCard(false);
   };
 
@@ -64,10 +64,6 @@ export function MainMap() {
       lat: latlng.getLat(),
       lng: latlng.getLng(),
     });
-  };
-
-  const handleResetSelectMarker = () => {
-    setSelectMarker({ lat: 0, lng: 0 });
   };
 
   async function getPlaces() {

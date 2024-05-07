@@ -21,20 +21,10 @@ const ReviewPost = () => {
     categoryName: string;
     addressName: string;
     roadAddressName: string;
-    phone: string;
+    phone: string | null;
     x: number;
     y: number;
-  }>({
-    kakaoPlaceId: 0,
-    placeName: "",
-    placeUrl: "",
-    categoryName: "",
-    addressName: "",
-    roadAddressName: "",
-    phone: "",
-    x: 0,
-    y: 0,
-  });
+  }>();
 
   const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
