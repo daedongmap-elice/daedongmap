@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 
 interface ImageInputProps {
   prevImgUrls: string[];
+  postImgs: File[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handlePostImgs: (Imgs: any) => void;
 }
 
-const ImageInput = ({ prevImgUrls, handlePostImgs }: ImageInputProps) => {
+const ImageInput = ({
+  prevImgUrls,
+  postImgs,
+  handlePostImgs,
+}: ImageInputProps) => {
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
 
   // TODO: 이미 올라간 이미지를 삭제한 경우, 새로운 이미지들로 대체되어야 함 (post요청))
@@ -31,6 +36,7 @@ const ImageInput = ({ prevImgUrls, handlePostImgs }: ImageInputProps) => {
     });
     setPreviewImgs(previews);
     console.log("previews:", previews);
+    console.log("PostImgs:", files);
   };
 
   useEffect(() => {
@@ -61,17 +67,25 @@ const ImageInput = ({ prevImgUrls, handlePostImgs }: ImageInputProps) => {
         </div>
       </label>
       <div className="carousel h-52 w-52 border border-solid border-gray-300">
-        {previewImgs.map((url, i) => (
+        {previewImgs.map((url, index) => (
           <div
             key={url}
-            id={`item${i}`}
+            id={`item${index}`}
             className="carousel-item relative w-full overflow-hidden"
           >
-            <img src={url} className="relative h-52 w-52" alt={`file${i}`} />
+            <img src={url} className="relative h-52 w-52" alt="file" />
             <button
               className="relative bottom-20 right-9"
               onClick={() => {
-                setPreviewImgs(previewImgs.filter((el) => el !== url));
+                setPreviewImgs(previewImgs.filter((img) => img !== url));
+                const newPostImgs = [];
+                for (let i = 0; i < postImgs.length; ++i) {
+                  if (i !== index) {
+                    newPostImgs.push(postImgs[i]);
+                  }
+                }
+                handlePostImgs(newPostImgs);
+                console.log("newPostImgs:", newPostImgs);
               }}
             >
               {/* <img

@@ -137,7 +137,11 @@ const ReviewPost = () => {
       <div className="mb-6 ml-5 mt-4 text-lg font-medium">새 리뷰 등록하기</div>
       <form className="flex flex-col items-center justify-center gap-1">
         <div className="flex justify-center">
-          <ImageInput prevImgUrls={[]} handlePostImgs={handlePostImgs} />
+          <ImageInput
+            prevImgUrls={[]}
+            postImgs={postImgs}
+            handlePostImgs={handlePostImgs}
+          />
         </div>
         <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
           <div className="mb-0.5 flex items-center gap-1">
