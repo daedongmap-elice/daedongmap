@@ -3,7 +3,7 @@ import {
   ImageInput,
   FindPlaceModal,
 } from "@/components/review/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ const ReviewPost = () => {
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
+  const [loginUserId, setLoginUserId] = useState<number>(0);
   const [place, setPlace] = useState<{
     kakaoPlaceId: number;
     placeName: string;
@@ -38,9 +39,27 @@ const ReviewPost = () => {
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePostImgs = (imgs: File[]) => {
     setPostImgs(imgs);
+  };
+
+  const getUserId = async () => {
+    try {
+      const response = await axios.post(
+        "http://35.232.243.53:8080/api/user",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoginUserId(response.data);
+    } catch (error) {
+      console.error("로그인 유저id 요청 에러:", error);
+    }
   };
 
   const appendFormData = (formData: FormData) => {
@@ -50,7 +69,7 @@ const ReviewPost = () => {
 
     // reviewRequest 데이터 추가
     const reviewRequest = {
-      userId: 2,
+      userId: loginUserId,
       content: content,
       tasteRating: tasteRating,
       hygieneRating: hygieneRating,
@@ -97,22 +116,21 @@ const ReviewPost = () => {
     appendFormData(formData);
 
     try {
-      const response = await axios.post(
-        "http://35.232.243.53:8080/api/reviews",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("응답 데이터:", response.data);
+      await axios.post("http://35.232.243.53:8080/api/reviews", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       navigate("/review");
     } catch (error) {
       console.error("리뷰 등록 실패:", error);
     }
   };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
 
   return (
     <div className="pb-16">

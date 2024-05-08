@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 // }
 
 const ReviewEdit = () => {
-  // const [data, setData] = useState<ReviewDetailResponse | null>(null);
+  const [loginUserId, setLoginUserId] = useState<number>(0);
   const [tasteRating, setTasteRating] = useState(5);
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
@@ -40,7 +40,9 @@ const ReviewEdit = () => {
   const [placeName, setPlaceName] = useState("");
   const [prevImgUrls, setPrevImgUrls] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
+  const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
   const currentReviewId = window.location.hash.substring(1);
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   const getData = async () => {
@@ -48,7 +50,6 @@ const ReviewEdit = () => {
       const response = await axios.get(
         `http://35.232.243.53:8080/api/reviews/${currentReviewId}`
       );
-      // setData(response.data);
       setTasteRating(response.data.tasteRating);
       setHygieneRating(response.data.hygieneRating);
       setKindnessRating(response.data.kindnessRating);
@@ -63,18 +64,31 @@ const ReviewEdit = () => {
         }) => imageDto.filePath
       );
       setPrevImgUrls(filePaths);
-      // setPostImgs(response.data.);
     } catch (error) {
       console.error("리뷰수정 get요청 에러", error);
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const getUserId = async () => {
+    try {
+      const response = await axios.post(
+        "http://35.232.243.53:8080/api/user",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoginUserId(response.data);
+    } catch (error) {
+      console.error("로그인 유저id 요청 에러:", error);
+    }
+  };
 
   const handlePostImgs = (imgs: File[]) => {
     setPostImgs(imgs);
+    setIsImgChanged(true);
   };
 
   const appendFormData = (formData: FormData) => {
@@ -83,26 +97,38 @@ const ReviewEdit = () => {
     const averageRating = Math.round((sum / 3) * 100) / 100;
 
     // reviewRequest 데이터 추가
-    const reviewRequest = {
-      userId: 0,
+    const reviewUpdateRequest = {
+      userId: loginUserId,
       content: content,
       tasteRating: tasteRating,
       hygieneRating: hygieneRating,
       kindnessRating: kindnessRating,
       averageRating: averageRating,
+      imageModified: isImgChanged,
     };
 
-    formData.append("file", postImgs);
+    // formData에 파일 항목이 없으면 원래 이미지를 그대로 쓴다
+    // formData에 파일이 있으면 원래 이미지를 삭제하고 새로운 이미지로 대체
+    if (isImgChanged) {
+      for (let i = 0; i < postImgs.length; i++) {
+        formData.append("file", postImgs[i]);
+      }
+    }
     formData.append(
       "reviewRequest",
-      new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
+      new Blob([JSON.stringify(reviewUpdateRequest)], {
+        type: "application/json",
+      })
     );
   };
 
   const handleSubmit = async () => {
-    console.log(content);
-    if (postImgs.length === 0) {
+    if (isImgChanged && postImgs.length === 0) {
       alert("사진을 1장 이상 첨부해주세요.");
+      return;
+    }
+    if (postImgs.length > 5) {
+      alert("사진은 5장 이하로 첨부해주세요");
       return;
     }
     if (!content) {
@@ -113,27 +139,27 @@ const ReviewEdit = () => {
     const formData: FormData = new FormData();
     appendFormData(formData);
 
-    console.log(content);
-    // for (const key of formData.keys()) {
-    //   console.log(key, ":", formData.get(key));
-    // }
-
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log("응답 데이터:", response.data);
       navigate(`/detail#${currentReviewId}/`);
     } catch (error) {
-      console.error("리뷰 등록 실패:", error);
+      console.error("리뷰 수정 실패:", error);
     }
   };
+
+  useEffect(() => {
+    getData();
+    getUserId();
+  }, []);
 
   return (
     <div className="pb-16">
@@ -192,7 +218,7 @@ const ReviewEdit = () => {
           }}
           className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
         >
-          리뷰 등록
+          리뷰 수정
         </button>
       </form>
     </div>
