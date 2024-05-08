@@ -20,6 +20,8 @@ const KakaoOauth = () => {
         );
         if (res.status === 202) {
           console.log(res);
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
           navigate("/");
         }
       } catch (error) {

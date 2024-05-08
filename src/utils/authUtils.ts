@@ -22,3 +22,10 @@ export const isCheckDelete = (message: string) => {
   }
   return false;
 };
+
+export const isCheckPhone = (phone: string) => {
+  if (phone.startsWith("010") && phone.length === 11) {
+    return true;
+  }
+  return false;
+};
