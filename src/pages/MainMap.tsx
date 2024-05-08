@@ -36,6 +36,9 @@ export function MainMap() {
   const [nowCenter, setNowCenter] = useState<LatLngData>();
   const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [markers, setMarkers] = useState<PlaceData[]>([]);
+  const [filter, setFilter] = useState<"default" | "rating" | "distance">(
+    "default"
+  );
 
   const handleOnClickMarker = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
@@ -68,6 +71,10 @@ export function MainMap() {
     });
   };
 
+  const handleSetFilter = (type: "default" | "rating" | "distance") => {
+    setFilter(type);
+  };
+
   async function getPlaces() {
     if (!map) {
       return;
@@ -80,7 +87,7 @@ export function MainMap() {
     const neLatLng = bounds.getNorthEast();
     try {
       const res = await axios.get(
-        `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}&x=${userLocation.center.lng}&y=${userLocation.center.lat}`
+        `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}&x=${userLocation.center.lng}&y=${userLocation.center.lat}&${filter !== "default" && `filter=${filter}`}`
       );
       const data = await res.data;
       if (res.status === 200) {
@@ -146,6 +153,10 @@ export function MainMap() {
       setShowInfoCard(false);
     }
   }, [selectMarker]);
+
+  useEffect(() => {
+    getPlaces();
+  }, [filter]);
 
   return (
     <>
@@ -253,6 +264,7 @@ export function MainMap() {
           openListModal={openListModal}
           placeList={markers}
           userLocation={userLocation}
+          handleSetFilter={handleSetFilter}
         />
 
         <div

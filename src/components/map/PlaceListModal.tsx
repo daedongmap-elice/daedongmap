@@ -13,6 +13,7 @@ interface PlaceListModalProps {
     errMsg: null | string;
     isLoading: boolean;
   };
+  handleSetFilter: (type: "default" | "rating" | "distance") => void;
 }
 
 export default function PlaceListModal({
