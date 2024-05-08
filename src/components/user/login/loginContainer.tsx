@@ -36,8 +36,7 @@ export default function LoginContainer() {
   };
   const getId = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    const Email = await FindEmail(phone);
-    console.log(Email);
+    await FindEmail(phone);
   };
   //useMemo로 변경
   const isbuttonDisabled = !(formData.email && formData.password);
