@@ -54,29 +54,31 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
       }
       putMyPageData(myPageData);
     }
-  }, []);
+  }, [myPageData]);
 
   return (
     <div className="pb-16">
-      <div className="mb-1 flex justify-between">
-        <Logo />
-        <div>
-          <Select items={["추천순", "인기순", "최신순"]} />
-          <Select items={["음식 종류", "한식", "중식", "양식", "기타"]} />
-          <Select
-            items={[
-              "전국",
-              "서울",
-              "경기도",
-              "강원도",
-              "충청도",
-              "경상도",
-              "전라도",
-              "제주도",
-            ]}
-          />
+      {type === "myPage" && (
+        <div className="mb-1 flex justify-between">
+          <Logo />
+          <div>
+            <Select items={["추천순", "인기순", "최신순"]} />
+            <Select items={["음식 종류", "한식", "중식", "양식", "기타"]} />
+            <Select
+              items={[
+                "전국",
+                "서울",
+                "경기도",
+                "강원도",
+                "충청도",
+                "경상도",
+                "전라도",
+                "제주도",
+              ]}
+            />
+          </div>
         </div>
-      </div>
+      )}
       {imgUrls.length !== 0 ? (
         <div className="grid grid-cols-3 gap-px">
           <Thumbnail reviewIds={reviewIds} imgUrls={imgUrls} />
