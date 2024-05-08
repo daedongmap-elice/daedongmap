@@ -4,7 +4,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 interface LikeProps {
   currentReviewId: string;
   isLiked: boolean;
-  handleIsLiked: () => void;
+  handleIsLiked: (bool: boolean) => void;
   isLikedByUser: boolean;
   likeCount: number;
 }
@@ -53,13 +53,13 @@ const LikeBtn = ({
     <div className="flex items-center">
       <button
         onClick={() => {
-          if (isLikedByUser && isLiked) {
+          if (!isLiked && !isLikedByUser) handleIsLiked(true);
+          if (isLiked && isLikedByUser) handleIsLiked(false);
+          if (!isLikedByUser) {
             likePost();
-            handleIsLiked();
           }
-          if (!isLikedByUser && !isLiked) {
+          if (isLikedByUser) {
             likeDelete();
-            handleIsLiked();
           }
         }}
       >
@@ -70,7 +70,7 @@ const LikeBtn = ({
         )}
       </button>
       <span className="ml-1 text-sm text-subGray">
-        {!isLikedByUser && isLiked ? likeCount + 1 : likeCount}명이 좋아합니다
+        {likeCount}명이 좋아합니다
       </span>
     </div>
   );

@@ -19,6 +19,7 @@ interface ReviewDetailProps {
 // ReviewDetailProps가 ReviewDetailResponse타입의 데이터를 props로 받을 수 있음을 나타냄
 const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
+  const [isLikedByUser, setIsLikedByUser] = useState(false); // 내가 좋아요를 눌렀는지 여부
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
@@ -29,10 +30,9 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   const currentReviewId = window.location.hash.substring(1);
   const token = localStorage.getItem("accessToken");
-  let isLikedByUser = false;
 
   // console.log("loginUserId", loginUserId, "reviewUserId", reviewUserId);
-  console.log("isLikedByUser(서버):", isLikedByUser, "/ isLiked", isLiked);
+  // console.log("isLikedByUser(서버):", isLikedByUser, "/ isLiked", isLiked);
   const putFeedData = (fData: ReviewDetailResponse) => {
     setData(fData);
     setReviewUserId(fData.user.id);
@@ -48,8 +48,8 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
     setLikeCount(fData.likeCount);
   };
 
-  const handleIsLiked = () => {
-    setIsLiked((prev) => !prev);
+  const handleIsLiked = (bool: boolean) => {
+    setIsLiked(bool);
   };
 
   const handleCommentCount = (count: number) => {
@@ -79,7 +79,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
       setImgUrls(filePaths);
       setLikeCount(response.data.likeCount);
       setIsLiked(response.data.isLikedByUser);
-      isLikedByUser = response.data.isLikedByUser;
+      setIsLikedByUser(response.data.isLikedByUser);
     } catch (error) {
       console.error("리뷰상세 get요청 에러", error);
     }
@@ -114,7 +114,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
       }
       putFeedData(feedData);
     }
-  }, []);
+  }, [isLiked, commentCount]);
 
   return imgUrls.length !== 0 ? (
     <div className="pb-16">
