@@ -1,17 +1,68 @@
+import axios from "axios";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 interface LikeProps {
+  loginUserId: number;
+  currentReviewId: string;
   isLiked: boolean;
-  setIsLiked: React.Dispatch<React.SetStateAction<boolean>>;
+  handleIsLiked: () => void;
+  isLikedByUser: boolean;
   likeCount: number;
 }
 
-const LikeBtn: React.FC<LikeProps> = ({ isLiked, setIsLiked, likeCount }) => {
+const LikeBtn = ({
+  loginUserId,
+  currentReviewId,
+  isLiked,
+  handleIsLiked,
+  isLikedByUser,
+  likeCount,
+}: LikeProps) => {
+  const token = localStorage.getItem("accessToken");
+
+  const likePost = async () => {
+    try {
+      await axios.post(
+        `http://35.232.243.53:8080/api/likes?userId=${loginUserId}&reviewId=${currentReviewId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("좋아요 post요청 에러:", error);
+    }
+  };
+
+  const likeDelete = async () => {
+    try {
+      await axios.delete(
+        `http://35.232.243.53:8080/api/likes?userId=${loginUserId}&reviewId=${currentReviewId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("좋아요 deleted요청 에러:", error);
+    }
+  };
+
   return (
     <div className="flex items-center">
       <button
         onClick={() => {
-          setIsLiked((prev) => !prev);
+          if (isLikedByUser && isLiked) {
+            likePost();
+            handleIsLiked();
+          }
+          if (!isLikedByUser && isLiked) {
+            likeDelete();
+            handleIsLiked();
+          }
         }}
       >
         {isLiked ? (
@@ -21,7 +72,7 @@ const LikeBtn: React.FC<LikeProps> = ({ isLiked, setIsLiked, likeCount }) => {
         )}
       </button>
       <span className="ml-1 text-sm text-subGray">
-        {likeCount}명이 좋아합니다
+        {!isLikedByUser && isLiked ? likeCount + 1 : likeCount}명이 좋아합니다
       </span>
     </div>
   );

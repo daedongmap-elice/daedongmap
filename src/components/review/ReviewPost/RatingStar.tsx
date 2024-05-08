@@ -4,11 +4,7 @@ interface RatingStarProps {
   setRating: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const RatingStar: React.FC<RatingStarProps> = ({
-  name,
-  initialValue,
-  setRating,
-}) => {
+const RatingStar = ({ name, initialValue, setRating }: RatingStarProps) => {
   const ratingScore = [1, 2, 3, 4, 5];
   return (
     <div className="rating rating-sm">

@@ -3,7 +3,7 @@ interface StarProps {
   rating: number | undefined;
 }
 
-const Star: React.FC<StarProps> = ({ name, rating }) => {
+const Star = ({ name, rating }: StarProps) => {
   const ratingScore = [1, 2, 3, 4, 5];
   return (
     <div className="rating rating-sm">

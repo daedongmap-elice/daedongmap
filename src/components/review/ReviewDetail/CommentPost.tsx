@@ -1,14 +1,20 @@
 import { useRef, useState } from "react";
 import axios from "axios";
 
-interface CommentProps {
+interface CommentPostProps {
+  loginUserId: number;
   reviewId: string;
   onPostSuccess: () => void;
 }
 
-const CommentPost: React.FC<CommentProps> = ({ reviewId, onPostSuccess }) => {
+const CommentPost = ({
+  loginUserId,
+  reviewId,
+  onPostSuccess,
+}: CommentPostProps) => {
   const [content, setContent] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const token = localStorage.getItem("accessToken");
 
   // 나의 유저아이디 가져와야 함
   const handleSubmit = async () => {
@@ -17,10 +23,15 @@ const CommentPost: React.FC<CommentProps> = ({ reviewId, onPostSuccess }) => {
       const response = await axios.post(
         "http://35.232.243.53:8080/api/comments",
         {
-          userId: 1,
+          userId: loginUserId,
           reviewId: reviewId,
           content: content,
           parentId: null,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log("응답 데이터:", response.data);

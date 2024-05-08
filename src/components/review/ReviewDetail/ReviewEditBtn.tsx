@@ -6,7 +6,7 @@ interface EditButtonProps {
   currentReviewId: string;
 }
 
-const ReviewEditBtn: React.FC<EditButtonProps> = ({ currentReviewId }) => {
+const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
   // TODO: 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
   //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
   const navigate = useNavigate();
