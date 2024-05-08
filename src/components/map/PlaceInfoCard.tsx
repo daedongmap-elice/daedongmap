@@ -54,13 +54,13 @@ export default function PlaceInfoCard({
   return (
     <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
       <div className="flex justify-between">
-        <div className="flex flex-col gap-0.5">
+        <div className="flex max-w-[220px] flex-col gap-0.5">
           <div>
-            <h2 className="text-base font-bold">
-              {placeName}
-              <p className="inline text-xs font-normal text-subGray">
-                &nbsp;{categoryName}
-              </p>
+            <h2 className="truncate font-normal text-subGray">
+              <span className="text-base font-bold text-black">
+                {placeName}
+              </span>
+              <p className="inline text-xs">&nbsp;{categoryName}</p>
             </h2>
           </div>
           {type === "main" && (
@@ -113,7 +113,7 @@ export default function PlaceInfoCard({
             </div>
           )}
 
-          <p className="text-xs">{roadAddressName}</p>
+          <p className="truncate text-xs">{roadAddressName}</p>
           <div className="flex gap-1">
             {type === "main" && (
               <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
