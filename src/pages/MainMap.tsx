@@ -213,11 +213,13 @@ export function MainMap() {
                 />
 
                 {isSelected && showInfoCard && (
-                  <PlaceInfoCard
-                    place={place}
-                    userLocation={userLocation}
-                    type="main"
-                  />
+                  <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                    <PlaceInfoCard
+                      place={place}
+                      userLocation={userLocation}
+                      type="main"
+                    />
+                  </div>
                 )}
               </React.Fragment>
             );

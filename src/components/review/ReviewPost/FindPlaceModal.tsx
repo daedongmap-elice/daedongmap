@@ -150,11 +150,13 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
                   />
 
                   {isSelected && showInfoCard && (
-                    <PlaceInfoCard
-                      place={place}
-                      type="post"
-                      handleSetPlace={handleSetPlace}
-                    />
+                    <div className="absolute bottom-8 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                      <PlaceInfoCard
+                        place={place}
+                        type="post"
+                        handleSetPlace={handleSetPlace}
+                      />
+                    </div>
                   )}
                 </React.Fragment>
               );
