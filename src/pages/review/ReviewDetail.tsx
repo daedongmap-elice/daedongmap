@@ -9,53 +9,52 @@ import {
 } from "@/components/review/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ReviewDetailResponse } from "@/type/types";
 
-interface ReviewDetailResponse {
-  id: number;
-  kakaoPlaceId: number;
-  placeName: string;
-  user: {
-    id: number;
-    nickName: string;
-    email: string;
-    profileImagePath: string;
-  };
-  content: string;
-  reviewImageDtoList: [
-    {
-      id: number;
-      userId: number;
-      reviewId: number;
-      filePath: string;
-    },
-  ];
-  tasteRating: number;
-  hygieneRating: number;
-  kindnessRating: number;
-  averageRating: number;
-  likeCount: number;
-  createdAt: string | undefined;
-  updatedAt: string;
+interface ReviewDetailProps {
+  type?: "feed";
+  feedData?: ReviewDetailResponse; // path가 "feed"일 때 사용되는 데이터
 }
 
-const ReviewDetail = () => {
+// ReviewDetailProps가 ReviewDetailResponse타입의 데이터를 props로 받을 수 있음을 나타냄
+const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
-  const [isLiked, setIsLiked] = useState(false); // TODO: GET요청의 결과를 초기값으로 지정
+  const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const [data, setData] = useState<ReviewDetailResponse | null>(null);
-  const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [loginUserId, setLoginUserId] = useState<number>(0);
   const [reviewUserId, setReviewUserId] = useState<number>(0);
+  const [data, setData] = useState<ReviewDetailResponse | null>(null);
+  const [imgUrls, setImgUrls] = useState<string[]>([]);
+
   const currentReviewId = window.location.hash.substring(1);
   const token = localStorage.getItem("accessToken");
+  let isLikedByUser = false;
+
+  // console.log("loginUserId", loginUserId, "reviewUserId", reviewUserId);
+  console.log("isLikedByUser(서버):", isLikedByUser, "/ isLiked", isLiked);
+  const putFeedData = (fData: ReviewDetailResponse) => {
+    setData(fData);
+    setReviewUserId(fData.user.id);
+    const filePaths = fData.reviewImageDtoList.map(
+      (imageDto: {
+        id: number;
+        userId: number;
+        reviewId: number;
+        filePath: string;
+      }) => imageDto.filePath
+    );
+    setImgUrls(filePaths);
+    setLikeCount(fData.likeCount);
+  };
+
+  const handleIsLiked = () => {
+    setIsLiked((prev) => !prev);
+  };
 
   const handleCommentCount = (count: number) => {
     setCommentCount(count);
   };
-
-  // 내 유저아이디를 알려달라고 요청을 보낼거임 - 땡땡땡(수정삭제)버튼 표시여부 결정
-  // 내가 이 글에 좋아요 눌렀는지 여부 (isLiked)
 
   const getData = async () => {
     try {
@@ -63,8 +62,7 @@ const ReviewDetail = () => {
         `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
         {
           headers: {
-            // "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // TODO: 서버수정후 토큰삭제하기
           },
         }
       );
@@ -80,6 +78,8 @@ const ReviewDetail = () => {
       );
       setImgUrls(filePaths);
       setLikeCount(response.data.likeCount);
+      setIsLiked(response.data.isLikedByUser);
+      isLikedByUser = response.data.isLikedByUser;
     } catch (error) {
       console.error("리뷰상세 get요청 에러", error);
     }
@@ -87,26 +87,34 @@ const ReviewDetail = () => {
 
   const getUserId = async () => {
     try {
-      const id: number = await axios.post(
+      const response = await axios.post(
         "http://35.232.243.53:8080/api/user",
+        null,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setLoginUserId(id);
+      setLoginUserId(response.data);
     } catch (error) {
       console.error("로그인 유저id 요청 에러:", error);
     }
   };
 
   useEffect(() => {
-    getData();
     getUserId();
+    if (typeof type === "undefined") {
+      getData();
+    }
+    if (type === "feed") {
+      if (!feedData) {
+        console.log("피드 데이터 없음");
+        return;
+      }
+      putFeedData(feedData);
+    }
   }, []);
-
-  console.log("loginUserId", loginUserId, "reviewUserId", reviewUserId);
 
   return imgUrls.length !== 0 ? (
     <div className="pb-16">
@@ -126,8 +134,11 @@ const ReviewDetail = () => {
       <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
         <LikeBtn
+          loginUserId={loginUserId}
+          currentReviewId={currentReviewId}
           isLiked={isLiked}
-          setIsLiked={setIsLiked}
+          handleIsLiked={handleIsLiked}
+          isLikedByUser={isLikedByUser}
           likeCount={likeCount}
         />
         <DateCreated createdAt={data?.createdAt} />
@@ -175,7 +186,10 @@ const ReviewDetail = () => {
           댓글 {commentCount}개 보기
         </button>
         <dialog id="commentModal" className="modal modal-bottom text-black">
-          <CommentModal handleCommentCount={handleCommentCount} />
+          <CommentModal
+            handleCommentCount={handleCommentCount}
+            loginUserId={loginUserId}
+          />
         </dialog>
       </div>
     </div>
