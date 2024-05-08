@@ -65,7 +65,6 @@ export default function MyPageContainer() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log(refreshToken);
     logout();
   };
   const isClickModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
