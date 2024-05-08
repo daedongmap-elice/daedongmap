@@ -17,17 +17,10 @@ export const signUp = async (info: SignUpRequest) => {
   }
 };
 
-// const LoginSuccess = (res: AxiosResponse) => {
-//   const accessToken = res.data.token.accessToken;
-//   console.log(accessToken);
-//   axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-// };
-
 export const Login = async (info: LoginData) => {
   try {
     const res = await axiosClient.post("/login", info);
     if (res.status === 202) {
-      //LoginSuccess(res);
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
       return true;

@@ -13,6 +13,7 @@ export default function MyPageContainer() {
   });
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [reviews, setReivews] = useState();
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const naviagte = useNavigate();
@@ -40,7 +41,7 @@ export default function MyPageContainer() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (res.status === 200) {
-        console.log(res);
+        setReivews(res.data);
       }
     } catch (error) {
       console.log(error);
@@ -100,6 +101,7 @@ export default function MyPageContainer() {
       isClickDelete={isClickDelete}
       buttonDisabled={buttonDisabled}
       handleChange={handleChange}
+      reviews={reviews}
     />
   );
 }

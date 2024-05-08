@@ -9,6 +9,7 @@ interface MypageProps {
   isClickDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   buttonDisabled: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  reviews: any;
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
