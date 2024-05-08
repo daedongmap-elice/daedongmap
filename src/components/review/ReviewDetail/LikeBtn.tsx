@@ -37,7 +37,7 @@ const LikeBtn = ({
   const likeDelete = async () => {
     try {
       await axios.delete(
-        `http://35.232.243.53:8080/api/likes?userId=${loginUserId}&reviewId=${currentReviewId}`,
+        `http://35.232.243.53:8080/api/likes?reviewId=${currentReviewId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ const LikeBtn = ({
             likePost();
             handleIsLiked();
           }
-          if (!isLikedByUser && isLiked) {
+          if (!isLikedByUser && !isLiked) {
             likeDelete();
             handleIsLiked();
           }
