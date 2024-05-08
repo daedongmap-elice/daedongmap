@@ -2,6 +2,7 @@ import { PlaceInfoCard } from "@/components/map/index";
 import { LatLngData, PlaceData } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import { MdErrorOutline } from "react-icons/md";
 
 interface PlaceListModalProps {
   openListModal: boolean;
@@ -32,9 +33,14 @@ export default function PlaceListModal({
         <div className="fixed top-0 z-10 h-28 w-full bg-[#F7F7F9]"></div>
         <PerfectScrollar>
           <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-2 pt-2">
-            {placeList === undefined ? (
+            {placeList.length === 0 ? (
               //맛집이 없는 경우 메세지로 알림 추가
-              <></>
+              <div className="mt-40 flex flex-col items-center gap-3">
+                <MdErrorOutline className="h-10 w-10 text-mainY" />
+                <span className="text-sm text-subGray">
+                  리뷰가 등록된 맛집이 없습니다
+                </span>
+              </div>
             ) : (
               placeList.map((place) => {
                 return (
