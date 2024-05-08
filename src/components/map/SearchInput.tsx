@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoSearch, IoCloseCircle } from "react-icons/io5";
 import Toast from "../common/Toast";
+import { PlaceInfoData } from "@/type/types";
 
 interface SearchInputProps {
   map: kakao.maps.Map | undefined;
@@ -53,17 +54,7 @@ export default function SearchInput({
 
           if (type === "post") {
             const bounds = new kakao.maps.LatLngBounds();
-            const newMarkers: {
-              kakaoPlaceId: number;
-              placeName: string;
-              addressName: string;
-              categoryName: string;
-              roadAddressName: string;
-              placeUrl: string;
-              phone: string | null;
-              x: number;
-              y: number;
-            }[] = [];
+            const newMarkers: PlaceInfoData[] = [];
 
             datas.map((data) => {
               const {

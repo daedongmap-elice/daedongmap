@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { PlaceInfoData } from "@/type/types";
 
 const ReviewPost = () => {
   const [postImgs, setPostImgs] = useState<File[]>([]);
@@ -15,20 +16,7 @@ const ReviewPost = () => {
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
   const [loginUserId, setLoginUserId] = useState<number>(0);
-  const [place, setPlace] = useState<
-    | {
-        kakaoPlaceId: number;
-        placeName: string;
-        placeUrl: string;
-        categoryName: string;
-        addressName: string;
-        roadAddressName: string;
-        phone: string | null;
-        x: number;
-        y: number;
-      }
-    | undefined
-  >(undefined);
+  const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();

@@ -1,59 +1,24 @@
 import { useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { PlaceInfoCard, SearchInput } from "@/components/map/index";
-import { PlaceData } from "@/type/types";
+import { PlaceData, PlaceInfoData } from "@/type/types";
 import React from "react";
 
 interface FindPlaceProps {
-  setPlace: React.Dispatch<
-    React.SetStateAction<
-      | {
-          kakaoPlaceId: number;
-          placeName: string;
-          addressName: string;
-          categoryName: string;
-          roadAddressName: string;
-          placeUrl: string;
-          phone: string | null;
-          x: number;
-          y: number;
-        }
-      | undefined
-    >
-  >;
+  setPlace: React.Dispatch<React.SetStateAction<PlaceInfoData | undefined>>;
 }
 
 const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
   const [markers, setMarkers] = useState<PlaceData[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
-  const [selectMarker, setSelectMarker] = useState<{
-    kakaoPlaceId: number;
-    placeName: string;
-    addressName: string;
-    categoryName: string;
-    roadAddressName: string;
-    placeUrl: string;
-    phone: string | null;
-    x: number;
-    y: number;
-  }>();
+  const [selectMarker, setSelectMarker] = useState<PlaceInfoData>();
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
 
   const handleSetMarkers = (places: PlaceData[]) => {
     setMarkers(places);
   };
 
-  const handleOnClickMarker = (place: {
-    kakaoPlaceId: number;
-    placeName: string;
-    addressName: string;
-    categoryName: string;
-    roadAddressName: string;
-    placeUrl: string;
-    phone: string | null;
-    x: number;
-    y: number;
-  }) => {
+  const handleOnClickMarker = (place: PlaceInfoData) => {
     setSelectMarker(place);
     setShowInfoCard(true);
   };
