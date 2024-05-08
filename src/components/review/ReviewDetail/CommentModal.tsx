@@ -6,6 +6,7 @@ import axios from "axios";
 
 interface CommentModalProps {
   handleCommentCount: (count: number) => void;
+  loginUserId: number;
 }
 
 interface CommentModalResponse {
@@ -20,7 +21,10 @@ interface CommentModalResponse {
   createdAt: string;
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({ handleCommentCount }) => {
+const CommentModal = ({
+  handleCommentCount,
+  loginUserId,
+}: CommentModalProps) => {
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const currentReviewId = window.location.hash.substring(1);
 
@@ -48,6 +52,7 @@ const CommentModal: React.FC<CommentModalProps> = ({ handleCommentCount }) => {
           {data.map((comment, i) => (
             <Comment
               key={`comment${i}`}
+              loginUserId={loginUserId}
               commentId={comment.id}
               userId={comment.user.id}
               profileImagePath={comment.user.profileImagePath}
@@ -58,7 +63,11 @@ const CommentModal: React.FC<CommentModalProps> = ({ handleCommentCount }) => {
             />
           ))}
         </div>
-        <CommentPost reviewId={currentReviewId} onPostSuccess={getData} />
+        <CommentPost
+          loginUserId={loginUserId}
+          reviewId={currentReviewId}
+          onPostSuccess={getData}
+        />
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

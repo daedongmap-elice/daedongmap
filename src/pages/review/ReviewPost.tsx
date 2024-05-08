@@ -3,7 +3,7 @@ import {
   ImageInput,
   FindPlaceModal,
 } from "@/components/review/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ const ReviewPost = () => {
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
+  const [loginUserId, setLoginUserId] = useState<number>(0);
   const [place, setPlace] = useState<
     | {
         kakaoPlaceId: number;
@@ -29,10 +30,29 @@ const ReviewPost = () => {
     | undefined
   >(undefined);
 
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handlePostImgs = (imgs: any) => {
+  const handlePostImgs = (imgs: File[]) => {
     setPostImgs(imgs);
+  };
+
+  const getUserId = async () => {
+    try {
+      const response = await axios.post(
+        "http://35.232.243.53:8080/api/user",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoginUserId(response.data);
+    } catch (error) {
+      console.error("로그인 유저id 요청 에러:", error);
+    }
   };
 
   const appendFormData = (formData: FormData) => {
@@ -42,7 +62,7 @@ const ReviewPost = () => {
 
     // reviewRequest 데이터 추가
     const reviewRequest = {
-      userId: 2,
+      userId: loginUserId,
       content: content,
       tasteRating: tasteRating,
       hygieneRating: hygieneRating,
@@ -53,7 +73,7 @@ const ReviewPost = () => {
     // placeRequest 데이터 추가 (FindPlaceModal 컴포넌트에서 선택된 음식점 정보)
     const placeRequest = place;
 
-    formData.append("file", postImgs);
+    // formData.append("file", postImgs);
     for (let i = 0; i < postImgs.length; i++) {
       formData.append("file", postImgs[i]);
     }
@@ -65,18 +85,21 @@ const ReviewPost = () => {
       "placeRequest",
       new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
     );
-    // console.log(postImgs);
   };
 
   const handleSubmit = async () => {
-    // if (postImgs.length === 0) {
-    //   alert("사진을 1장 이상 첨부해주세요.");
-    //   return;
-    // }
-    // if (!content) {
-    //   alert("본문 내용을 입력해주세요.");
-    //   return;
-    // }
+    if (postImgs.length === 0) {
+      alert("사진을 1장 이상 첨부해주세요");
+      return;
+    }
+    if (postImgs.length > 5) {
+      alert("사진은 5장 이하로 첨부해주세요");
+      return;
+    }
+    if (!content) {
+      alert("본문 내용을 입력해주세요");
+      return;
+    }
     // if (!place?.kakaoPlaceId) {
     //   alert("음식점 정보를 선택해주세요.");
     //   return;
@@ -85,26 +108,22 @@ const ReviewPost = () => {
     const formData: FormData = new FormData();
     appendFormData(formData);
 
-    // for (const key of newFormData.keys()) {
-    //   console.log(key, ":", newFormData.get(key));
-    // }
-
     try {
-      const response = await axios.post(
-        "http://35.232.243.53:8080/api/reviews",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("응답 데이터:", response.data);
+      await axios.post("http://35.232.243.53:8080/api/reviews", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       navigate("/review");
     } catch (error) {
       console.error("리뷰 등록 실패:", error);
     }
   };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
 
   return (
     <div className="pb-16">
@@ -159,8 +178,8 @@ const ReviewPost = () => {
         <button
           type="submit"
           onClick={(e) => {
-            e.preventDefault(); // 기본적인 form submit 동작 방지
-            handleSubmit(); // handleSubmit 함수 호출
+            e.preventDefault();
+            handleSubmit();
           }}
           className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
         >

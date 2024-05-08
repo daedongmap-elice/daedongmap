@@ -1,16 +1,41 @@
+import axios from "axios";
 import ReviewDetail from "./ReviewDetail";
+import { useEffect, useState } from "react";
+import { ReviewDetailResponse } from "@/type/types";
+import { useParams } from "react-router-dom";
 
-// TODO: '음식점별 리뷰 조회' (/api/reviews/places/kakaoPlaceId??)로 데이터 받아와서 리뷰 상세에 뿌리기
+const ReviewFeed = () => {
+  const [dataArray, setDataArray] = useState<
+    ReviewDetailResponse[] | undefined
+  >(undefined);
+  const token = localStorage.getItem("accessToken");
+  const params = useParams();
 
-export default function ReviewFeed() {
+  const getData = async () => {
+    try {
+      const response = await axios.get(
+        `http://35.232.243.53:8080/api/reviews/places/${params.placeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setDataArray(response.data);
+    } catch (error) {
+      console.error("리뷰상세 get요청 에러", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <>
-      <ReviewDetail />
-      <div className="divider"></div>
-      <ReviewDetail />
-      <div className="divider"></div>
-      <ReviewDetail />
-      <div className="divider"></div>
+      {dataArray?.map((data) => <ReviewDetail type="feed" feedData={data} />)}
     </>
   );
-}
+};
+
+export default ReviewFeed;

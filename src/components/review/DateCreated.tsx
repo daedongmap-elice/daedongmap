@@ -2,7 +2,7 @@ interface DateCreatedProps {
   createdAt: string | undefined;
 }
 
-const DateCreated: React.FC<DateCreatedProps> = ({ createdAt }) => {
+const DateCreated = ({ createdAt }: DateCreatedProps) => {
   const formatDate = (created?: string) => {
     if (!created) return;
     const dateObject = new Date(created);
