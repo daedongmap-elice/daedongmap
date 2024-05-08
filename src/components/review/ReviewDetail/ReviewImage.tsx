@@ -4,7 +4,7 @@ interface ReviewImageProps {
   imgUrls: string[];
 }
 
-const ReviewImage: React.FC<ReviewImageProps> = ({ imgUrls }) => {
+const ReviewImage = ({ imgUrls }: ReviewImageProps) => {
   const [slideIndex, setSlideIndex] = useState(1);
   const isImgOnlyOne = imgUrls.length === 1;
 

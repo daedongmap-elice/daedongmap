@@ -21,10 +21,10 @@ interface CommentModalResponse {
   createdAt: string;
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({
+const CommentModal = ({
   handleCommentCount,
   loginUserId,
-}) => {
+}: CommentModalProps) => {
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const currentReviewId = window.location.hash.substring(1);
 

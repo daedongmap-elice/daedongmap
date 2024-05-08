@@ -13,7 +13,7 @@ interface CommentProps {
   onDeleteSuccess: () => void;
 }
 
-const Comment: React.FC<CommentProps> = ({
+const Comment = ({
   loginUserId,
   commentId,
   userId,
@@ -22,7 +22,7 @@ const Comment: React.FC<CommentProps> = ({
   content,
   createdAt,
   onDeleteSuccess,
-}) => {
+}: CommentProps) => {
   return (
     <>
       <div className="mb-6 mt-4 flex justify-between">

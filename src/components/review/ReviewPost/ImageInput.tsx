@@ -6,10 +6,7 @@ interface ImageInputProps {
   handlePostImgs: (Imgs: any) => void;
 }
 
-const ImageInput: React.FC<ImageInputProps> = ({
-  prevImgUrls,
-  handlePostImgs,
-}) => {
+const ImageInput = ({ prevImgUrls, handlePostImgs }: ImageInputProps) => {
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
 
   // TODO: 이미 올라간 이미지를 삭제한 경우, 새로운 이미지들로 대체되어야 함 (post요청))
