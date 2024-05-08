@@ -19,6 +19,7 @@ export function MainMap() {
     center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
+    isSetUserLocation: boolean;
   }>({
     center: {
       lat: 37.5665851,
@@ -26,6 +27,7 @@ export function MainMap() {
     },
     errMsg: null,
     isLoading: true,
+    isSetUserLocation: false,
   });
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
   const [openListModal, setOpenListModal] = useState<boolean>(false);
@@ -113,6 +115,7 @@ export function MainMap() {
               lng: position.coords.longitude,
             },
             isLoading: false,
+            isSetUserLocation: true,
           }));
         },
         (err) => {
@@ -120,6 +123,7 @@ export function MainMap() {
             ...prev,
             errMsg: err.message,
             isLoading: false,
+            isSetUserLocation: false,
           }));
         }
       );
@@ -128,6 +132,7 @@ export function MainMap() {
         ...prev,
         errMsg: "위치를 불러올 수 없습니다.",
         isLoading: false,
+        isSetUserLocation: false,
       }));
     }
   }, []);
@@ -146,7 +151,14 @@ export function MainMap() {
     <>
       <div className="absolute left-1/2 top-4 z-20 h-6 w-28 -translate-x-1/2 rounded-full bg-[url('img/sample3.png')] bg-cover bg-center"></div>
       <Map
-        center={userLocation.center}
+        center={
+          userLocation.isSetUserLocation
+            ? userLocation.center
+            : {
+                lat: 37.5665851,
+                lng: 126.9782038,
+              }
+        }
         style={{
           width: "100%",
           height: "95.3vh",
@@ -231,11 +243,11 @@ export function MainMap() {
             })
           ))}
 
-        <div
-          className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
-        >
-          <NowPositionBtn userLocation={userLocation.center} map={map} />
-        </div>
+        <NowPositionBtn
+          userLocation={userLocation}
+          map={map}
+          showInfoCard={showInfoCard}
+        />
 
         <PlaceListModal
           openListModal={openListModal}
