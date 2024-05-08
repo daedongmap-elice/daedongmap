@@ -47,7 +47,7 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
       <div className="modal-box h-full w-full p-0">
         <div id="map" className="h-full w-full bg-slate-200">
           <Map // 지도를 표시할 Container
-            id="map"
+            id="reviewPostMap"
             center={{
               // 지도의 중심좌표
               lat: 37.5665851,
@@ -70,13 +70,13 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
               handleToggleShowInfoCard={handleToggleShowInfoCard}
             />
             {markers.map((place) => {
-              const { id, x: lng, y: lat } = place;
+              const { kakaoPlaceId, x: lng, y: lat } = place;
               const isSelected =
                 selectMarker?.y === Number(lat) &&
                 selectMarker?.x === Number(lng);
 
               return (
-                <React.Fragment key={id}>
+                <React.Fragment key={`reviewPost-${kakaoPlaceId}`}>
                   <MapMarker
                     position={{
                       lat: Number(lat),
