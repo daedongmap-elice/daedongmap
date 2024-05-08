@@ -2,16 +2,14 @@ import axios from "axios";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 interface LikeProps {
-  loginUserId: number;
   currentReviewId: string;
   isLiked: boolean;
-  handleIsLiked: () => void;
+  handleIsLiked: (bool: boolean) => void;
   isLikedByUser: boolean;
   likeCount: number;
 }
 
 const LikeBtn = ({
-  loginUserId,
   currentReviewId,
   isLiked,
   handleIsLiked,
@@ -23,7 +21,7 @@ const LikeBtn = ({
   const likePost = async () => {
     try {
       await axios.post(
-        `http://35.232.243.53:8080/api/likes?userId=${loginUserId}&reviewId=${currentReviewId}`,
+        `http://35.232.243.53:8080/api/likes?reviewId=${currentReviewId}`,
         null,
         {
           headers: {
@@ -39,7 +37,7 @@ const LikeBtn = ({
   const likeDelete = async () => {
     try {
       await axios.delete(
-        `http://35.232.243.53:8080/api/likes?userId=${loginUserId}&reviewId=${currentReviewId}`,
+        `http://35.232.243.53:8080/api/likes?reviewId=${currentReviewId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,13 +53,13 @@ const LikeBtn = ({
     <div className="flex items-center">
       <button
         onClick={() => {
-          if (isLikedByUser && isLiked) {
+          if (!isLiked && !isLikedByUser) handleIsLiked(true);
+          if (isLiked && isLikedByUser) handleIsLiked(false);
+          if (!isLikedByUser) {
             likePost();
-            handleIsLiked();
           }
-          if (!isLikedByUser && isLiked) {
+          if (isLikedByUser) {
             likeDelete();
-            handleIsLiked();
           }
         }}
       >
@@ -72,7 +70,7 @@ const LikeBtn = ({
         )}
       </button>
       <span className="ml-1 text-sm text-subGray">
-        {!isLikedByUser && isLiked ? likeCount + 1 : likeCount}명이 좋아합니다
+        {likeCount}명이 좋아합니다
       </span>
     </div>
   );

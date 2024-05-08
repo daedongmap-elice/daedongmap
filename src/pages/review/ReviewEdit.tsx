@@ -1,35 +1,12 @@
-import { RatingStar, ImageInput } from "@/components/review/index";
+import {
+  RatingStar,
+  ImageInput,
+  FindPlaceModal,
+} from "@/components/review/index";
 import { useEffect, useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// interface ReviewDetailResponse {
-//   id: number;
-//   kakaoPlaceId: number;
-//   placeName: string;
-//   user: {
-//     id: number;
-//     nickName: string;
-//     email: string;
-//   };
-//   content: string;
-//   reviewImageDtoList: [
-//     {
-//       id: number;
-//       userId: number;
-//       reviewId: number;
-//       filePath: string;
-//     },
-//   ];
-//   tasteRating: number;
-//   hygieneRating: number;
-//   kindnessRating: number;
-//   averageRating: number;
-//   likeCount: number;
-//   createdAt: string | undefined;
-//   updatedAt: string;
-// }
 
 const ReviewEdit = () => {
   const [loginUserId, setLoginUserId] = useState<number>(0);
@@ -41,6 +18,28 @@ const ReviewEdit = () => {
   const [prevImgUrls, setPrevImgUrls] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
+  const [place, setPlace] = useState<{
+    kakaoPlaceId: number;
+    placeName: string;
+    placeUrl: string;
+    categoryName: string;
+    addressName: string;
+    roadAddressName: string;
+    phone: string;
+    x: number;
+    y: number;
+  }>({
+    kakaoPlaceId: 0,
+    placeName: "",
+    placeUrl: "",
+    categoryName: "",
+    addressName: "",
+    roadAddressName: "",
+    phone: "",
+    x: 0,
+    y: 0,
+  });
+
   const currentReviewId = window.location.hash.substring(1);
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -48,7 +47,12 @@ const ReviewEdit = () => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`
+        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setTasteRating(response.data.tasteRating);
       setHygieneRating(response.data.hygieneRating);
@@ -107,18 +111,32 @@ const ReviewEdit = () => {
       imageModified: isImgChanged,
     };
 
+    const placeRequest = place;
+
     // formData에 파일 항목이 없으면 원래 이미지를 그대로 쓴다
     // formData에 파일이 있으면 원래 이미지를 삭제하고 새로운 이미지로 대체
     if (isImgChanged) {
       for (let i = 0; i < postImgs.length; i++) {
         formData.append("file", postImgs[i]);
       }
+    } else {
+      // formData.append("file", []);
+      formData.append(
+        "file",
+        new Blob([JSON.stringify([])], {
+          type: "image/png",
+        })
+      );
     }
     formData.append(
       "reviewRequest",
       new Blob([JSON.stringify(reviewUpdateRequest)], {
         type: "application/json",
       })
+    );
+    formData.append(
+      "placeRequest",
+      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
     );
   };
 
@@ -138,9 +156,11 @@ const ReviewEdit = () => {
 
     const formData: FormData = new FormData();
     appendFormData(formData);
+    console.log("isImgChanged:", isImgChanged);
+    console.log("Edit-loginUserId:", loginUserId);
 
     try {
-      await axios.post(
+      await axios.put(
         `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
         formData,
         {
@@ -203,6 +223,10 @@ const ReviewEdit = () => {
           className="input input-sm input-bordered mb-2 box-border w-3/4 max-w-xs"
           disabled
         />
+        {/* 리뷰 수정 요청에 placeRequest 필요없으면 dialog 삭제할 것(eslint setPlace never used 에러 때문) */}
+        <dialog>
+          <FindPlaceModal setPlace={setPlace} />
+        </dialog>
         <textarea
           required
           className="textarea textarea-bordered box-border h-32 w-3/4 max-w-xs pt-3 text-xs"
