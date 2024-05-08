@@ -36,9 +36,10 @@ const ReviewPost = () => {
     y: 0,
   });
 
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handlePostImgs = (imgs: any) => {
+  const handlePostImgs = (imgs: File[]) => {
     setPostImgs(imgs);
   };
 
@@ -60,7 +61,7 @@ const ReviewPost = () => {
     // placeRequest 데이터 추가 (FindPlaceModal 컴포넌트에서 선택된 음식점 정보)
     const placeRequest = place;
 
-    formData.append("file", postImgs);
+    // formData.append("file", postImgs);
     for (let i = 0; i < postImgs.length; i++) {
       formData.append("file", postImgs[i]);
     }
@@ -72,18 +73,21 @@ const ReviewPost = () => {
       "placeRequest",
       new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
     );
-    // console.log(postImgs);
   };
 
   const handleSubmit = async () => {
-    // if (postImgs.length === 0) {
-    //   alert("사진을 1장 이상 첨부해주세요.");
-    //   return;
-    // }
-    // if (!content) {
-    //   alert("본문 내용을 입력해주세요.");
-    //   return;
-    // }
+    if (postImgs.length === 0) {
+      alert("사진을 1장 이상 첨부해주세요");
+      return;
+    }
+    if (postImgs.length > 5) {
+      alert("사진은 5장 이하로 첨부해주세요");
+      return;
+    }
+    if (!content) {
+      alert("본문 내용을 입력해주세요");
+      return;
+    }
     // if (!place?.kakaoPlaceId) {
     //   alert("음식점 정보를 선택해주세요.");
     //   return;
@@ -92,10 +96,6 @@ const ReviewPost = () => {
     const formData: FormData = new FormData();
     appendFormData(formData);
 
-    // for (const key of newFormData.keys()) {
-    //   console.log(key, ":", newFormData.get(key));
-    // }
-
     try {
       const response = await axios.post(
         "http://35.232.243.53:8080/api/reviews",
@@ -103,6 +103,7 @@ const ReviewPost = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -166,8 +167,8 @@ const ReviewPost = () => {
         <button
           type="submit"
           onClick={(e) => {
-            e.preventDefault(); // 기본적인 form submit 동작 방지
-            handleSubmit(); // handleSubmit 함수 호출
+            e.preventDefault();
+            handleSubmit();
           }}
           className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
         >
