@@ -3,6 +3,7 @@ import CommentEditBtn from "./CommentEditBtn";
 
 // 아이디, 프로필사진, 닉네임, 댓글내용, 작성일을 prop로 내려받기
 interface CommentProps {
+  loginUserId: number;
   commentId: number;
   userId: number;
   profileImagePath: string;
@@ -12,7 +13,8 @@ interface CommentProps {
   onDeleteSuccess: () => void;
 }
 
-const Comment: React.FC<CommentProps> = ({
+const Comment = ({
+  loginUserId,
   commentId,
   userId,
   profileImagePath,
@@ -20,7 +22,7 @@ const Comment: React.FC<CommentProps> = ({
   content,
   createdAt,
   onDeleteSuccess,
-}) => {
+}: CommentProps) => {
   return (
     <>
       <div className="mb-6 mt-4 flex justify-between">
@@ -42,10 +44,12 @@ const Comment: React.FC<CommentProps> = ({
             <p className="w-64">{content} </p>
           </div>
         </div>
-        <CommentEditBtn
-          onDeleteSuccess={onDeleteSuccess}
-          commentId={commentId}
-        />
+        {loginUserId === userId && (
+          <CommentEditBtn
+            onDeleteSuccess={onDeleteSuccess}
+            commentId={commentId}
+          />
+        )}
       </div>
     </>
   );

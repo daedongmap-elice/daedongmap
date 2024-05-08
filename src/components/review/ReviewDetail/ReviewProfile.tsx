@@ -5,12 +5,12 @@ interface ReviewProfileProps {
   profileImagePath: string | undefined;
 }
 
-const ReviewProfile: React.FC<ReviewProfileProps> = ({
+const ReviewProfile = ({
   userId,
   nickName,
   placeName,
   profileImagePath,
-}) => {
+}: ReviewProfileProps) => {
   return (
     <>
       <a href={`/mypage/#${userId}`}>
