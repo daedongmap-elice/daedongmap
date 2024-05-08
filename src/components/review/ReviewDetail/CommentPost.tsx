@@ -56,14 +56,24 @@ const CommentPost = ({
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleSubmit();
+                if (token) {
+                  handleSubmit();
+                } else {
+                  alert("댓글 작성은 로그인 후 가능합니다.");
+                }
               }
             }}
             ref={inputRef}
           />
           <button
             type="submit"
-            onClick={handleSubmit}
+            onClick={() => {
+              if (token) {
+                handleSubmit();
+              } else {
+                alert("댓글 작성은 로그인 후 가능합니다.");
+              }
+            }}
             className="btn btn-sm mr-2 h-4 bg-mainG text-xs text-GbtnText"
           >
             확인

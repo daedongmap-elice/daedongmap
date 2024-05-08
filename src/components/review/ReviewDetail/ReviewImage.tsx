@@ -5,7 +5,7 @@ interface ReviewImageProps {
 }
 
 const ReviewImage = ({ imgUrls }: ReviewImageProps) => {
-  const [slideIndex, setSlideIndex] = useState(1);
+  const [slideIndex, setSlideIndex] = useState(0);
   const isImgOnlyOne = imgUrls.length === 1;
 
   return (

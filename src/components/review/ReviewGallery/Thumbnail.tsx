@@ -30,7 +30,7 @@ const Thumbnail = ({ reviewIds, imgUrls }: ThumbnailProps) => {
           <img
             src={el.url}
             alt="thumbnail"
-            className="h-full w-full object-cover"
+            className="h-full max-h-32 w-full object-cover"
           />
         </a>
       ))}
