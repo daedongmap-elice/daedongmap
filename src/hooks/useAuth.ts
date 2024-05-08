@@ -66,16 +66,28 @@ export const Logout = async (RT: string | null) => {
   }
 };
 
-export const DeleteUser = async (RT: string | null) => {
+export const DeleteUser = async (AT: string | null) => {
   try {
     const res = await axiosClient.delete(`/user`, {
       headers: {
-        Authorization: `Bearer ${RT}`,
+        Authorization: `Bearer ${AT}`,
       },
     });
     if (res.status === 200) {
       alert("회원이 탈퇴되었습니다.");
       localStorage.clear();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const FindEmail = async (phoneNumber: string) => {
+  try {
+    const res = await axiosClient.post(`/accountId`, { phoneNumber });
+    if (res.status === 200) {
+      console.log(res.data);
+      alert(`찾으신 아이디는 ${res.data} 입니다.`);
     }
   } catch (error) {
     console.log(error);

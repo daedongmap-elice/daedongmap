@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo } from "@/type/types";
-import { DeleteUser, axiosClient, getRefreshToken } from "@/hooks/useAuth";
+import { DeleteUser, axiosClient } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { isCheckDelete } from "@/utils/authUtils";
 
@@ -29,9 +29,6 @@ export default function MyPageContainer() {
           status: res.data.status,
         });
         console.log(res);
-      }
-      if (res.status === 401) {
-        getRefreshToken(refreshToken);
       }
     } catch (error) {
       console.log(error);
@@ -81,7 +78,7 @@ export default function MyPageContainer() {
   ) => {
     e.preventDefault();
     setIsModal(!isModal);
-    DeleteUser(refreshToken);
+    DeleteUser(accessToken);
     naviagte("/");
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

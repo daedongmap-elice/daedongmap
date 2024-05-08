@@ -18,8 +18,11 @@ const GoogleOauth = () => {
             },
           }
         );
-        console.log(res);
-        navigate("/");
+        if (res.status === 202) {
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          navigate("/");
+        }
       } catch (error) {
         console.log(error);
       }
