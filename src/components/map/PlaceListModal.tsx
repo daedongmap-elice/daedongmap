@@ -1,5 +1,7 @@
 import { PlaceInfoCard } from "@/components/map/index";
 import { LatLngData, PlaceData } from "@/type/types";
+import PerfectScrollar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 interface PlaceListModalProps {
   openListModal: boolean;
@@ -28,23 +30,25 @@ export default function PlaceListModal({
         className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pb-5 pt-28 transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
       >
         <div className="fixed top-0 z-10 h-28 w-full bg-[#F7F7F9]"></div>
-        <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pt-2">
-          {placeList === undefined ? (
-            //맛집이 없는 경우 메세지로 알림 추가
-            <></>
-          ) : (
-            placeList.map((place) => {
-              return (
-                <PlaceInfoCard
-                  key={place.id}
-                  place={place}
-                  userLocation={userLocation}
-                  type="main"
-                />
-              );
-            })
-          )}
-        </div>
+        <PerfectScrollar>
+          <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-2 pt-2">
+            {placeList === undefined ? (
+              //맛집이 없는 경우 메세지로 알림 추가
+              <></>
+            ) : (
+              placeList.map((place) => {
+                return (
+                  <PlaceInfoCard
+                    key={place.id}
+                    place={place}
+                    userLocation={userLocation}
+                    type="main"
+                  />
+                );
+              })
+            )}
+          </div>
+        </PerfectScrollar>
       </div>
     </div>
   );
