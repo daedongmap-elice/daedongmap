@@ -134,7 +134,6 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
       <ReviewImage imgUrls={imgUrls} />
       <div className="mt-2 flex items-center justify-between">
         <LikeBtn
-          loginUserId={loginUserId}
           currentReviewId={currentReviewId}
           isLiked={isLiked}
           handleIsLiked={handleIsLiked}
