@@ -25,8 +25,8 @@ const MyPagePresent: React.FC<MypageProps> = ({
       <div className="flex flex-col items-center">
         <div className="mt-16 flex flex-row">
           <div className="avatar mr-4">
-            <div className="w-23 rounded-full border border-solid  border-subGray">
-              <img src="img/profile.jpg" alt="프로필 이미지 " />
+            <div className="w-[107px] rounded-full border border-solid  border-subGray">
+              <img src={profile.profileImage} alt="프로필 이미지 " />
             </div>
           </div>
           <div className="flex flex-col justify-center">
@@ -79,7 +79,6 @@ const MyPagePresent: React.FC<MypageProps> = ({
               회원탈퇴
             </h3>
             <p className="py-4 text-center">회원탈퇴 하시겠습니까?</p>
-
             <input
               type="text"
               name="message"

@@ -21,9 +21,11 @@ const NaverOAuth = () => {
             },
           }
         );
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-        navigate("/");
+        if (res.status === 202) {
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          navigate("/");
+        }
       } catch (error) {
         console.error("Error fetching OAuth token:", error);
       }

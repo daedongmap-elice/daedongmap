@@ -49,7 +49,7 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
             <span className="label-text">닉네임</span>
           </div>
           <input
-            name="nickname"
+            name="nickName"
             type="text"
             placeholder="닉네임을 입력해주세요."
             onChange={handleChange}
