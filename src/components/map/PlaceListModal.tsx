@@ -3,6 +3,7 @@ import { LatLngData, PlaceData } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { MdErrorOutline } from "react-icons/md";
+import { Select } from "../review";
 
 interface PlaceListModalProps {
   openListModal: boolean;
@@ -22,13 +23,16 @@ export default function PlaceListModal({
   return (
     <div>
       <div
-        className={`fixed z-10 h-[95.3vh] w-full overflow-y-auto bg-[#F7F7F9] pt-24 transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
+        className={`fixed z-10 h-[95.3vh] w-full bg-[#F7F7F9] pt-24 transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
       >
         <div
           className={`fixed transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"} z-10 h-24 w-full bg-[#F7F7F9]`}
         ></div>
+        <div className="relative mx-auto my-0 w-[320px] pb-2 text-right">
+          <Select items={["추천순", "인기순", "거리순"]} />
+        </div>
         <PerfectScrollar>
-          <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-2 pt-2">
+          <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-2">
             {placeList.length === 0 ? (
               //맛집이 없는 경우 메세지로 알림 추가
               <div className="mt-40 flex flex-col items-center gap-3">
@@ -38,16 +42,18 @@ export default function PlaceListModal({
                 </span>
               </div>
             ) : (
-              placeList.map((place) => {
-                return (
-                  <PlaceInfoCard
-                    key={place.id}
-                    place={place}
-                    userLocation={userLocation}
-                    type="main"
-                  />
-                );
-              })
+              <>
+                {placeList.map((place) => {
+                  return (
+                    <PlaceInfoCard
+                      key={place.id}
+                      place={place}
+                      userLocation={userLocation}
+                      type="main"
+                    />
+                  );
+                })}
+              </>
             )}
           </div>
         </PerfectScrollar>
