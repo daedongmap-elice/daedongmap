@@ -1,5 +1,6 @@
-import { UserInfo } from "@/type/types";
+import { UserInfo, ReviewGalleryResponse } from "@/type/types";
 import { AiOutlineMore } from "react-icons/ai";
+import ReviewGallery from "@/pages/review/ReviewGallery";
 
 interface MypageProps {
   profile: UserInfo;
@@ -9,7 +10,7 @@ interface MypageProps {
   isClickDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   buttonDisabled: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  reviews: any;
+  reviews: ReviewGalleryResponse[];
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
@@ -20,11 +21,12 @@ const MyPagePresent: React.FC<MypageProps> = ({
   isClickDelete,
   handleChange,
   buttonDisabled,
+  reviews,
 }) => {
   return (
     <>
       <div className="flex flex-col items-center">
-        <div className="mt-16 flex flex-row">
+        <div className="mt-9 flex flex-row">
           <div className="avatar mr-4">
             <div className="w-[107px] rounded-full border border-solid  border-subGray">
               <img src={profile.profileImage} alt="프로필 이미지 " />
@@ -63,7 +65,10 @@ const MyPagePresent: React.FC<MypageProps> = ({
         <button className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText">
           <a href="/editprofile">프로필 편집</a>
         </button>
-        <hr className="mt-5 w-10/12 border-t border-solid border-subLightGray" />
+        <hr className="mt-5 w-full border-t border-solid border-subLightGray" />
+        <div className="mt-3">
+          <ReviewGallery type="myPage" myPageData={reviews} />
+        </div>
       </div>
       {isModal && (
         <div className="modal-overlay">
