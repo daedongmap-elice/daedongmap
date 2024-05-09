@@ -129,7 +129,7 @@ const ReviewEdit = () => {
       );
     }
     formData.append(
-      "reviewRequest",
+      "reviewUpdateRequest",
       new Blob([JSON.stringify(reviewUpdateRequest)], {
         type: "application/json",
       })
@@ -170,7 +170,7 @@ const ReviewEdit = () => {
           },
         }
       );
-      navigate(`/detail#${currentReviewId}/`);
+      navigate(`/detail#${currentReviewId}`);
     } catch (error) {
       console.error("리뷰 수정 실패:", error);
     }
@@ -188,6 +188,7 @@ const ReviewEdit = () => {
         <div className="flex justify-center">
           <ImageInput
             prevImgUrls={prevImgUrls}
+            postImgs={postImgs}
             handlePostImgs={handlePostImgs}
           />
         </div>
