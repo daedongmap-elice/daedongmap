@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ReviewResponse } from "@/type/types";
+import PerfectScrollar from "react-perfect-scrollbar";
 
 interface ReviewDetailProps {
   type?: "feed";
@@ -113,81 +114,83 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   }, [isLiked, commentCount]);
 
   return imgUrls.length !== 0 ? (
-    <div className="pb-16">
-      <div className="flex items-center justify-between">
-        <ReviewProfile
-          userId={data?.user.id}
-          nickName={data?.user.nickName}
-          placeName={data?.placeName}
-          profileImagePath={data?.user.profileImagePath}
-        />
-        {reviewUserId === loginUserId && (
-          <div className="mb-3 mr-3 mt-4">
-            <ReviewEditBtn currentReviewId={currentReviewId} />
-          </div>
-        )}
-      </div>
-      <ReviewImage imgUrls={imgUrls} />
-      <div className="mt-2 flex items-center justify-between">
-        <LikeBtn
-          currentReviewId={currentReviewId}
-          isLiked={isLiked}
-          handleIsLiked={handleIsLiked}
-          isLikedByUser={isLikedByUser}
-          likeCount={likeCount}
-        />
-        <DateCreated createdAt={data?.createdAt} />
-      </div>
-      <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
-        <div className="flex items-center gap-1">
-          <span className="min-w-fit">맛</span>
-          <Star name="taste" rating={data?.tasteRating} />
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="min-w-fit">위생</span>
-          <Star name="hygiene" rating={data?.hygieneRating} />
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="min-w-fit">친절</span>
-          <Star name="kindness" rating={data?.kindnessRating} />
-        </div>
-      </div>
-      <div className="flex w-full justify-between px-5 pt-4 text-sm">
-        {data?.content && data?.content.length >= 110 ? (
-          <p
-            className={`${isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"} ${isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"} ${isSeeMoreClicked ? "" : "text-clip"}`}
-          >
-            {data?.content}
-          </p>
-        ) : (
-          <p>{data?.content}</p>
-        )}
-        {data?.content && data?.content.length >= 110 ? (
-          <button
-            onClick={() => setIsSeeMoreClicked(true)}
-            className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
-          >
-            <span>...&nbsp; 더 보기</span>
-          </button>
-        ) : (
-          <></>
-        )}
-      </div>
-      <div className="mb-6 px-5 pt-2 text-sm text-subGray">
-        <button
-          // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
-          onClick={() => document.getElementById("commentModal").showModal()}
-        >
-          댓글 {commentCount}개 보기
-        </button>
-        <dialog id="commentModal" className="modal modal-bottom text-black">
-          <CommentModal
-            handleCommentCount={handleCommentCount}
-            loginUserId={loginUserId}
+    <PerfectScrollar>
+      <div className="pb-16">
+        <div className="flex items-center justify-between">
+          <ReviewProfile
+            userId={data?.user.id}
+            nickName={data?.user.nickName}
+            placeName={data?.placeName}
+            profileImagePath={data?.user.profileImagePath}
           />
-        </dialog>
+          {reviewUserId === loginUserId && (
+            <div className="mb-3 mr-3 mt-4">
+              <ReviewEditBtn currentReviewId={currentReviewId} />
+            </div>
+          )}
+        </div>
+        <ReviewImage imgUrls={imgUrls} />
+        <div className="mt-2 flex items-center justify-between">
+          <LikeBtn
+            currentReviewId={currentReviewId}
+            isLiked={isLiked}
+            handleIsLiked={handleIsLiked}
+            isLikedByUser={isLikedByUser}
+            likeCount={likeCount}
+          />
+          <DateCreated createdAt={data?.createdAt} />
+        </div>
+        <div className="mt-3 flex items-center justify-between pl-5 pr-5 text-sm">
+          <div className="flex items-center gap-1">
+            <span className="min-w-fit">맛</span>
+            <Star name="taste" rating={data?.tasteRating} />
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="min-w-fit">위생</span>
+            <Star name="hygiene" rating={data?.hygieneRating} />
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="min-w-fit">친절</span>
+            <Star name="kindness" rating={data?.kindnessRating} />
+          </div>
+        </div>
+        <div className="flex w-full justify-between px-5 pt-4 text-sm">
+          {data?.content && data?.content.length >= 110 ? (
+            <p
+              className={`${isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"} ${isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"} ${isSeeMoreClicked ? "" : "text-clip"}`}
+            >
+              {data?.content}
+            </p>
+          ) : (
+            <p>{data?.content}</p>
+          )}
+          {data?.content && data?.content.length >= 110 ? (
+            <button
+              onClick={() => setIsSeeMoreClicked(true)}
+              className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
+            >
+              <span>...&nbsp; 더 보기</span>
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="mb-6 px-5 pt-2 text-sm text-subGray">
+          <button
+            // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
+            onClick={() => document.getElementById("commentModal").showModal()}
+          >
+            댓글 {commentCount}개 보기
+          </button>
+          <dialog id="commentModal" className="modal modal-bottom text-black">
+            <CommentModal
+              handleCommentCount={handleCommentCount}
+              loginUserId={loginUserId}
+            />
+          </dialog>
+        </div>
       </div>
-    </div>
+    </PerfectScrollar>
   ) : (
     <div className="ml-4 mt-4 flex w-11/12 flex-col gap-4">
       <div className="flex items-center gap-4">

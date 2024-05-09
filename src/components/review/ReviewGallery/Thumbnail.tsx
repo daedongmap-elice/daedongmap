@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PerfectScrollar from "react-perfect-scrollbar";
 
 interface ThumbnailProps {
   reviewIds: number[];
@@ -16,15 +17,19 @@ const Thumbnail = ({ reviewIds, imgUrls }: ThumbnailProps) => {
 
   return (
     <>
-      {idAndUrl.map((el, i) => (
-        <a href={`/detail#${el.id}`} key={`thumbnail${i}`}>
-          <img
-            src={el.url}
-            alt="thumbnail"
-            className="h-full max-h-32 w-full object-cover"
-          />
-        </a>
-      ))}
+      <PerfectScrollar>
+        <div className="grid grid-cols-3 gap-px">
+          {idAndUrl.map((el, i) => (
+            <a href={`/detail#${el.id}`} key={`thumbnail${i}`}>
+              <img
+                src={el.url}
+                alt="thumbnail"
+                className="h-full max-h-32 w-full object-cover"
+              />
+            </a>
+          ))}
+        </div>
+      </PerfectScrollar>
     </>
   );
 };

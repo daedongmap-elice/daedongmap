@@ -1,6 +1,7 @@
 import { Comment, CommentPost } from "@/components/review/index";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import PerfectScrollar from "react-perfect-scrollbar";
 
 interface CommentModalProps {
   handleCommentCount: (count: number) => void;
@@ -54,21 +55,23 @@ const CommentModal = ({
     <>
       <div className="modal-box h-5/6 w-full rounded-b-none pl-4">
         <h3 className="text-center text-base font-bold">댓글</h3>
-        <div className="h-5/6 overflow-auto" ref={commentRef}>
-          {data.map((comment, i) => (
-            <Comment
-              key={`comment${i}`}
-              loginUserId={loginUserId}
-              commentId={comment.id}
-              userId={comment.user.id}
-              profileImagePath={comment.user.profileImagePath}
-              nickName={comment.user.nickName}
-              content={comment.content}
-              createdAt={comment.createdAt}
-              getData={getData}
-            />
-          ))}
-        </div>
+        <PerfectScrollar>
+          <div className="h-5/6 overflow-auto" ref={commentRef}>
+            {data.map((comment, i) => (
+              <Comment
+                key={`comment${i}`}
+                loginUserId={loginUserId}
+                commentId={comment.id}
+                userId={comment.user.id}
+                profileImagePath={comment.user.profileImagePath}
+                nickName={comment.user.nickName}
+                content={comment.content}
+                createdAt={comment.createdAt}
+                getData={getData}
+              />
+            ))}
+          </div>
+        </PerfectScrollar>
         <CommentPost
           loginUserId={loginUserId}
           reviewId={currentReviewId}
