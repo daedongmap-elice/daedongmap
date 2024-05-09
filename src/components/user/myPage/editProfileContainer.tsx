@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import EditProfilePresnet from "./editProfilePresent";
 import { ProfileData } from "@/type/types";
 import { axiosClient } from "@/hooks/useAuth";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function EditProfileContainer() {
   const [profile, setProfile] = useState<ProfileData>({
@@ -14,7 +14,7 @@ export default function EditProfileContainer() {
   const formData = new FormData();
   const [imgFile, setImgFile] = useState<string[]>(["img/sample1.png"]);
   const upload = useRef<HTMLInputElement>(null);
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
 
   const imgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,8 +63,7 @@ export default function EditProfileContainer() {
   ) => {
     e.preventDefault();
     editProfile();
-    //navigate("/mypage");
-    console.log(profile);
+    navigate("/mypage");
   };
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

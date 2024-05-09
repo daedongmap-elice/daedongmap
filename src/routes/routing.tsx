@@ -8,6 +8,7 @@ import ReviewFeed from "@/pages/review/ReviewFeed";
 import ReviewEdit from "@/pages/review/ReviewEdit";
 import PreLoginPresent from "../components/user/preLoginPresnt";
 import MyPageContainer from "@/components/user/myPage/mypageContainer";
+import UserPageContainer from "@/components/user/myPage/userPageContainer";
 import EditProfileContainer from "@/components/user/myPage/editProfileContainer";
 import NotFoundPresent from "../components/notFound";
 import SignUpContainer from "@/components/user/signUP/signupContainer";
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
       { path: "/kakao/oauth", element: <KakaoOauth /> },
       { path: "/google/oauth", element: <GoogleOauth /> },
       { path: "/mypage", element: <MyPageContainer /> },
-      { path: "/mypage/:id", element: <MyPageContainer /> },
+      { path: `/userpage`, element: <UserPageContainer /> },
       { path: "/editprofile", element: <EditProfileContainer /> },
     ],
   },
