@@ -29,6 +29,8 @@ export default function PlaceInfoCard({
     placeName,
     placeUrl,
     roadAddressName,
+    reviewCnt,
+    reviewImagePath,
   } = place;
 
   const handleClickKaKaoBtn = () => {
@@ -67,7 +69,7 @@ export default function PlaceInfoCard({
             <div className="flex items-center gap-1.5">
               <h4 className="text-xs font-medium">{averageRating}</h4>
               <div className="rating rating-half rating-xs pointer-events-none">
-                <input
+                {/* <input
                   type="radio"
                   className="mask mask-half-1 mask-star-2 bg-mainY"
                 />
@@ -107,9 +109,17 @@ export default function PlaceInfoCard({
                 <input
                   type="radio"
                   className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
+                /> */}
+                {[...Array(10)].map((_, i) => (
+                  <input
+                    key={i}
+                    type="radio"
+                    className={`mask mask-half-${i % 2 === 0 ? 1 : 2} mask-star-2 bg-mainY`}
+                    defaultChecked={i === Math.floor(averageRating * 2) - 1}
+                  />
+                ))}
               </div>
-              <p className="text-xs text-subGray">(265)</p>
+              <p className="text-xs text-subGray">({reviewCnt})</p>
             </div>
           )}
 
@@ -124,7 +134,11 @@ export default function PlaceInfoCard({
         </div>
 
         {type === "main" && (
-          <div className="h-[80px] w-[80px] flex-none rounded bg-[url('https://img1.kakaocdn.net/cthumb/local/R736x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fb9db7f48894e9e0b2c6d22ba7330d0f6a1aa84b5%3Foriginal')] bg-cover bg-center"></div>
+          <img
+            src={reviewImagePath}
+            alt="음식점 사진"
+            className="h-[80px] w-[80px] rounded object-cover"
+          />
         )}
       </div>
       <div className="flex gap-3">
