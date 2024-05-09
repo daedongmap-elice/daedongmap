@@ -165,9 +165,7 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
         </div>
       )}
       {imgUrls.length !== 0 ? (
-        <div className="grid grid-cols-3 gap-px">
-          <Thumbnail reviewIds={reviewIds} imgUrls={imgUrls} />
-        </div>
+        <Thumbnail reviewIds={reviewIds} imgUrls={imgUrls} />
       ) : isDataLengthZero ? (
         <div className="mt-12 text-center text-subGray">
           등록된 리뷰가 없습니다.
