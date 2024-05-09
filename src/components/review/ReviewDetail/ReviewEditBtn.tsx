@@ -39,23 +39,21 @@ const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
   };
 
   return (
-    <>
-      <div className="dropdown dropdown-end mr-1">
-        <div tabIndex={0} role="button">
-          <AiOutlineMore className="h-6 w-6" />
-        </div>
-        <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
-          <li>
-            <a href={`/edit/#${currentReviewId}`}>수정</a>
-          </li>
-          <li>
-            <a href="/" onClick={handleDelete}>
-              삭제
-            </a>
-          </li>
-        </ul>
+    <div className="dropdown dropdown-end mr-1">
+      <div tabIndex={0} role="button">
+        <AiOutlineMore className="h-6 w-6" />
       </div>
-    </>
+      <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
+        <li>
+          <a href={`/edit/#${currentReviewId}`}>수정</a>
+        </li>
+        <li>
+          <a href="/" onClick={handleDelete}>
+            삭제
+          </a>
+        </li>
+      </ul>
+    </div>
   );
 };
 

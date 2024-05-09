@@ -1,13 +1,13 @@
 import axios from "axios";
 import ReviewDetail from "./ReviewDetail";
 import { useEffect, useState } from "react";
-import { ReviewDetailResponse } from "@/type/types";
+import { ReviewResponse } from "@/type/types";
 import { useParams } from "react-router-dom";
 
 const ReviewFeed = () => {
-  const [dataArray, setDataArray] = useState<
-    ReviewDetailResponse[] | undefined
-  >(undefined);
+  const [dataArray, setDataArray] = useState<ReviewResponse[] | undefined>(
+    undefined
+  );
   const token = localStorage.getItem("accessToken");
   const params = useParams();
 
