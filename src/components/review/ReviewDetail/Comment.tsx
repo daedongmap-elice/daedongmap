@@ -11,6 +11,7 @@ interface CommentProps {
   content: string;
   createdAt: string;
   getData: () => void;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
 const Comment = ({
@@ -23,9 +24,12 @@ const Comment = ({
   createdAt,
   getData,
 }: CommentProps) => {
+  const isMyComment = loginUserId === userId;
   return (
     <>
-      <div className="mb-6 mt-4 flex justify-center">
+      <div
+        className={`mb-6 mt-4 flex justify-center ${!isMyComment && "mr-6"}`}
+      >
         <div className="flex">
           <div>
             <a href={`/mypage/#${userId}`}>
@@ -44,7 +48,7 @@ const Comment = ({
             <p className="w-64">{content} </p>
           </div>
         </div>
-        {loginUserId === userId && (
+        {isMyComment && (
           <CommentEditBtn getData={getData} commentId={commentId} />
         )}
       </div>
