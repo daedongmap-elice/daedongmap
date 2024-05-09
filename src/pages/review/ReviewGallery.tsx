@@ -11,6 +11,23 @@ interface ReviewGalleryProps {
 const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
   const [reviewIds, setReviewIds] = useState<number[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
+  const [sort, setSort] = useState<string>();
+  const [category, setCategory] = useState<string>();
+  const [region, setRegion] = useState<string>();
+
+  // get요청 함수 만들기
+
+  console.log(sort, category, region);
+
+  const handleSort = (option: string) => {
+    setSort(option);
+  };
+  const handleCategory = (option: string) => {
+    setCategory(option);
+  };
+  const handleRegion = (option: string) => {
+    setRegion(option);
+  };
 
   const getData = async () => {
     try {
@@ -62,7 +79,10 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
         <div className="mb-1 flex justify-between">
           <Logo />
           <div>
-            <Select items={["최신순", "인기순", "리뷰많은순"]} />
+            <Select
+              items={["최신순", "별점순", "인기리뷰순", "인기음식점순"]}
+              handler={handleSort}
+            />
             <Select
               items={[
                 "음식 종류",
@@ -79,6 +99,7 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
                 "퓨전요리",
                 "카페",
               ]}
+              handler={handleCategory}
             />
             <Select
               items={[
@@ -100,6 +121,7 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
                 "강원",
                 "제주",
               ]}
+              handler={handleRegion}
             />
           </div>
         </div>

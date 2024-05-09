@@ -11,7 +11,7 @@ export { default as ReviewProfile } from "./ReviewDetail/ReviewProfile";
 export { default as ReviewEditBtn } from "./ReviewDetail/ReviewEditBtn";
 export { default as Star } from "./ReviewDetail/Star";
 export { default as Logo } from "./ReviewGallery/Logo";
-export { default as Select } from "./ReviewGallery/Select";
+export { default as Select } from "../common/Select";
 export { default as Thumbnail } from "./ReviewGallery/Thumbnail";
 export { default as FindPlaceModal } from "./ReviewPost/FindPlaceModal";
 export { default as ImageInput } from "./ReviewPost/ImageInput";
