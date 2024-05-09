@@ -26,33 +26,29 @@ const Comment = ({
 }: CommentProps) => {
   const isMyComment = loginUserId === userId;
   return (
-    <>
-      <div
-        className={`mb-6 mt-4 flex justify-center ${!isMyComment && "mr-6"}`}
-      >
-        <div className="flex">
-          <div>
-            <a href={`/mypage/#${userId}`}>
-              <img
-                className="mask mask-circle ml-3 mr-3 w-9"
-                src={profileImagePath}
-                alt="user-profile"
-              />
-            </a>
-          </div>
-          <div className="text-xs">
-            <div className="mb-2 flex w-64 items-center justify-between">
-              <b>{nickName}</b>
-              <DateCreated createdAt={createdAt} />
-            </div>
-            <p className="w-64">{content} </p>
-          </div>
+    <div className={`mb-6 mt-4 flex justify-start ${!isMyComment && "mr-6"}`}>
+      <div className="flex w-full">
+        <div className="min-w-14">
+          <a href={`/mypage/#${userId}`}>
+            <img
+              className="mask mask-circle ml-3 mr-3 w-9"
+              src={profileImagePath}
+              alt="user-profile"
+            />
+          </a>
         </div>
-        {isMyComment && (
-          <CommentEditBtn getData={getData} commentId={commentId} />
-        )}
+        <div className="w-full text-xs">
+          <div className="mb-2 flex items-center justify-between">
+            <b>{nickName}</b>
+            <DateCreated createdAt={createdAt} />
+          </div>
+          <p className="w-64">{content} </p>
+        </div>
       </div>
-    </>
+      {isMyComment && (
+        <CommentEditBtn getData={getData} commentId={commentId} />
+      )}
+    </div>
   );
 };
 
