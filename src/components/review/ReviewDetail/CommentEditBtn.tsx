@@ -9,14 +9,20 @@ interface EditButtonProps {
 const CommentEditBtn = ({ commentId, onDeleteSuccess }: EditButtonProps) => {
   // TODO: 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
   //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
+  const token = localStorage.getItem("accessToken");
 
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://35.232.243.53:8080/api/comments/${commentId}`
+        `http://35.232.243.53:8080/api/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
-      alert("댓글이 삭제되었습니다.");
+      // alert("댓글이 삭제되었습니다.");
       onDeleteSuccess();
     } catch (error) {
       console.error("댓글삭제 delete요청 에러", error);
