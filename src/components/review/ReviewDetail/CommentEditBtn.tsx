@@ -1,14 +1,14 @@
 import { AiOutlineMore } from "react-icons/ai";
 import axios from "axios";
+import { useState } from "react";
 
 interface EditButtonProps {
   commentId: number;
-  onDeleteSuccess: () => void;
+  getData: () => void;
 }
 
-const CommentEditBtn = ({ commentId, onDeleteSuccess }: EditButtonProps) => {
-  // TODO: 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
-  //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
+const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
+  const [showMenu, setShowMenu] = useState(false);
   const token = localStorage.getItem("accessToken");
 
   const handleDelete = async () => {
@@ -23,7 +23,8 @@ const CommentEditBtn = ({ commentId, onDeleteSuccess }: EditButtonProps) => {
       );
       console.log(response);
       // alert("댓글이 삭제되었습니다.");
-      onDeleteSuccess();
+      getData();
+      setShowMenu(false);
     } catch (error) {
       console.error("댓글삭제 delete요청 에러", error);
     }
@@ -32,19 +33,21 @@ const CommentEditBtn = ({ commentId, onDeleteSuccess }: EditButtonProps) => {
   return (
     <>
       <div className="dropdown dropdown-end mr-1">
-        <div tabIndex={0} role="button">
+        <button tabIndex={0} onClick={() => setShowMenu(true)}>
           <AiOutlineMore className="h-6 w-6" />
-        </div>
-        <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
-          {/* <li>
+        </button>
+        {showMenu && (
+          <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
+            {/* <li>
             <a href={"/"} onClick={}>
               수정
             </a>
           </li> */}
-          <li>
-            <button onClick={handleDelete}>삭제</button>
-          </li>
-        </ul>
+            <li>
+              <button onClick={handleDelete}>삭제</button>
+            </li>
+          </ul>
+        )}
       </div>
     </>
   );

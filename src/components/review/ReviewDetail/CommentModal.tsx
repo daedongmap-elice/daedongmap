@@ -59,7 +59,7 @@ const CommentModal = ({
               nickName={comment.user.nickName}
               content={comment.content}
               createdAt={comment.createdAt}
-              onDeleteSuccess={getData}
+              getData={getData}
             />
           ))}
         </div>

@@ -10,7 +10,7 @@ interface CommentProps {
   nickName: string;
   content: string;
   createdAt: string;
-  onDeleteSuccess: () => void;
+  getData: () => void;
 }
 
 const Comment = ({
@@ -21,7 +21,7 @@ const Comment = ({
   nickName,
   content,
   createdAt,
-  onDeleteSuccess,
+  getData,
 }: CommentProps) => {
   return (
     <>
@@ -45,10 +45,7 @@ const Comment = ({
           </div>
         </div>
         {loginUserId === userId && (
-          <CommentEditBtn
-            onDeleteSuccess={onDeleteSuccess}
-            commentId={commentId}
-          />
+          <CommentEditBtn getData={getData} commentId={commentId} />
         )}
       </div>
     </>
