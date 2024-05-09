@@ -55,6 +55,10 @@ const LikeBtn = ({
     <div className="flex items-center">
       <button
         onClick={() => {
+          if (!token) {
+            alert("좋아요는 로그인 후 누를 수 있습니다.");
+            return;
+          }
           if (!isLikedByUser) {
             likePost();
           }
