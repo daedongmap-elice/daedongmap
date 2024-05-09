@@ -17,7 +17,6 @@ export default function MyPageContainer() {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const naviagte = useNavigate();
-  console.log(reviews);
   const getProfile = async () => {
     try {
       const res = await axiosClient.get(`/user`, {
@@ -29,7 +28,6 @@ export default function MyPageContainer() {
           nickName: res.data.nickName,
           status: res.data.status,
         });
-        console.log(res);
       }
     } catch (error) {
       console.log(error);
@@ -53,7 +51,6 @@ export default function MyPageContainer() {
         headers: { Authorization: `Bearer ${refreshToken}` },
       });
       if (res.status === 200) {
-        console.log(res);
         alert(`${res.data}`);
         localStorage.clear();
         naviagte("/");
@@ -70,7 +67,6 @@ export default function MyPageContainer() {
   };
   const isClickModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    console.log(isModal);
     setIsModal(!isModal);
   };
   const isClickDelete = (
