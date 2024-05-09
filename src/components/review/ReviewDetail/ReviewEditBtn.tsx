@@ -9,6 +9,7 @@ interface EditButtonProps {
 const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
   // TODO: 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
   //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   const handleDelete = async (
@@ -19,7 +20,12 @@ const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
       e.preventDefault();
       try {
         const response = await axios.delete(
-          `http://35.232.243.53:8080/api/reviews/${currentReviewId}`
+          `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(response);
         navigate("/review");
