@@ -7,6 +7,7 @@ interface PlaceInfoCardProps {
     center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
+    isSetUserLocation: boolean;
   };
   type: "main" | "post";
   handleSetPlace?: () => void;
@@ -38,7 +39,7 @@ export default function PlaceInfoCard({
   };
 
   useEffect(() => {
-    if (userLocation) {
+    if (userLocation?.isSetUserLocation) {
       const pos = new kakao.maps.Polyline({
         path: [
           new kakao.maps.LatLng(
@@ -84,10 +85,12 @@ export default function PlaceInfoCard({
 
           <p className="truncate text-xs">{roadAddressName}</p>
           <div className="flex gap-1">
-            {type === "main" && (
+            {type === "main" && userLocation?.isSetUserLocation && (
               <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
             )}
-            {type === "main" && phone && <p className="text-xs font-bold">|</p>}
+            {type === "main" && userLocation?.isSetUserLocation && phone && (
+              <p className="text-xs font-bold">|</p>
+            )}
             {phone && <p className="text-xs text-mainG">{phone}</p>}
           </div>
         </div>
