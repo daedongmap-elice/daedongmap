@@ -9,14 +9,13 @@ import {
 } from "@/components/review/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ReviewDetailResponse } from "@/type/types";
+import { ReviewResponse } from "@/type/types";
 
 interface ReviewDetailProps {
   type?: "feed";
-  feedData?: ReviewDetailResponse; // path가 "feed"일 때 사용되는 데이터
+  feedData?: ReviewResponse; // path가 "feed"일 때 사용되는 데이터
 }
 
-// ReviewDetailProps가 ReviewDetailResponse타입의 데이터를 props로 받을 수 있음을 나타냄
 const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [isSeeMoreClicked, setIsSeeMoreClicked] = useState(false);
   const [isLikedByUser, setIsLikedByUser] = useState(false); // 내가 좋아요를 눌렀는지 여부
@@ -25,15 +24,13 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [commentCount, setCommentCount] = useState(0);
   const [loginUserId, setLoginUserId] = useState<number>(0);
   const [reviewUserId, setReviewUserId] = useState<number>(0);
-  const [data, setData] = useState<ReviewDetailResponse | null>(null);
+  const [data, setData] = useState<ReviewResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
   const currentReviewId = window.location.hash.substring(1);
   const token = localStorage.getItem("accessToken");
 
-  // console.log("loginUserId", loginUserId, "reviewUserId", reviewUserId);
-  // console.log("isLikedByUser(서버):", isLikedByUser, "/ isLiked", isLiked);
-  const putFeedData = (fData: ReviewDetailResponse) => {
+  const putFeedData = (fData: ReviewResponse) => {
     setData(fData);
     setReviewUserId(fData.user.id);
     const filePaths = fData.reviewImageDtoList.map(
@@ -109,7 +106,6 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
     }
     if (type === "feed") {
       if (!feedData) {
-        console.log("피드 데이터 없음");
         return;
       }
       putFeedData(feedData);
