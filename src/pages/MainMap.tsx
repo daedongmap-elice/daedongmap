@@ -36,9 +36,7 @@ export function MainMap() {
   const [nowCenter, setNowCenter] = useState<LatLngData>();
   const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [markers, setMarkers] = useState<PlaceData[]>([]);
-  const [filter, setFilter] = useState<"default" | "rating" | "distance">(
-    "default"
-  );
+  const [filter, setFilter] = useState<string>("default");
 
   const handleOnClickMarker = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
@@ -71,8 +69,16 @@ export function MainMap() {
     });
   };
 
-  const handleSetFilter = (type: "default" | "rating" | "distance") => {
-    setFilter(type);
+  const handleSetFilter = (type: string) => {
+    if (type === "추천순") {
+      setFilter("default");
+    }
+    if (type === "별점순") {
+      setFilter("rating");
+    }
+    if (type === "거리순") {
+      setFilter("distance");
+    }
   };
 
   async function getPlaces() {
