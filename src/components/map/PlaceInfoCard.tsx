@@ -73,7 +73,7 @@ export default function PlaceInfoCard({
                   <input
                     key={i}
                     type="radio"
-                    className={`mask mask-half-${i % 2 === 0 ? 1 : 2} mask-star-2 bg-mainY`}
+                    className={`mask ${i % 2 === 0 ? "mask-half-1" : "mask-half-2"} mask-star-2 bg-mainY`}
                     defaultChecked={i === Math.floor(averageRating * 2) - 1}
                   />
                 ))}
