@@ -4,20 +4,18 @@ import { UserInfo, ReviewGalleryResponse } from "@/type/types";
 import { DeleteUser, axiosClient } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { isCheckDelete } from "@/utils/authUtils";
+import { useAtom } from "jotai";
+import { profileAtom } from "@/components/atom/auth";
 
 export default function MyPageContainer() {
-  const [profile, setProfile] = useState<UserInfo>({
-    profileImage: "",
-    nickName: "",
-    status: "",
-    webSite: "",
-  });
+  const [profile, setProfile] = useAtom<UserInfo>(profileAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [reviews, setReivews] = useState<ReviewGalleryResponse[]>([]);
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const naviagte = useNavigate();
+
   const getProfile = async () => {
     try {
       const res = await axiosClient.get(`/user`, {
@@ -88,7 +86,7 @@ export default function MyPageContainer() {
   useEffect(() => {
     getProfile();
     getReview();
-  }, []);
+  }, [naviagte]);
 
   return (
     <MyPagePresent

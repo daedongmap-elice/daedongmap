@@ -1,11 +1,9 @@
-import { atom } from "jotai";
-import { getToken } from "@/utils/useToken";
-export const TokenAtom = atom(false);
-const isToken = getToken();
+import { UserInfo } from "@/type/types";
+import { atomWithStorage } from "jotai/utils";
 
-export const isTokenAtom = atom(
-  (get) => get(TokenAtom),
-  (get, set) => {
-    set(TokenAtom, isToken);
-  }
-);
+export const profileAtom = atomWithStorage<UserInfo>("profile", {
+  profileImage: "",
+  nickName: "",
+  status: "",
+  webSite: "",
+});

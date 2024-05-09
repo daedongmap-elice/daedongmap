@@ -1,18 +1,16 @@
 import { useRef, useState } from "react";
 import EditProfilePresnet from "./editProfilePresent";
-import { ProfileData } from "@/type/types";
+import { UserInfo } from "@/type/types";
 import { axiosClient } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { profileAtom } from "@/components/atom/auth";
+import { useAtom } from "jotai";
 
 export default function EditProfileContainer() {
-  const [profile, setProfile] = useState<ProfileData>({
-    nickName: "",
-    status: "",
-    webSite: "",
-  });
+  const [profile, setProfile] = useAtom<UserInfo>(profileAtom);
   const [img, setImg] = useState<any>();
   const formData = new FormData();
-  const [imgFile, setImgFile] = useState<string[]>(["img/sample1.png"]);
+  const [imgFile, setImgFile] = useState<string[]>([profile.profileImage]);
   const upload = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
@@ -86,6 +84,7 @@ export default function EditProfileContainer() {
       imgUpload={imgUpload}
       imgFile={imgFile}
       handleButtonClick={handleButtonClick}
+      profile={profile}
     />
   );
 }

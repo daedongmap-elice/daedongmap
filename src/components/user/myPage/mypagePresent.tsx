@@ -2,6 +2,7 @@ import { UserInfo, ReviewGalleryResponse } from "@/type/types";
 import { AiOutlineMore } from "react-icons/ai";
 import { RiLink } from "react-icons/ri";
 import ReviewGallery from "@/pages/review/ReviewGallery";
+import { Link } from "react-router-dom";
 
 interface MypageProps {
   profile: UserInfo;
@@ -80,7 +81,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
           <></>
         ) : (
           <button className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText">
-            <a href="/editprofile">프로필 편집</a>
+            <Link to="/editprofile">프로필 편집</Link>
           </button>
         )}
         {isModal && (
