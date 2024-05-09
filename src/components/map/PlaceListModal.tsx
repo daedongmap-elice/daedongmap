@@ -30,7 +30,7 @@ export default function PlaceListModal({
         <div
           className={`fixed transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"} z-10 h-24 w-full bg-[#F7F7F9]`}
         ></div>
-        <div className="relative mx-auto my-0 w-[320px] pb-2 text-right">
+        <div className="relative mx-auto my-0 w-[320px] pb-px text-right">
           <Select
             optionName={["추천순", "별점순", "거리순"]}
             optionValue={["default", "rating", "distance"]}
@@ -38,7 +38,7 @@ export default function PlaceListModal({
           />
         </div>
         <PerfectScrollar>
-          <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-2">
+          <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-11 pt-px">
             {placeList.length === 0 ? (
               //맛집이 없는 경우 메세지로 알림 추가
               <div className="mt-40 flex flex-col items-center gap-3">
