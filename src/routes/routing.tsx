@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       { path: "/kakao/oauth", element: <KakaoOauth /> },
       { path: "/google/oauth", element: <GoogleOauth /> },
       { path: "/mypage", element: <MyPageContainer /> },
-      { path: `/userPage`, element: <UserPageContainer /> },
+      { path: `/userpage`, element: <UserPageContainer /> },
       { path: "/editprofile", element: <EditProfileContainer /> },
     ],
   },
