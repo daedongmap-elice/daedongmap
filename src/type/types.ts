@@ -31,18 +31,21 @@ export interface LatLngData {
   lng: number;
 }
 
-export interface PlaceData {
-  addressName: string;
-  averageRating: number;
-  categoryName: string;
-  id: number;
+export interface PlaceInfoData {
   kakaoPlaceId: number;
-  phone: string | null;
   placeName: string;
-  placeUrl: string;
+  addressName: string;
+  categoryName: string;
   roadAddressName: string;
+  placeUrl: string;
+  phone: string | null;
   x: number;
   y: number;
+}
+
+export interface PlaceData extends PlaceInfoData {
+  averageRating: number;
+  id: number;
 }
 
 export interface ReviewGalleryResponse {
