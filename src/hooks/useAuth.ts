@@ -8,7 +8,6 @@ export const axiosClient = axios.create({
   baseURL: BASE_URL,
 });
 
-//요청
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
@@ -22,7 +21,6 @@ axiosClient.interceptors.request.use(
   }
 );
 
-//응답
 axiosClient.interceptors.response.use(
   (res) => {
     return res;

@@ -76,7 +76,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
           </button>
         )}
         {isModal && (
-          <div className="modal-overlay">
+          <div className="modal-overlay flex justify-center">
             <div className="modal-box">
               <form method="dialog">
                 <button
