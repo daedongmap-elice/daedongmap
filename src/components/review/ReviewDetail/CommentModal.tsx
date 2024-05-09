@@ -2,7 +2,7 @@ import { Comment, CommentPost } from "@/components/review/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-// TODO: CommentModal에서도 각 댓글에서 로그인userID와 댓글userID가 일치할 경우에만 EditButton 표시
+// TODO: useRef 사용해서 스크롤을 div의 하단으로 가도록 하기
 
 interface CommentModalProps {
   handleCommentCount: (count: number) => void;
@@ -28,9 +28,7 @@ const CommentModal = ({
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const currentReviewId = window.location.hash.substring(1);
   // 부모 컴포넌트에서 자식의 DOM요소 접근 시는 useRef 대신 forwardRef를 사용해 접근
-  // const lastCommentRef = forwardRef<HTMLDivElement>((div) =>
-  //   div.scrollIntoView()
-  // );
+  // const commentRef = useRef();
 
   const getData = async () => {
     try {
@@ -66,7 +64,6 @@ const CommentModal = ({
                 content={comment.content}
                 createdAt={comment.createdAt}
                 getData={getData}
-                // ref={lastCommentRef}
               />
             ) : (
               <Comment
