@@ -2,7 +2,7 @@ import { Comment, CommentPost } from "@/components/review/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-// TODO: CommentModal에서도 각 댓글에서 로그인userID와 댓글userID가 일치할 경우에만 EditButton 표시
+// TODO: useRef 사용해서 스크롤을 div의 하단으로 가도록 하기
 
 interface CommentModalProps {
   handleCommentCount: (count: number) => void;
@@ -27,6 +27,8 @@ const CommentModal = ({
 }: CommentModalProps) => {
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const currentReviewId = window.location.hash.substring(1);
+  // 부모 컴포넌트에서 자식의 DOM요소 접근 시는 useRef 대신 forwardRef를 사용해 접근
+  // const commentRef = useRef();
 
   const getData = async () => {
     try {
@@ -42,6 +44,7 @@ const CommentModal = ({
 
   useEffect(() => {
     getData();
+    // lastCommentRef.scrollIntoView();
   }, []);
 
   return (
@@ -49,19 +52,33 @@ const CommentModal = ({
       <div className="modal-box h-5/6 w-full rounded-b-none pl-4">
         <h3 className="text-center text-base font-bold">댓글</h3>
         <div className="h-5/6 overflow-auto">
-          {data.map((comment, i) => (
-            <Comment
-              key={`comment${i}`}
-              loginUserId={loginUserId}
-              commentId={comment.id}
-              userId={comment.user.id}
-              profileImagePath={comment.user.profileImagePath}
-              nickName={comment.user.nickName}
-              content={comment.content}
-              createdAt={comment.createdAt}
-              onDeleteSuccess={getData}
-            />
-          ))}
+          {data.map((comment, i) =>
+            data.length === i + 1 ? (
+              <Comment
+                key={`comment${i}`}
+                loginUserId={loginUserId}
+                commentId={comment.id}
+                userId={comment.user.id}
+                profileImagePath={comment.user.profileImagePath}
+                nickName={comment.user.nickName}
+                content={comment.content}
+                createdAt={comment.createdAt}
+                getData={getData}
+              />
+            ) : (
+              <Comment
+                key={`comment${i}`}
+                loginUserId={loginUserId}
+                commentId={comment.id}
+                userId={comment.user.id}
+                profileImagePath={comment.user.profileImagePath}
+                nickName={comment.user.nickName}
+                content={comment.content}
+                createdAt={comment.createdAt}
+                getData={getData}
+              />
+            )
+          )}
         </div>
         <CommentPost
           loginUserId={loginUserId}

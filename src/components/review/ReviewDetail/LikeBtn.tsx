@@ -29,6 +29,7 @@ const LikeBtn = ({
           },
         }
       );
+      handleIsLiked(true);
     } catch (error) {
       console.error("좋아요 post요청 에러:", error);
     }
@@ -44,6 +45,7 @@ const LikeBtn = ({
           },
         }
       );
+      handleIsLiked(false);
     } catch (error) {
       console.error("좋아요 deleted요청 에러:", error);
     }
@@ -53,8 +55,6 @@ const LikeBtn = ({
     <div className="flex items-center">
       <button
         onClick={() => {
-          if (!isLiked && !isLikedByUser) handleIsLiked(true);
-          if (isLiked && isLikedByUser) handleIsLiked(false);
           if (!isLikedByUser) {
             likePost();
           }

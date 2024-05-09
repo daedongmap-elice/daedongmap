@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import axios from "axios";
 
 interface CommentPostProps {
@@ -17,8 +17,7 @@ const CommentPost = ({
   const token = localStorage.getItem("accessToken");
 
   // 나의 유저아이디 가져와야 함
-  const handleSubmit = async () => {
-    console.log(content);
+  const handleSubmit = useCallback(async () => {
     try {
       const response = await axios.post(
         "http://35.232.243.53:8080/api/comments",
@@ -42,10 +41,10 @@ const CommentPost = ({
     } catch (error) {
       console.error("댓글등록 실패:", error);
     }
-  };
+  }, [content]);
 
   return (
-    <div className="fixed bottom-7 w-full">
+    <div className="fixed bottom-9 w-full">
       <div className="flex justify-center">
         <div className="flex w-10/12 gap-2">
           <input
@@ -56,6 +55,7 @@ const CommentPost = ({
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
+                e.preventDefault();
                 if (token) {
                   handleSubmit();
                 } else {
@@ -67,8 +67,9 @@ const CommentPost = ({
           />
           <button
             type="submit"
-            onClick={() => {
+            onClick={(e) => {
               if (token) {
+                e.preventDefault();
                 handleSubmit();
               } else {
                 alert("댓글 작성은 로그인 후 가능합니다.");

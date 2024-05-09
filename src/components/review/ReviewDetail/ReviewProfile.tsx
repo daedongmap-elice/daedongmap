@@ -13,7 +13,7 @@ const ReviewProfile = ({
 }: ReviewProfileProps) => {
   return (
     <>
-      <a href={`/mypage/#${userId}`}>
+      <a href={`/userpage/#${userId}`}>
         <div className="mb-3 mt-4 flex">
           <div>
             <img
