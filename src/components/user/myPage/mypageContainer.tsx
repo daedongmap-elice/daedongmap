@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MyPagePresent from "./mypagePresent";
-import { UserInfo } from "@/type/types";
+import { UserInfo, ReviewGalleryResponse } from "@/type/types";
 import { DeleteUser, axiosClient } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { isCheckDelete } from "@/utils/authUtils";
@@ -13,10 +13,11 @@ export default function MyPageContainer() {
   });
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [reviews, setReivews] = useState<ReviewGalleryResponse[]>([]);
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const naviagte = useNavigate();
-
+  console.log(reviews);
   const getProfile = async () => {
     try {
       const res = await axiosClient.get(`/user`, {
@@ -40,7 +41,7 @@ export default function MyPageContainer() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (res.status === 200) {
-        console.log(res);
+        setReivews(res.data);
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +66,6 @@ export default function MyPageContainer() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log(refreshToken);
     logout();
   };
   const isClickModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -101,6 +101,7 @@ export default function MyPageContainer() {
       isClickDelete={isClickDelete}
       buttonDisabled={buttonDisabled}
       handleChange={handleChange}
+      reviews={reviews}
     />
   );
 }
