@@ -69,47 +69,6 @@ export default function PlaceInfoCard({
             <div className="flex items-center gap-1.5">
               <h4 className="text-xs font-medium">{averageRating}</h4>
               <div className="rating rating-half rating-xs pointer-events-none">
-                {/* <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-1 mask-star-2 bg-mainY"
-                  defaultChecked={true}
-                />
-                <input
-                  type="radio"
-                  className="mask mask-half-2 mask-star-2 bg-mainY"
-                /> */}
                 {[...Array(10)].map((_, i) => (
                   <input
                     key={i}
