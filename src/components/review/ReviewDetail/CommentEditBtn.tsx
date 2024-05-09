@@ -32,19 +32,19 @@ const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
 
   return (
     <>
-      <div className="dropdown dropdown-end mr-1">
+      <div className="dropdown dropdown-end">
         <button tabIndex={0} onClick={() => setShowMenu(true)}>
           <AiOutlineMore className="h-6 w-6" />
         </button>
         {showMenu && (
-          <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
+          <ul className="menu dropdown-content z-[1] w-28 rounded-box bg-base-100 p-2 shadow">
             {/* <li>
             <a href={"/"} onClick={}>
               수정
             </a>
           </li> */}
             <li>
-              <button onClick={handleDelete}>삭제</button>
+              <button onClick={handleDelete}>댓글 삭제</button>
             </li>
           </ul>
         )}

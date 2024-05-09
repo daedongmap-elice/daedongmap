@@ -45,7 +45,7 @@ const CommentPost = ({
   };
 
   return (
-    <div className="fixed bottom-7 w-full">
+    <div className="fixed bottom-9 w-full">
       <div className="flex justify-center">
         <div className="flex w-10/12 gap-2">
           <input
@@ -55,6 +55,7 @@ const CommentPost = ({
             className="input input-bordered h-8 w-full text-xs"
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={(e) => {
+              e.preventDefault();
               if (e.key === "Enter") {
                 if (token) {
                   handleSubmit();

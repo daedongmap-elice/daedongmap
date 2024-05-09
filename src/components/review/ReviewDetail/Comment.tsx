@@ -25,7 +25,7 @@ const Comment = ({
 }: CommentProps) => {
   return (
     <>
-      <div className="mb-6 mt-4 flex justify-between">
+      <div className="mb-6 mt-4 flex justify-center">
         <div className="flex">
           <div>
             <a href={`/mypage/#${userId}`}>
