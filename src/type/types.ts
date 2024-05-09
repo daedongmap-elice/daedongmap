@@ -50,35 +50,7 @@ export interface PlaceData extends PlaceInfoData {
   reviewImagePath: string;
 }
 
-export interface ReviewGalleryResponse {
-  id: number;
-  kakaoPlaceId: number;
-  placeName: string;
-  user: {
-    id: number;
-    nickName: string;
-    email: string;
-    profileImagePath: string;
-  };
-  content: string;
-  reviewImageList: [
-    {
-      id: number;
-      userId: number;
-      reviewId: number;
-      filePath: string;
-    },
-  ];
-  tasteRating: number;
-  hygieneRating: number;
-  kindnessRating: number;
-  averageRating: number;
-  likeCount: number;
-  createdAt: string | undefined;
-  updatedAt: string;
-}
-
-export interface ReviewDetailResponse {
+export interface ReviewResponse {
   id: number;
   kakaoPlaceId: number;
   placeName: string;

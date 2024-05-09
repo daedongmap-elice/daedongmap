@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PerfectScrollar from "react-perfect-scrollbar";
+import { PlaceInfoData } from "@/type/types";
 
 const ReviewEdit = () => {
   const [loginUserId, setLoginUserId] = useState<number>(0);
@@ -18,27 +20,7 @@ const ReviewEdit = () => {
   const [prevImgUrls, setPrevImgUrls] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
-  const [place, setPlace] = useState<{
-    kakaoPlaceId: number;
-    placeName: string;
-    placeUrl: string;
-    categoryName: string;
-    addressName: string;
-    roadAddressName: string;
-    phone: string;
-    x: number;
-    y: number;
-  }>({
-    kakaoPlaceId: 0,
-    placeName: "",
-    placeUrl: "",
-    categoryName: "",
-    addressName: "",
-    roadAddressName: "",
-    phone: "",
-    x: 0,
-    y: 0,
-  });
+  const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
 
   const currentReviewId = window.location.hash.substring(1);
   const token = localStorage.getItem("accessToken");
@@ -120,7 +102,6 @@ const ReviewEdit = () => {
         formData.append("file", postImgs[i]);
       }
     } else {
-      // formData.append("file", []);
       formData.append(
         "file",
         new Blob([JSON.stringify([])], {
@@ -182,71 +163,73 @@ const ReviewEdit = () => {
   }, []);
 
   return (
-    <div className="pb-16">
-      <div className="mb-6 ml-5 mt-4 text-lg font-medium">리뷰 수정하기</div>
-      <form className="flex flex-col items-center justify-center gap-1">
-        <div className="flex justify-center">
-          <ImageInput
-            prevImgUrls={prevImgUrls}
-            postImgs={postImgs}
-            handlePostImgs={handlePostImgs}
+    <PerfectScrollar>
+      <div className="pb-16">
+        <div className="mb-6 ml-5 mt-4 text-lg font-medium">리뷰 수정하기</div>
+        <form className="flex flex-col items-center justify-center gap-1">
+          <div className="flex justify-center">
+            <ImageInput
+              prevImgUrls={prevImgUrls}
+              postImgs={postImgs}
+              handlePostImgs={handlePostImgs}
+            />
+          </div>
+          <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
+            <div className="mb-0.5 flex items-center gap-1">
+              <span className="min-w-6 text-center">맛</span>
+              <RatingStar
+                name="taste"
+                initialValue={tasteRating}
+                setRating={setTasteRating}
+              />
+            </div>
+            <div className="mb-0.5 flex items-center gap-1">
+              <span className="min-w-6">위생</span>
+              <RatingStar
+                name="hygiene"
+                initialValue={hygieneRating}
+                setRating={setHygieneRating}
+              />
+            </div>
+            <div className="mb-3 flex items-center gap-1">
+              <span className="min-w-6">친절</span>
+              <RatingStar
+                name="kindness"
+                initialValue={kindnessRating}
+                setRating={setKindnessRating}
+              />
+            </div>
+          </div>
+          <input
+            type="text"
+            placeholder={placeName}
+            className="input input-sm input-bordered mb-2 box-border w-3/4 max-w-xs"
+            disabled
           />
-        </div>
-        <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
-          <div className="mb-0.5 flex items-center gap-1">
-            <span className="min-w-6 text-center">맛</span>
-            <RatingStar
-              name="taste"
-              initialValue={tasteRating}
-              setRating={setTasteRating}
-            />
-          </div>
-          <div className="mb-0.5 flex items-center gap-1">
-            <span className="min-w-6">위생</span>
-            <RatingStar
-              name="hygiene"
-              initialValue={hygieneRating}
-              setRating={setHygieneRating}
-            />
-          </div>
-          <div className="mb-3 flex items-center gap-1">
-            <span className="min-w-6">친절</span>
-            <RatingStar
-              name="kindness"
-              initialValue={kindnessRating}
-              setRating={setKindnessRating}
-            />
-          </div>
-        </div>
-        <input
-          type="text"
-          placeholder={placeName}
-          className="input input-sm input-bordered mb-2 box-border w-3/4 max-w-xs"
-          disabled
-        />
-        {/* 리뷰 수정 요청에 placeRequest 필요없으면 dialog 삭제할 것(eslint setPlace never used 에러 때문) */}
-        <dialog>
-          <FindPlaceModal setPlace={setPlace} />
-        </dialog>
-        <textarea
-          required
-          className="textarea textarea-bordered box-border h-32 w-3/4 max-w-xs pt-3 text-xs"
-          placeholder="리뷰 내용 입력..."
-          onChange={(e) => setContent(e.target.value)}
-          defaultValue={content}
-        ></textarea>
-        <button
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
-        >
-          리뷰 수정
-        </button>
-      </form>
-    </div>
+          {/* 리뷰 수정 요청에 placeRequest 필요없으면 dialog 삭제할 것(eslint setPlace never used 에러 때문) */}
+          <dialog>
+            <FindPlaceModal setPlace={setPlace} />
+          </dialog>
+          <textarea
+            required
+            className="textarea textarea-bordered box-border h-32 w-3/4 max-w-xs pt-3 text-xs"
+            placeholder="리뷰 내용 입력..."
+            onChange={(e) => setContent(e.target.value)}
+            defaultValue={content}
+          ></textarea>
+          <button
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
+          >
+            리뷰 수정
+          </button>
+        </form>
+      </div>
+    </PerfectScrollar>
   );
 };
 
