@@ -32,7 +32,8 @@ export default function PlaceListModal({
         ></div>
         <div className="relative mx-auto my-0 w-[320px] pb-2 text-right">
           <Select
-            items={["추천순", "인기순", "거리순"]}
+            optionName={["추천순", "별점순", "거리순"]}
+            optionValue={["default", "rating", "distance"]}
             handler={handleSetFilter}
           />
         </div>

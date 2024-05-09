@@ -70,15 +70,7 @@ export function MainMap() {
   };
 
   const handleSetFilter = (type: string) => {
-    if (type === "추천순") {
-      setFilter("default");
-    }
-    if (type === "별점순") {
-      setFilter("rating");
-    }
-    if (type === "거리순") {
-      setFilter("distance");
-    }
+    setFilter(type);
   };
 
   async function getPlaces() {
