@@ -2,15 +2,17 @@ import { BiSolidHome } from "react-icons/bi";
 import { BiSolidGridAlt } from "react-icons/bi";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { BiSolidUserCircle } from "react-icons/bi";
-//import { getToken } from "../../utils/useToken";
-//import { useEffect, useState } from "react";
+import { getToken } from "../../utils/useToken";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAtom } from "jotai";
-import { isTokenAtom } from "../atom/auth";
 
 export default function BottomNavbar() {
-  const [isToken] = useAtom(isTokenAtom);
-  console.log(isToken);
+  const [isToken, setIsToken] = useState<boolean>(false);
+  useEffect(() => {
+    setIsToken(getToken());
+    console.log(isToken);
+  }, [isToken]);
+
   return (
     <div className="btm-nav z-[100] h-9 border border-x-0 border-b-0 border-solid border-gray-200">
       <button className="rounded-none border-none bg-white pb-0">

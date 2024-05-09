@@ -1,5 +1,6 @@
 import { UserInfo, ReviewGalleryResponse } from "@/type/types";
 import { AiOutlineMore } from "react-icons/ai";
+import { RiLink } from "react-icons/ri";
 import ReviewGallery from "@/pages/review/ReviewGallery";
 
 interface MypageProps {
@@ -28,7 +29,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
   return (
     <>
       <div className="flex flex-col items-center">
-        <div className="mt-9 flex flex-row">
+        <div className="mt-9 flex w-full flex-row justify-center">
           <div className="avatar mr-4">
             <div className="w-[107px] rounded-full border border-solid  border-subGray">
               <img src={profile.profileImage} alt="프로필 이미지 " />
@@ -41,6 +42,13 @@ const MyPagePresent: React.FC<MypageProps> = ({
               <span className="text-xs">10</span>
             </div>
             <span className="text-sm">{profile.status}</span>
+            {profile.webSite === "아직 연결된 외부 사이트가 없습니다." ? (
+              <></>
+            ) : (
+              <div className="text-xs">
+                <RiLink /> {profile.webSite}
+              </div>
+            )}
           </div>
           {userId ? (
             <></>
