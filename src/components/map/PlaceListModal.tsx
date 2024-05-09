@@ -13,13 +13,14 @@ interface PlaceListModalProps {
     errMsg: null | string;
     isLoading: boolean;
   };
-  handleSetFilter: (type: "default" | "rating" | "distance") => void;
+  handleSetFilter: (type: string) => void;
 }
 
 export default function PlaceListModal({
   openListModal,
   placeList,
   userLocation,
+  handleSetFilter,
 }: PlaceListModalProps) {
   return (
     <div>
@@ -30,7 +31,11 @@ export default function PlaceListModal({
           className={`fixed transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"} z-10 h-24 w-full bg-[#F7F7F9]`}
         ></div>
         <div className="relative mx-auto my-0 w-[320px] pb-2 text-right">
-          <Select items={["추천순", "인기순", "거리순"]} />
+          <Select
+            optionName={["추천순", "별점순", "거리순"]}
+            optionValue={["default", "rating", "distance"]}
+            handler={handleSetFilter}
+          />
         </div>
         <PerfectScrollar>
           <div className="relative mx-auto my-0 flex w-[320px] flex-col gap-3 pb-2">
