@@ -46,6 +46,8 @@ export interface PlaceInfoData {
 export interface PlaceData extends PlaceInfoData {
   averageRating: number;
   id: number;
+  reviewCnt: string;
+  reviewImagePath: string;
 }
 
 export interface ReviewGalleryResponse {
