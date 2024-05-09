@@ -58,22 +58,47 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
 
   return (
     <div className="pb-16">
-      {type === "myPage" && (
+      {type !== "myPage" && (
         <div className="mb-1 flex justify-between">
           <Logo />
           <div>
-            <Select items={["추천순", "인기순", "최신순"]} />
-            <Select items={["음식 종류", "한식", "중식", "양식", "기타"]} />
+            <Select items={["최신순", "인기순", "리뷰많은순"]} />
+            <Select
+              items={[
+                "음식 종류",
+                "한식",
+                "일식",
+                "양식",
+                "중식",
+                "아시안",
+                "뷔페",
+                "기사식당",
+                "술집",
+                "간식",
+                "분식",
+                "퓨전요리",
+                "카페",
+              ]}
+            />
             <Select
               items={[
                 "전국",
                 "서울",
-                "경기도",
-                "강원도",
-                "충청도",
-                "경상도",
-                "전라도",
-                "제주도",
+                "경기",
+                "부산",
+                "대구",
+                "인천",
+                "광주",
+                "대전",
+                "울산",
+                "충북",
+                "충남",
+                "전북",
+                "전남",
+                "경북",
+                "경남",
+                "강원",
+                "제주",
               ]}
             />
           </div>
