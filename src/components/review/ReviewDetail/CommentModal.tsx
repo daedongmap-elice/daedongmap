@@ -1,8 +1,6 @@
 import { Comment, CommentPost } from "@/components/review/index";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-
-// TODO: useRef 사용해서 스크롤을 div의 하단으로 가도록 하기
 
 interface CommentModalProps {
   handleCommentCount: (count: number) => void;
@@ -28,7 +26,12 @@ const CommentModal = ({
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const currentReviewId = window.location.hash.substring(1);
   // 부모 컴포넌트에서 자식의 DOM요소 접근 시는 useRef 대신 forwardRef를 사용해 접근
-  // const commentRef = useRef();
+  const commentRef = useRef<HTMLDivElement>(null);
+
+  // TOFIX: 새 댓글 등록 시 하단으로 이동하는 기능을 넣었으나 동작하지 않고 있음
+  const scrollToBottom = () => {
+    commentRef.current?.scrollIntoView(false);
+  };
 
   const getData = async () => {
     try {
@@ -37,6 +40,7 @@ const CommentModal = ({
       );
       setData(response.data);
       handleCommentCount(response.data.length);
+      scrollToBottom();
     } catch (error) {
       console.error("댓글창 get요청 에러", error);
     }
@@ -44,46 +48,32 @@ const CommentModal = ({
 
   useEffect(() => {
     getData();
-    // lastCommentRef.scrollIntoView();
   }, []);
 
   return (
     <>
       <div className="modal-box h-5/6 w-full rounded-b-none pl-4">
         <h3 className="text-center text-base font-bold">댓글</h3>
-        <div className="h-5/6 overflow-auto">
-          {data.map((comment, i) =>
-            data.length === i + 1 ? (
-              <Comment
-                key={`comment${i}`}
-                loginUserId={loginUserId}
-                commentId={comment.id}
-                userId={comment.user.id}
-                profileImagePath={comment.user.profileImagePath}
-                nickName={comment.user.nickName}
-                content={comment.content}
-                createdAt={comment.createdAt}
-                getData={getData}
-              />
-            ) : (
-              <Comment
-                key={`comment${i}`}
-                loginUserId={loginUserId}
-                commentId={comment.id}
-                userId={comment.user.id}
-                profileImagePath={comment.user.profileImagePath}
-                nickName={comment.user.nickName}
-                content={comment.content}
-                createdAt={comment.createdAt}
-                getData={getData}
-              />
-            )
-          )}
+        <div className="h-5/6 overflow-auto" ref={commentRef}>
+          {data.map((comment, i) => (
+            <Comment
+              key={`comment${i}`}
+              loginUserId={loginUserId}
+              commentId={comment.id}
+              userId={comment.user.id}
+              profileImagePath={comment.user.profileImagePath}
+              nickName={comment.user.nickName}
+              content={comment.content}
+              createdAt={comment.createdAt}
+              getData={getData}
+            />
+          ))}
         </div>
         <CommentPost
           loginUserId={loginUserId}
           reviewId={currentReviewId}
-          onPostSuccess={getData}
+          getData={getData}
+          scrollToBottom={scrollToBottom}
         />
       </div>
       <form method="dialog" className="modal-backdrop">
