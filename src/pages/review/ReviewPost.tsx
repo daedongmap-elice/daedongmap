@@ -5,10 +5,10 @@ import {
 } from "@/components/review/index";
 import { useState } from "react";
 import FormData from "form-data";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { PlaceInfoData } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
+import axiosClient from "@/utils/baseUrl";
 
 const ReviewPost = () => {
   const [postImgs, setPostImgs] = useState<File[]>([]);
@@ -84,7 +84,7 @@ const ReviewPost = () => {
     appendFormData(formData);
 
     try {
-      await axios.post("http://35.232.243.53:8080/api/reviews", formData, {
+      await axiosClient.post("/reviews", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

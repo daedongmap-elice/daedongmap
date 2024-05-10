@@ -1,6 +1,6 @@
 import { AiOutlineMore } from "react-icons/ai";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosClient from "@/utils/baseUrl";
 
 interface EditButtonProps {
   reviewId: number;
@@ -19,14 +19,11 @@ const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
     if (shouldDelete) {
       e.preventDefault();
       try {
-        const response = await axios.delete(
-          `http://35.232.243.53:8080/api/reviews/${reviewId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axiosClient.delete(`/reviews/${reviewId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log(response);
         navigate("/review");
         window.alert("삭제되었습니다.");

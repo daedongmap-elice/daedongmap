@@ -1,7 +1,7 @@
 import { Select, Logo, Thumbnail } from "@/components/review/index";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { ReviewResponse } from "@/type/types";
+import axiosClient from "@/utils/baseUrl";
 
 interface ReviewGalleryProps {
   type?: "myPage";
@@ -32,8 +32,8 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
       const ids: number[] = [];
       const firstFiles: string[] = [];
 
-      const response = await axios.get(
-        `http://35.232.243.53:8080/api/reviews/filter?region=${region}&category=${category}&sort=${sort}`
+      const response = await axiosClient.get(
+        `/reviews/filter?region=${region}&category=${category}&sort=${sort}`
       );
       if (response.data.length === 0) {
         setIsDataLengthZero(true);

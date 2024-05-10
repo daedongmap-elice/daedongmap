@@ -8,9 +8,9 @@ import {
   CommentModal,
 } from "@/components/review/index";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { ReviewResponse } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
+import axiosClient from "@/utils/baseUrl";
 
 interface ReviewDetailProps {
   type?: "feed";
@@ -57,14 +57,11 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   const getData = async () => {
     try {
-      const response = await axios.get(
-        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // TODO: 서버수정후 토큰삭제하기
-          },
-        }
-      );
+      const response = await axiosClient.get(`/reviews/${currentReviewId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // TODO: 서버수정후 토큰삭제하기
+        },
+      });
       console.log(response.data.id);
       setData(response.data);
       setReviewId(response.data.id);
@@ -88,15 +85,11 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   const getUserId = async () => {
     try {
-      const response = await axios.post(
-        "http://35.232.243.53:8080/api/user",
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosClient.post("/user", null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setLoginUserId(response.data);
     } catch (error) {
       console.error("로그인 유저id 요청 에러:", error);
