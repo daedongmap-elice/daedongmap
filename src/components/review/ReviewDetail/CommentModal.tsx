@@ -28,6 +28,7 @@ const CommentModal = ({
   const currentReviewId = window.location.hash.substring(1);
   // 부모 컴포넌트에서 자식의 DOM요소 접근 시는 useRef 대신 forwardRef를 사용해 접근
   const commentRef = useRef<HTMLDivElement>(null);
+  const token = localStorage.getItem("accessToken");
 
   // TOFIX: 새 댓글 등록 시 하단으로 이동하는 기능을 넣었으나 동작하지 않고 있음
   const scrollToBottom = () => {
@@ -36,19 +37,23 @@ const CommentModal = ({
 
   const getData = async () => {
     try {
-      const response = await axios.get(
-        `http://35.232.243.53:8080/api/comments/reviews/${currentReviewId}`
-      );
-      setData(response.data);
-      handleCommentCount(response.data.length);
-      scrollToBottom();
+      if (token) {
+        const response = await axios.get(
+          `http://35.232.243.53:8080/api/comments/reviews/${currentReviewId}`
+        );
+        setData(response.data);
+        handleCommentCount(response.data.length);
+        scrollToBottom();
+      }
     } catch (error) {
       console.error("댓글창 get요청 에러", error);
     }
   };
 
   useEffect(() => {
-    getData();
+    if (token) {
+      getData();
+    }
   }, []);
 
   return (
