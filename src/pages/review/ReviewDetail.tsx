@@ -25,6 +25,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [commentCount, setCommentCount] = useState(0);
   const [loginUserId, setLoginUserId] = useState<number>(0);
   const [reviewUserId, setReviewUserId] = useState<number>(0);
+  const [reviewId, setReviewId] = useState<number>(0);
   const [data, setData] = useState<ReviewResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
@@ -64,7 +65,9 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
           },
         }
       );
+      console.log(response.data.id);
       setData(response.data);
+      setReviewId(response.data.id);
       setReviewUserId(response.data.user.id);
       const filePaths = response.data.reviewImageDtoList.map(
         (imageDto: {
@@ -125,14 +128,14 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
           />
           {reviewUserId === loginUserId && (
             <div className="mb-3 mr-3 mt-4">
-              <ReviewEditBtn currentReviewId={currentReviewId} />
+              <ReviewEditBtn reviewId={reviewId} />
             </div>
           )}
         </div>
         <ReviewImage imgUrls={imgUrls} />
         <div className="mt-2 flex items-center justify-between">
           <LikeBtn
-            currentReviewId={currentReviewId}
+            reviewId={reviewId}
             isLiked={isLiked}
             handleIsLiked={handleIsLiked}
             isLikedByUser={isLikedByUser}
