@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Routes, createBrowserRouter, Route } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import { MainMap } from "../pages/MainMap";
 import ReviewGallery from "../pages/review/ReviewGallery";
@@ -6,7 +6,7 @@ import ReviewPost from "../pages/review/ReviewPost";
 import ReviewDetail from "../pages/review/ReviewDetail";
 import ReviewFeed from "@/pages/review/ReviewFeed";
 import ReviewEdit from "@/pages/review/ReviewEdit";
-import PreLoginPresent from "../components/user/preLoginPresnt";
+import PreLogin from "../components/user/preLoginPresnt";
 import MyPageContainer from "@/components/user/myPage/mypageContainer";
 import UserPageContainer from "@/components/user/myPage/userPageContainer";
 import EditProfileContainer from "@/components/user/myPage/editProfileContainer";
@@ -27,19 +27,27 @@ const router = createBrowserRouter([
       //게시글 관련 페이지
       { path: "/review", element: <ReviewGallery /> },
       { path: "/detail", element: <ReviewDetail /> },
-      { path: "/post", element: <ReviewPost /> },
-      { path: "/edit", element: <ReviewEdit /> },
       { path: "/feed/:id", element: <ReviewFeed /> },
       //유저 관련 페이지
-      { path: "/prelogin", element: <PreLoginPresent /> },
       { path: "/signup", element: <SignUpContainer /> },
       { path: "/login", element: <LoginContainer /> },
       { path: "/naver/oauth", element: <NaverOAuth /> },
       { path: "/kakao/oauth", element: <KakaoOauth /> },
       { path: "/google/oauth", element: <GoogleOauth /> },
-      { path: "/mypage", element: <MyPageContainer /> },
-      { path: `/userpage`, element: <UserPageContainer /> },
-      { path: "/editprofile", element: <EditProfileContainer /> },
+      {
+        path: "/*",
+        element: (
+          <PreLogin>
+            <Routes>
+              <Route path="/post" element={<ReviewPost />} />
+              <Route path="/edit" element={<ReviewEdit />} />
+              <Route path="/mypage" element={<MyPageContainer />} />
+              <Route path="/userpage" element={<UserPageContainer />} />
+              <Route path="/editprofile" element={<EditProfileContainer />} />
+            </Routes>
+          </PreLogin>
+        ),
+      },
     ],
   },
 ]);
