@@ -11,8 +11,17 @@ const ReviewProfile = ({
   placeName,
   profileImagePath,
 }: ReviewProfileProps) => {
+  const token = localStorage.getItem("accessToken");
+
   return (
-    <>
+    <button
+      onClick={() => {
+        if (!token) {
+          alert("사용자 프로필은 로그인 후 볼 수 있습니다.");
+          return;
+        }
+      }}
+    >
       <a href={`/userpage/#${userId}`}>
         <div className="mb-3 mt-4 flex">
           <div>
@@ -30,7 +39,7 @@ const ReviewProfile = ({
           </div>
         </div>
       </a>
-    </>
+    </button>
   );
 };
 
