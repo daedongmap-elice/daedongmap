@@ -1,3 +1,4 @@
+import { UserInfo } from "@/type/types";
 import { RefObject } from "react";
 
 interface EditProfileProps {
@@ -11,6 +12,7 @@ interface EditProfileProps {
   handleButtonClick: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
+  profile: UserInfo;
 }
 const EditProfilePresnet: React.FC<EditProfileProps> = ({
   handleEditProfile,
@@ -19,6 +21,7 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
   imgUpload,
   imgFile,
   handleButtonClick,
+  profile,
 }) => {
   return (
     <>
@@ -52,15 +55,17 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
             name="nickName"
             type="text"
             placeholder="닉네임을 입력해주세요."
+            value={profile.nickName}
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />
           <div className="label">
-            <span className="label-text">자기소개</span>
+            <span className="label-text">자기소개 (50자 제한)</span>
           </div>
           <textarea
             name="status"
-            placeholder="소개글을 입력해주세요.(50자 제한)"
+            placeholder="자기소개를 해주세요(50자 제한)"
+            value={profile.status}
             onChange={handleChange}
             maxLength={50}
             className="textarea textarea-bordered w-full max-w-xs"
@@ -71,7 +76,8 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
           <input
             name="webSite"
             type="text"
-            placeholder="연동할 주소를 입력해주세요."
+            placeholder="연동할 사이트 주소를 입력해주세요."
+            value={profile.webSite}
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />

@@ -1,21 +1,18 @@
 import { useRef, useState } from "react";
 import EditProfilePresnet from "./editProfilePresent";
-import { ProfileData } from "@/type/types";
+import { UserInfo } from "@/type/types";
 import { axiosClient } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { profileAtom } from "@/components/atom/auth";
+import { useAtom } from "jotai";
 
 export default function EditProfileContainer() {
-  const [profile, setProfile] = useState<ProfileData>({
-    nickName: "",
-    status: "",
-    webSite: "",
-  });
+  const [profile, setProfile] = useAtom<UserInfo>(profileAtom);
   const [img, setImg] = useState<any>();
   const formData = new FormData();
-  const [imgFile, setImgFile] = useState<string[]>(["img/sample1.png"]);
+  const [imgFile, setImgFile] = useState<string[]>([profile.profileImage]);
   const upload = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
 
   const imgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -36,9 +33,8 @@ export default function EditProfileContainer() {
       "userUpdateDto",
       new Blob([profileJSON], { type: "application/json" })
     );
-    console.log(formData.get("file"));
     try {
-      const res = await axiosClient.put(
+      await axiosClient.put(
         `/user`,
         {
           file: formData.get("file"),
@@ -46,14 +42,10 @@ export default function EditProfileContainer() {
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
           },
         }
       );
-      if (res.status === 200) {
-        console.log(res);
-      }
     } catch (error) {
       console.log(error);
     }
@@ -86,6 +78,7 @@ export default function EditProfileContainer() {
       imgUpload={imgUpload}
       imgFile={imgFile}
       handleButtonClick={handleButtonClick}
+      profile={profile}
     />
   );
 }
