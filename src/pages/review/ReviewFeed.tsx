@@ -2,7 +2,6 @@ import axios from "axios";
 import ReviewDetail from "./ReviewDetail";
 import { useEffect, useState } from "react";
 import { ReviewResponse } from "@/type/types";
-import { useParams } from "react-router-dom";
 import PerfectScrollar from "react-perfect-scrollbar";
 
 const ReviewFeed = () => {
@@ -10,12 +9,12 @@ const ReviewFeed = () => {
     undefined
   );
   const token = localStorage.getItem("accessToken");
-  const params = useParams();
+  const currentPlaceId = window.location.hash.substring(1);
 
   const getData = async () => {
     try {
       const response = await axios.get(
-        `http://35.232.243.53:8080/api/reviews/places/${params.placeId}`,
+        `http://35.232.243.53:8080/api/reviews/places/${currentPlaceId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
