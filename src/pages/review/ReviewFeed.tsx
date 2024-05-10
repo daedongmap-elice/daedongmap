@@ -36,7 +36,9 @@ const ReviewFeed = () => {
   return (
     <div className="pb-12">
       <PerfectScrollar>
-        {dataArray?.map((data) => <ReviewDetail type="feed" feedData={data} />)}
+        {dataArray?.map((data, i) => (
+          <ReviewDetail key={i} type="feed" feedData={data} />
+        ))}
       </PerfectScrollar>
     </div>
   );
