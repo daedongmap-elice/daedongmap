@@ -132,10 +132,10 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
           </Map>
         </div>
       </div>
-      {/* <form method="dialog" className="modal-backdrop">
+      <form method="dialog" className="modal-backdrop">
         <button>close</button>
-      </form> */}
-      <button
+      </form>
+      {/* <button
         type="button"
         className="btn btn-circle btn-ghost btn-sm absolute right-3 top-24"
         onClick={() => {
@@ -144,7 +144,7 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
         }}
       >
         <img src="/svg/deleteIcon.svg" alt="deleteIcon" />
-      </button>
+      </button> */}
     </>
   );
 };
