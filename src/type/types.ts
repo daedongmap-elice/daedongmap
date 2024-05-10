@@ -24,6 +24,7 @@ export interface UserInfo {
   profileImage: string;
   nickName: string;
   status: string;
+  webSite?: string;
 }
 
 export interface LatLngData {
