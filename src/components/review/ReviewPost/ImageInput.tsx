@@ -7,9 +7,8 @@ interface ImageInputProps {
   postImgs: File[];
   setPostImgs: React.Dispatch<React.SetStateAction<any>>;
   setIsImgChanged: React.Dispatch<React.SetStateAction<boolean>>;
+  type: "post" | "edit";
 }
-
-// "https://s3~~~
 
 const ImageInput = ({
   beforeImgUrls,
@@ -17,7 +16,7 @@ const ImageInput = ({
   setPreviewImgs,
   postImgs,
   setPostImgs,
-  setIsImgChanged,
+  type,
 }: ImageInputProps) => {
   const [showImgEdit, setShowImgEdit] = useState(true);
   const putPrevImg = () => {
@@ -38,11 +37,6 @@ const ImageInput = ({
       return URL.createObjectURL(img);
     });
     setPreviewImgs(previews);
-    // 이전에 서버에 올렸던 이미지가 있는지 검사
-    // TOFIX: 이미지 다시 올리기를 누르면 previewImgs, postImgs를 초기화해야겠다.
-    if (!previewImgs[0].startsWith("https")) {
-      setIsImgChanged(true);
-    }
   };
 
   useEffect(() => {
@@ -71,8 +65,8 @@ const ImageInput = ({
         </div>
       </label>
       <div className="carousel h-52 w-52">
-        {showImgEdit ? (
-          <div className="carousel-item absolute h-full w-full flex-col items-center justify-center gap-1 bg-white text-base text-subGray opacity-90">
+        {type === "edit" && showImgEdit ? (
+          <div className="carousel-item absolute h-full w-full flex-col items-center justify-center gap-1 border border-solid border-gray-200  bg-white text-base text-subGray">
             <button
               onClick={() => {
                 setPreviewImgs([]);
@@ -83,9 +77,6 @@ const ImageInput = ({
               사진 다시 올리기
               <div className="text-sm text-rose-600">
                 <b>(이전 사진은 전부 삭제됩니다!)</b>
-              </div>
-              <div className="absolute right-0 top-0 w-full overflow-hidden opacity-10">
-                <img src={previewImgs[0]} className="h-52 w-52" alt="file" />
               </div>
             </button>
           </div>
@@ -135,17 +126,13 @@ const ImageInput = ({
             </div>
           ))
         )}
-        <div className="flex w-full justify-center gap-3 pb-2 pt-2">
-          {previewImgs.map((url, i) => (
-            <a
-              href={`#item${i}`}
-              className="btn btn-xs w-6 rounded-xl"
-              key={url}
-            >
-              {i + 1}
-            </a>
-          ))}
-        </div>
+      </div>
+      <div className="flex w-full justify-center gap-3 pb-2 pt-2">
+        {previewImgs.map((url, i) => (
+          <a href={`#item${i}`} className="btn btn-xs w-6 rounded-xl" key={url}>
+            {i + 1}
+          </a>
+        ))}
       </div>
     </div>
   );

@@ -170,6 +170,7 @@ const ReviewEdit = () => {
               postImgs={postImgs}
               setPostImgs={setPostImgs}
               setIsImgChanged={setIsImgChanged}
+              type="edit"
             />
           </div>
           <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
