@@ -62,7 +62,7 @@ export default function PlaceInfoCard({
   }, []);
 
   return (
-    <button onClick={handleClickCard}>
+    <div onClick={handleClickCard} aria-hidden>
       <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
         <div className="flex justify-between">
           <div className="flex max-w-[220px] flex-col gap-0.5">
@@ -128,6 +128,6 @@ export default function PlaceInfoCard({
           )}
         </div>
       </div>
-    </button>
+    </div>
   );
 }
