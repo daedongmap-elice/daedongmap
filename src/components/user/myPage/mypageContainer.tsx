@@ -10,6 +10,7 @@ export default function MyPageContainer() {
     profileImage: "",
     nickName: "",
     status: "",
+    webSite: "",
   });
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -27,6 +28,7 @@ export default function MyPageContainer() {
           profileImage: res.data.profileImage,
           nickName: res.data.nickName,
           status: res.data.status,
+          webSite: res.data.webSite,
         });
       }
     } catch (error) {
