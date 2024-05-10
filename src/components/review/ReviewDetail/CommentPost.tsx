@@ -55,17 +55,17 @@ const CommentPost = ({
             placeholder="댓글 달기..."
             className="input input-bordered h-8 w-full text-xs"
             onChange={(e) => setContent(e.target.value)}
-            // onKeyDown={(e) => {
-            //   // 댓글이 2개 등록되는 이슈로 onKeyDown 주석 처리
-            //   if (e.key === "Enter") {
-            //     e.preventDefault();
-            //     if (token) {
-            //       handleSubmit();
-            //     } else {
-            //       alert("댓글 작성은 로그인 후 가능합니다.");
-            //     }
-            //   }
-            // }}
+            onKeyDown={(e) => {
+              // 댓글이 2개 등록되는 이슈로 onKeyDown 주석 처리
+              if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
+                e.preventDefault();
+                if (token) {
+                  handleSubmit();
+                } else {
+                  alert("댓글 작성은 로그인 후 가능합니다.");
+                }
+              }
+            }}
             ref={inputRef}
           />
           <button

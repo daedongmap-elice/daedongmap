@@ -117,7 +117,7 @@ export default function SearchInput({
   };
 
   const handleOnKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
       handlerOnClickSearch();
       (e.currentTarget as HTMLInputElement).blur();
     }
