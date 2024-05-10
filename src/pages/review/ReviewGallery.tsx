@@ -31,20 +31,19 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
     try {
       const ids: number[] = [];
       const firstFiles: string[] = [];
-      const customAxios = axios.create({});
 
-      const response = await customAxios.get(
+      const response = await axios.get(
         `http://35.232.243.53:8080/api/reviews/filter?region=${region}&category=${category}&sort=${sort}`
       );
+      if (response.data.length === 0) {
+        setIsDataLengthZero(true);
+      }
 
-      // response에서 이미지url, reviewId 추출
+      // response에서 이미지url, reviewId 추출 후 Thumbnail컴포넌트로 전달
       response.data.forEach((review: ReviewResponse) => {
         firstFiles.push(review.reviewImageDtoList?.[0]?.filePath);
         ids.push(review.id);
       });
-      if (response.data.length === 0) {
-        setIsDataLengthZero(true);
-      }
       setReviewIds(ids);
       setImgUrls(firstFiles);
     } catch (error) {
@@ -68,7 +67,10 @@ const ReviewGallery = ({ type, myPageData }: ReviewGalleryProps) => {
   };
 
   useEffect(() => {
-    getData();
+    console.log(type);
+  }, [type]);
+
+  useEffect(() => {
     if (typeof type === "undefined") {
       getData();
     }

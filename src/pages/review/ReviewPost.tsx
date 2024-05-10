@@ -3,7 +3,7 @@ import {
   ImageInput,
   FindPlaceModal,
 } from "@/components/review/index";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,37 +12,18 @@ import PerfectScrollar from "react-perfect-scrollbar";
 
 const ReviewPost = () => {
   const [postImgs, setPostImgs] = useState<File[]>([]);
+  const [previewImgs, setPreviewImgs] = useState<string[]>([]);
+  const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
   const [tasteRating, setTasteRating] = useState(5);
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
-  const [loginUserId, setLoginUserId] = useState<number>(0);
   const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handlePostImgs = (imgs: File[]) => {
-    setPostImgs(imgs);
-  };
-
-  const getUserId = async () => {
-    try {
-      const response = await axios.post(
-        "http://35.232.243.53:8080/api/user",
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setLoginUserId(response.data);
-    } catch (error) {
-      console.error("로그인 유저id 요청 에러:", error);
-    }
-  };
+  console.log(isImgChanged);
 
   const appendFormData = (formData: FormData) => {
     // 평균 별점 계산
@@ -51,7 +32,6 @@ const ReviewPost = () => {
 
     // reviewRequest 데이터 추가
     const reviewRequest = {
-      userId: loginUserId,
       content: content,
       tasteRating: tasteRating,
       hygieneRating: hygieneRating,
@@ -61,6 +41,8 @@ const ReviewPost = () => {
 
     // placeRequest 데이터 추가 (FindPlaceModal 컴포넌트에서 선택된 음식점 정보)
     const placeRequest = place;
+    console.log("placeRequest:", placeRequest);
+    console.log("reviewRequest:", reviewRequest);
 
     // formData.append("file", postImgs);
     for (let i = 0; i < postImgs.length; i++) {
@@ -89,10 +71,10 @@ const ReviewPost = () => {
       alert("본문 내용을 입력해주세요");
       return;
     }
-    // if (!place?.kakaoPlaceId) {
-    //   alert("음식점 정보를 선택해주세요.");
-    //   return;
-    // }
+    if (!place?.kakaoPlaceId) {
+      alert("음식점 정보를 선택해주세요.");
+      return;
+    }
 
     const formData: FormData = new FormData();
     appendFormData(formData);
@@ -110,10 +92,6 @@ const ReviewPost = () => {
     }
   };
 
-  useEffect(() => {
-    getUserId();
-  }, []);
-
   return (
     <PerfectScrollar>
       <div className="pb-16">
@@ -123,9 +101,12 @@ const ReviewPost = () => {
         <form className="flex flex-col items-center justify-center gap-1">
           <div className="flex justify-center">
             <ImageInput
-              prevImgUrls={[]}
+              beforeImgUrls={[]}
+              previewImgs={previewImgs}
+              setPreviewImgs={setPreviewImgs}
               postImgs={postImgs}
-              handlePostImgs={handlePostImgs}
+              setPostImgs={setPostImgs}
+              setIsImgChanged={setIsImgChanged}
             />
           </div>
           <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
