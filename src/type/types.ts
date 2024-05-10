@@ -14,12 +14,6 @@ export interface LoginData {
   password: string;
 }
 
-export interface ProfileData {
-  nickName: string;
-  status: string;
-  webSite: string; //선택
-}
-
 export interface UserInfo {
   profileImage: string;
   nickName: string;

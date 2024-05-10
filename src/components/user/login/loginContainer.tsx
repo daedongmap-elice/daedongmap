@@ -4,6 +4,8 @@ import LoginPresent from "./loginPresent";
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isCheckPhone } from "@/utils/authUtils";
+import { useAtom } from "jotai";
+import { isTokenAtom } from "@/components/atom/auth";
 
 export default function LoginContainer() {
   const [formData, setFormData] = useState<LoginData>({
@@ -11,6 +13,7 @@ export default function LoginContainer() {
     password: "",
   });
   const [phone, setPhone] = useState<string>("");
+  const [isToken, setIsTokn] = useAtom(isTokenAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleFormSubmit = async (
@@ -18,8 +21,8 @@ export default function LoginContainer() {
   ) => {
     e.preventDefault();
     const loginState = await Login(formData);
-    //window.location.href = "/mypage";
     if (loginState) {
+      setIsTokn(!isToken);
       navigate("/");
     }
   };
