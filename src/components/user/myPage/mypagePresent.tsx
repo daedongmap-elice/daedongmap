@@ -14,6 +14,7 @@ interface MypageProps {
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reviews: ReviewResponse[];
   userId?: string;
+  isClickFollow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
@@ -26,6 +27,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
   buttonDisabled,
   reviews,
   userId,
+  isClickFollow,
 }) => {
   return (
     <>
@@ -81,7 +83,14 @@ const MyPagePresent: React.FC<MypageProps> = ({
           )}
         </div>
         {userId ? (
-          <></>
+          <div className="">
+            <button
+              className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText"
+              onClick={isClickFollow}
+            >
+              팔로우
+            </button>
+          </div>
         ) : (
           <button className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText">
             <Link to="/editprofile">프로필 편집</Link>
