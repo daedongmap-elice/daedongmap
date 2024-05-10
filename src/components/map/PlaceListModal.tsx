@@ -42,8 +42,8 @@ export default function PlaceListModal({
                   }
                   optionValue={
                     userLocation.isSetUserLocation
-                      ? ["default", "rating", "distance"]
-                      : ["default", "rating"]
+                      ? ["recommend", "rating", "distance"]
+                      : ["recommend", "rating"]
                   }
                   handler={handleSetFilter}
                 />
