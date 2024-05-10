@@ -8,6 +8,7 @@ import FormData from "form-data";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { PlaceInfoData } from "@/type/types";
+import PerfectScrollar from "react-perfect-scrollbar";
 
 const ReviewPost = () => {
   const [postImgs, setPostImgs] = useState<File[]>([]);
@@ -114,71 +115,75 @@ const ReviewPost = () => {
   }, []);
 
   return (
-    <div className="pb-16">
-      <div className="mb-6 ml-5 mt-4 text-lg font-medium">새 리뷰 등록하기</div>
-      <form className="flex flex-col items-center justify-center gap-1">
-        <div className="flex justify-center">
-          <ImageInput
-            prevImgUrls={[]}
-            postImgs={postImgs}
-            handlePostImgs={handlePostImgs}
-          />
+    <PerfectScrollar>
+      <div className="pb-16">
+        <div className="mb-6 ml-5 mt-4 text-lg font-medium">
+          새 리뷰 등록하기
         </div>
-        <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
-          <div className="mb-0.5 flex items-center gap-1">
-            <span className="min-w-6 text-center">맛</span>
-            <RatingStar
-              name="taste"
-              initialValue={tasteRating}
-              setRating={setTasteRating}
+        <form className="flex flex-col items-center justify-center gap-1">
+          <div className="flex justify-center">
+            <ImageInput
+              prevImgUrls={[]}
+              postImgs={postImgs}
+              handlePostImgs={handlePostImgs}
             />
           </div>
-          <div className="mb-0.5 flex items-center gap-1">
-            <span className="min-w-6">위생</span>
-            <RatingStar
-              name="hygiene"
-              initialValue={hygieneRating}
-              setRating={setHygieneRating}
-            />
+          <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
+            <div className="mb-0.5 flex items-center gap-1">
+              <span className="min-w-6 text-center">맛</span>
+              <RatingStar
+                name="taste"
+                initialValue={tasteRating}
+                setRating={setTasteRating}
+              />
+            </div>
+            <div className="mb-0.5 flex items-center gap-1">
+              <span className="min-w-6">위생</span>
+              <RatingStar
+                name="hygiene"
+                initialValue={hygieneRating}
+                setRating={setHygieneRating}
+              />
+            </div>
+            <div className="mb-3 flex items-center gap-1">
+              <span className="min-w-6">친절</span>
+              <RatingStar
+                name="kindness"
+                initialValue={kindnessRating}
+                setRating={setKindnessRating}
+              />
+            </div>
           </div>
-          <div className="mb-3 flex items-center gap-1">
-            <span className="min-w-6">친절</span>
-            <RatingStar
-              name="kindness"
-              initialValue={kindnessRating}
-              setRating={setKindnessRating}
-            />
-          </div>
-        </div>
-        <button
-          type="button"
-          className="btn btn-outline btn-sm mb-2 w-3/4 max-w-xs flex-col items-baseline border-gray-300 text-xs font-normal"
-          // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
-          onClick={() => document.getElementById("placeModal").showModal()}
-        >
-          {place === undefined ? "음식점 선택" : place.placeName}
-        </button>
-        <dialog id="placeModal" className="modal modal-bottom">
-          <FindPlaceModal setPlace={setPlace} />
-        </dialog>
-        <textarea
-          required
-          className="textarea textarea-bordered h-32 w-3/4 max-w-xs pt-3 text-xs"
-          placeholder="리뷰 내용 입력..."
-          onChange={(e) => setContent(e.target.value)}
-        ></textarea>
-        <button
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
-        >
-          리뷰 등록
-        </button>
-      </form>
-    </div>
+          <button
+            type="button"
+            className="btn btn-outline btn-sm mb-2 w-3/4 max-w-xs flex-col items-baseline border-gray-300 text-xs font-normal"
+            // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
+            onClick={() => document.getElementById("placeModal").showModal()}
+          >
+            {place === undefined ? "음식점 선택" : place.placeName}
+          </button>
+          <dialog id="placeModal" className="modal modal-bottom">
+            <FindPlaceModal setPlace={setPlace} />
+          </dialog>
+          <textarea
+            required
+            className="textarea textarea-bordered h-32 w-3/4 max-w-xs pt-3 text-xs"
+            placeholder="리뷰 내용 입력..."
+            onChange={(e) => setContent(e.target.value)}
+          ></textarea>
+          <button
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
+          >
+            리뷰 등록
+          </button>
+        </form>
+      </div>
+    </PerfectScrollar>
   );
 };
 

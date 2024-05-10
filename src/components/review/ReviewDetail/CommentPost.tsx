@@ -4,13 +4,15 @@ import axios from "axios";
 interface CommentPostProps {
   loginUserId: number;
   reviewId: string;
-  onPostSuccess: () => void;
+  getData: () => void;
+  scrollToBottom: () => void;
 }
 
 const CommentPost = ({
   loginUserId,
   reviewId,
-  onPostSuccess,
+  getData,
+  scrollToBottom,
 }: CommentPostProps) => {
   const [content, setContent] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +21,7 @@ const CommentPost = ({
   // 나의 유저아이디 가져와야 함
   const handleSubmit = useCallback(async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://35.232.243.53:8080/api/comments",
         {
           userId: loginUserId,
@@ -33,8 +35,8 @@ const CommentPost = ({
           },
         }
       );
-      console.log("응답 데이터:", response.data);
-      onPostSuccess();
+      getData();
+      scrollToBottom();
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -53,16 +55,17 @@ const CommentPost = ({
             placeholder="댓글 달기..."
             className="input input-bordered h-8 w-full text-xs"
             onChange={(e) => setContent(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                if (token) {
-                  handleSubmit();
-                } else {
-                  alert("댓글 작성은 로그인 후 가능합니다.");
-                }
-              }
-            }}
+            // onKeyDown={(e) => {
+            //   // 댓글이 2개 등록되는 이슈로 onKeyDown 주석 처리
+            //   if (e.key === "Enter") {
+            //     e.preventDefault();
+            //     if (token) {
+            //       handleSubmit();
+            //     } else {
+            //       alert("댓글 작성은 로그인 후 가능합니다.");
+            //     }
+            //   }
+            // }}
             ref={inputRef}
           />
           <button
