@@ -3,10 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface EditButtonProps {
-  currentReviewId: string;
+  reviewId: number;
 }
 
-const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
+const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
   // TODO: 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
   //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
   const token = localStorage.getItem("accessToken");
@@ -20,7 +20,7 @@ const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
       e.preventDefault();
       try {
         const response = await axios.delete(
-          `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
+          `http://35.232.243.53:8080/api/reviews/${reviewId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const ReviewEditBtn = ({ currentReviewId }: EditButtonProps) => {
       </div>
       <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
         <li>
-          <a href={`/edit/#${currentReviewId}`}>수정</a>
+          <a href={`/edit/#${reviewId}`}>수정</a>
         </li>
         <li>
           <a href="/" onClick={handleDelete}>
