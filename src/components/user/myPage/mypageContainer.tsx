@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo, ReviewResponse } from "@/type/types";
-import { DeleteUser, axiosClient } from "@/hooks/useAuth";
+import { DeleteUser } from "@/hooks/useAuth";
+import axiosClient from "@/utils/baseUrl";
 import { useNavigate } from "react-router-dom";
 import { isCheckDelete } from "@/utils/authUtils";
 import { useAtom } from "jotai";
