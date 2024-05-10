@@ -15,7 +15,7 @@ export default function Toast({ setToast, message }: ToastProps) {
     };
   }, []);
   return (
-    <div className="absolute bottom-28 left-1/2 z-50 h-fit w-[300px] -translate-x-1/2">
+    <div className="absolute bottom-28 left-1/2 z-50 h-fit w-[300px] -translate-x-1/2 opacity-90">
       <div className="rounded-full bg-subGray px-3 py-1 text-center text-sm text-white">
         {message}
       </div>

@@ -70,7 +70,12 @@ export default function SearchInput({
                   x,
                   y,
                 } = data;
-                const category = categoryName.split(">")[1].trim();
+
+                const categoryArr = categoryName.split(">");
+                const category =
+                  categoryArr.length === 1
+                    ? categoryArr[0].trim()
+                    : categoryArr[1].trim();
 
                 newMarkers.push({
                   addressName,
