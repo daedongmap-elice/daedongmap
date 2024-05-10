@@ -118,7 +118,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   return imgUrls.length !== 0 ? (
     <PerfectScrollar>
-      <div className="pb-16">
+      <div className={type !== "feed" ? `pb-16` : ""}>
         <div className="flex items-center justify-between">
           <ReviewProfile
             userId={data?.user.id}

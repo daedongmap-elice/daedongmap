@@ -44,7 +44,7 @@ export default function NowPositionBtn({
   return (
     <>
       <div
-        className={`absolute right-4 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
+        className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-52" : "bottom-16"}`}
       >
         <button
           onClick={handleOnClick}
