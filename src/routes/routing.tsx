@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: "/detail", element: <ReviewDetail /> },
       { path: "/post", element: <ReviewPost /> },
       { path: "/edit", element: <ReviewEdit /> },
-      { path: "/feed", element: <ReviewFeed /> },
+      { path: "/feed/:id", element: <ReviewFeed /> },
       //유저 관련 페이지
       { path: "/prelogin", element: <PreLoginPresent /> },
       { path: "/signup", element: <SignUpContainer /> },

@@ -1,5 +1,6 @@
 import { LatLngData, PlaceData } from "@/type/types";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface PlaceInfoCardProps {
   place: PlaceData;
@@ -22,6 +23,7 @@ export default function PlaceInfoCard({
   if (!place) {
     return null;
   }
+  const nav = useNavigate();
   const [distance, setDistance] = useState(0);
   const {
     averageRating,
@@ -32,10 +34,15 @@ export default function PlaceInfoCard({
     roadAddressName,
     reviewCnt,
     reviewImagePath,
+    kakaoPlaceId,
   } = place;
 
   const handleClickKaKaoBtn = () => {
     window.open(placeUrl);
+  };
+
+  const handleClickCard = () => {
+    nav(`/feed/${kakaoPlaceId}`);
   };
 
   useEffect(() => {
@@ -55,70 +62,72 @@ export default function PlaceInfoCard({
   }, []);
 
   return (
-    <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
-      <div className="flex justify-between">
-        <div className="flex max-w-[220px] flex-col gap-0.5">
-          <div>
-            <h2 className="truncate font-normal text-subGray">
-              <span className="text-base font-bold text-black">
-                {placeName}
-              </span>
-              <p className="inline text-xs">&nbsp;{categoryName}</p>
-            </h2>
-          </div>
-          {type === "main" && (
-            <div className="flex items-center gap-1.5">
-              <h4 className="text-xs font-medium">{averageRating}</h4>
-              <div className="rating rating-half rating-xs pointer-events-none">
-                {[...Array(10)].map((_, i) => (
-                  <input
-                    key={i}
-                    type="radio"
-                    className={`mask ${i % 2 === 0 ? "mask-half-1" : "mask-half-2"} mask-star-2 bg-mainY`}
-                    defaultChecked={i === Math.floor(averageRating * 2) - 1}
-                  />
-                ))}
-              </div>
-              <p className="text-xs text-subGray">({reviewCnt})</p>
+    <button onClick={handleClickCard}>
+      <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
+        <div className="flex justify-between">
+          <div className="flex max-w-[220px] flex-col gap-0.5">
+            <div>
+              <h2 className="truncate font-normal text-subGray">
+                <span className="text-base font-bold text-black">
+                  {placeName}
+                </span>
+                <p className="inline text-xs">&nbsp;{categoryName}</p>
+              </h2>
             </div>
-          )}
+            {type === "main" && (
+              <div className="flex items-center gap-1.5">
+                <h4 className="text-xs font-medium">{averageRating}</h4>
+                <div className="rating rating-half rating-xs pointer-events-none">
+                  {[...Array(10)].map((_, i) => (
+                    <input
+                      key={i}
+                      type="radio"
+                      className={`mask ${i % 2 === 0 ? "mask-half-1" : "mask-half-2"} mask-star-2 bg-mainY`}
+                      defaultChecked={i === Math.floor(averageRating * 2) - 1}
+                    />
+                  ))}
+                </div>
+                <p className="text-xs text-subGray">({reviewCnt})</p>
+              </div>
+            )}
 
-          <p className="truncate text-xs">{roadAddressName}</p>
-          <div className="flex gap-1">
-            {type === "main" && userLocation?.isSetUserLocation && (
-              <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
-            )}
-            {type === "main" && userLocation?.isSetUserLocation && phone && (
-              <p className="text-xs font-bold">|</p>
-            )}
-            {phone && <p className="text-xs text-mainG">{phone}</p>}
+            <p className="truncate text-xs">{roadAddressName}</p>
+            <div className="flex gap-1">
+              {type === "main" && userLocation?.isSetUserLocation && (
+                <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
+              )}
+              {type === "main" && userLocation?.isSetUserLocation && phone && (
+                <p className="text-xs font-bold">|</p>
+              )}
+              {phone && <p className="text-xs text-mainG">{phone}</p>}
+            </div>
           </div>
-        </div>
 
-        {type === "main" && (
-          <img
-            src={reviewImagePath}
-            alt="음식점 사진"
-            className="h-[80px] w-[80px] rounded object-cover"
-          />
-        )}
-      </div>
-      <div className="flex gap-3">
-        <button
-          className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
-          onClick={handleClickKaKaoBtn}
-        >
-          kakao<strong>map</strong>으로 보기
-        </button>
-        {type === "post" && (
+          {type === "main" && (
+            <img
+              src={reviewImagePath}
+              alt="음식점 사진"
+              className="h-[80px] w-[80px] rounded object-cover"
+            />
+          )}
+        </div>
+        <div className="flex gap-3">
           <button
-            className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
-            onClick={handleSetPlace}
+            className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
+            onClick={handleClickKaKaoBtn}
           >
-            선택하기
+            kakao<strong>map</strong>으로 보기
           </button>
-        )}
+          {type === "post" && (
+            <button
+              className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
+              onClick={handleSetPlace}
+            >
+              선택하기
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+    </button>
   );
 }
