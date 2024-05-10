@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { isTokenAtom } from "@/components/atom/auth";
+import { useAtom } from "jotai";
 import axios from "axios";
 
 const KakaoOauth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [isToken, setIsToken] = useAtom(isTokenAtom);
   const code: string | null = searchParams.get("code");
 
   useEffect(() => {
@@ -22,6 +25,7 @@ const KakaoOauth = () => {
           console.log(res);
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
+          setIsToken(!isToken);
           navigate("/");
         }
       } catch (error) {

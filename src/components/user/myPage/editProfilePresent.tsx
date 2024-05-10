@@ -54,7 +54,8 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
           <input
             name="nickName"
             type="text"
-            placeholder={profile.nickName}
+            placeholder="닉네임을 입력해주세요."
+            value={profile.nickName}
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />
@@ -63,7 +64,8 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
           </div>
           <textarea
             name="status"
-            placeholder={profile.status}
+            placeholder="자기소개를 해주세요(50자 제한)"
+            value={profile.status}
             onChange={handleChange}
             maxLength={50}
             className="textarea textarea-bordered w-full max-w-xs"
@@ -74,7 +76,8 @@ const EditProfilePresnet: React.FC<EditProfileProps> = ({
           <input
             name="webSite"
             type="text"
-            placeholder={profile.webSite}
+            placeholder="연동할 사이트 주소를 입력해주세요."
+            value={profile.webSite}
             onChange={handleChange}
             className="input input-bordered w-full max-w-xs"
           />

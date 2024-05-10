@@ -13,7 +13,6 @@ export default function EditProfileContainer() {
   const [imgFile, setImgFile] = useState<string[]>([profile.profileImage]);
   const upload = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
 
   const imgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -34,9 +33,8 @@ export default function EditProfileContainer() {
       "userUpdateDto",
       new Blob([profileJSON], { type: "application/json" })
     );
-    console.log(formData.get("file"));
     try {
-      const res = await axiosClient.put(
+      await axiosClient.put(
         `/user`,
         {
           file: formData.get("file"),
@@ -44,14 +42,10 @@ export default function EditProfileContainer() {
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
           },
         }
       );
-      if (res.status === 200) {
-        console.log(res);
-      }
     } catch (error) {
       console.log(error);
     }

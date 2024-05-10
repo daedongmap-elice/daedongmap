@@ -1,4 +1,4 @@
-import { UserInfo, ReviewGalleryResponse } from "@/type/types";
+import { UserInfo, ReviewResponse } from "@/type/types";
 import { AiOutlineMore } from "react-icons/ai";
 import { RiLink } from "react-icons/ri";
 import ReviewGallery from "@/pages/review/ReviewGallery";
@@ -12,7 +12,7 @@ interface MypageProps {
   isClickDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   buttonDisabled?: boolean;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  reviews: ReviewGalleryResponse[];
+  reviews: ReviewResponse[];
   userId?: string;
 }
 
@@ -39,15 +39,18 @@ const MyPagePresent: React.FC<MypageProps> = ({
           <div className="flex flex-col justify-center">
             <span className="text-2xl font-semibold">{profile.nickName}</span>
             <div>
-              <span className="text-xs text-subGray">게시글</span>
-              <span className="text-xs">10</span>
+              <span className="mr-1 text-xs text-subGray">게시글</span>
+              <span className="text-xs">{reviews.length}</span>
             </div>
             <span className="text-sm">{profile.status}</span>
             {profile.webSite === "아직 연결된 외부 사이트가 없습니다." ? (
               <></>
             ) : (
-              <div className="text-xs">
-                <RiLink /> {profile.webSite}
+              <div className="flex flex-row text-xs">
+                <p className="mr-2 flex items-center">
+                  <RiLink />
+                </p>
+                <p className="text-center">{profile.webSite}</p>
               </div>
             )}
           </div>

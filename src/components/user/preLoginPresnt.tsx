@@ -5,7 +5,7 @@ export default function PreLoginPresent() {
         <a href="/">
           <img
             className="h-[290px] w-[275px]"
-            src="img/LoginLogo.jpg"
+            src="img/LoginLogo.png"
             alt="로고 이미지"
           />
         </a>
