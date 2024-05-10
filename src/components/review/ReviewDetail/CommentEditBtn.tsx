@@ -1,6 +1,6 @@
 import { AiOutlineMore } from "react-icons/ai";
-import axios from "axios";
 import { useState } from "react";
+import axiosClient from "@/utils/baseUrl";
 
 interface EditButtonProps {
   commentId: number;
@@ -13,14 +13,11 @@ const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(
-        `http://35.232.243.53:8080/api/comments/${commentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosClient.delete(`/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(response);
       // alert("댓글이 삭제되었습니다.");
       getData();

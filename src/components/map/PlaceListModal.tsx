@@ -25,7 +25,7 @@ export default function PlaceListModal({
 }: PlaceListModalProps) {
   return (
     <div
-      className={`absolute z-10 h-[95.3vh] w-full bg-[#F7F7F9] transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
+      className={`fixed z-10 h-[95.3vh] w-full max-w-[425px] bg-[#F7F7F9] transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
     >
       <PerfectScrollar>
         <div

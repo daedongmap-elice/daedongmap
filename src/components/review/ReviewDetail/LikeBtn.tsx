@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosClient from "@/utils/baseUrl";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 interface LikeProps {
@@ -20,15 +20,11 @@ const LikeBtn = ({
 
   const likePost = async () => {
     try {
-      await axios.post(
-        `http://35.232.243.53:8080/api/likes?reviewId=${reviewId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axiosClient.post(`/likes?reviewId=${reviewId}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       handleIsLiked(true);
     } catch (error) {
       console.error("좋아요 post요청 에러:", error);
@@ -37,14 +33,11 @@ const LikeBtn = ({
 
   const likeDelete = async () => {
     try {
-      await axios.delete(
-        `http://35.232.243.53:8080/api/likes?reviewId=${reviewId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axiosClient.delete(`/likes?reviewId=${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       handleIsLiked(false);
     } catch (error) {
       console.error("좋아요 deleted요청 에러:", error);

@@ -8,9 +8,9 @@ import {
   ReSearchBtn,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { LatLngData, PlaceData } from "@/type/types";
 import Toast from "@/components/common/Toast";
+import axiosClient from "@/utils/baseUrl";
 
 export function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -84,8 +84,8 @@ export function MainMap() {
     // 영역의 북동쪽 좌표를 얻어옵니다
     const neLatLng = bounds.getNorthEast();
     try {
-      const res = await axios.get(
-        `http://35.232.243.53:8080/api/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}&x=${userLocation.center.lng}&y=${userLocation.center.lat}${filter !== "default" && filter !== "recommend" ? `&filter=${filter}` : ""}`
+      const res = await axiosClient.get(
+        `/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}&x=${userLocation.center.lng}&y=${userLocation.center.lat}${filter !== "default" && filter !== "recommend" ? `&filter=${filter}` : ""}`
       );
       const data = await res.data;
       if (res.status === 200) {

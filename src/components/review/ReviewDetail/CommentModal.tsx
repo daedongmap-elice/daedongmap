@@ -1,7 +1,7 @@
 import { Comment, CommentPost } from "@/components/review/index";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import PerfectScrollar from "react-perfect-scrollbar";
+import axiosClient from "@/utils/baseUrl";
 
 interface CommentModalProps {
   handleCommentCount: (count: number) => void;
@@ -38,8 +38,8 @@ const CommentModal = ({
   const getData = async () => {
     try {
       if (token) {
-        const response = await axios.get(
-          `http://35.232.243.53:8080/api/comments/reviews/${currentReviewId}`
+        const response = await axiosClient.get(
+          `/comments/reviews/${currentReviewId}`
         );
         setData(response.data);
         handleCommentCount(response.data.length);
