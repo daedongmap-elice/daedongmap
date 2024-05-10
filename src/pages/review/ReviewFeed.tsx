@@ -3,6 +3,7 @@ import ReviewDetail from "./ReviewDetail";
 import { useEffect, useState } from "react";
 import { ReviewResponse } from "@/type/types";
 import { useParams } from "react-router-dom";
+import PerfectScrollar from "react-perfect-scrollbar";
 
 const ReviewFeed = () => {
   const [dataArray, setDataArray] = useState<ReviewResponse[] | undefined>(
@@ -32,9 +33,9 @@ const ReviewFeed = () => {
   }, []);
 
   return (
-    <>
+    <PerfectScrollar>
       {dataArray?.map((data) => <ReviewDetail type="feed" feedData={data} />)}
-    </>
+    </PerfectScrollar>
   );
 };
 

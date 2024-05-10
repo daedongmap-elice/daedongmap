@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
-import { ReviewGalleryResponse, UserInfo } from "@/type/types";
-import { axiosClient } from "@/hooks/useAuth";
+import { ReviewResponse, UserInfo } from "@/type/types";
+import { Follow, axiosClient } from "@/hooks/useAuth";
 
 export default function UserPageContainer() {
   const [userProfile, setUserProfile] = useState<UserInfo>({
@@ -11,7 +11,7 @@ export default function UserPageContainer() {
   });
 
   const accessToken = localStorage.getItem("accessToken");
-  const [reviews, setReivews] = useState<ReviewGalleryResponse[]>([]);
+  const [reviews, setReivews] = useState<ReviewResponse[]>([]);
   const id: string = location.hash.substring(1);
 
   const getUserProfile = async () => {
@@ -40,9 +40,23 @@ export default function UserPageContainer() {
       console.log(error);
     }
   };
+  const isClickFollow = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    Follow(id);
+  };
+
   useEffect(() => {
     getUserProfile();
     getUserReviews();
   }, []);
-  return <MyPagePresent profile={userProfile} reviews={reviews} userId={id} />;
+  return (
+    <MyPagePresent
+      profile={userProfile}
+      reviews={reviews}
+      userId={id}
+      isClickFollow={isClickFollow}
+    />
+  );
 }

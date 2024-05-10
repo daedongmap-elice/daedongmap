@@ -1,7 +1,8 @@
-import { UserInfo, ReviewGalleryResponse } from "@/type/types";
+import { UserInfo, ReviewResponse } from "@/type/types";
 import { AiOutlineMore } from "react-icons/ai";
 import { RiLink } from "react-icons/ri";
 import ReviewGallery from "@/pages/review/ReviewGallery";
+import { Link } from "react-router-dom";
 
 interface MypageProps {
   profile: UserInfo;
@@ -11,8 +12,9 @@ interface MypageProps {
   isClickDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   buttonDisabled?: boolean;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  reviews: ReviewGalleryResponse[];
+  reviews: ReviewResponse[];
   userId?: string;
+  isClickFollow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
@@ -25,6 +27,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
   buttonDisabled,
   reviews,
   userId,
+  isClickFollow,
 }) => {
   return (
     <>
@@ -38,15 +41,18 @@ const MyPagePresent: React.FC<MypageProps> = ({
           <div className="flex flex-col justify-center">
             <span className="text-2xl font-semibold">{profile.nickName}</span>
             <div>
-              <span className="text-xs text-subGray">게시글</span>
-              <span className="text-xs">10</span>
+              <span className="mr-1 text-xs text-subGray">게시글</span>
+              <span className="text-xs">{reviews.length}</span>
             </div>
             <span className="text-sm">{profile.status}</span>
             {profile.webSite === "아직 연결된 외부 사이트가 없습니다." ? (
               <></>
             ) : (
-              <div className="text-xs">
-                <RiLink /> {profile.webSite}
+              <div className="flex flex-row text-xs">
+                <p className="mr-2 flex items-center">
+                  <RiLink />
+                </p>
+                <p className="text-center">{profile.webSite}</p>
               </div>
             )}
           </div>
@@ -77,10 +83,17 @@ const MyPagePresent: React.FC<MypageProps> = ({
           )}
         </div>
         {userId ? (
-          <></>
+          <div className="">
+            <button
+              className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText"
+              onClick={isClickFollow}
+            >
+              팔로우
+            </button>
+          </div>
         ) : (
           <button className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText">
-            <a href="/editprofile">프로필 편집</a>
+            <Link to="/editprofile">프로필 편집</Link>
           </button>
         )}
         {isModal && (

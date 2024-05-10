@@ -2,7 +2,7 @@ import axios from "axios";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 interface LikeProps {
-  currentReviewId: string;
+  reviewId: number;
   isLiked: boolean;
   handleIsLiked: (bool: boolean) => void;
   isLikedByUser: boolean;
@@ -10,7 +10,7 @@ interface LikeProps {
 }
 
 const LikeBtn = ({
-  currentReviewId,
+  reviewId,
   isLiked,
   handleIsLiked,
   isLikedByUser,
@@ -21,7 +21,7 @@ const LikeBtn = ({
   const likePost = async () => {
     try {
       await axios.post(
-        `http://35.232.243.53:8080/api/likes?reviewId=${currentReviewId}`,
+        `http://35.232.243.53:8080/api/likes?reviewId=${reviewId}`,
         null,
         {
           headers: {
@@ -38,7 +38,7 @@ const LikeBtn = ({
   const likeDelete = async () => {
     try {
       await axios.delete(
-        `http://35.232.243.53:8080/api/likes?reviewId=${currentReviewId}`,
+        `http://35.232.243.53:8080/api/likes?reviewId=${reviewId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

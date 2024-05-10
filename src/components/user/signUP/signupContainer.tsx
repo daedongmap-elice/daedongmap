@@ -21,7 +21,6 @@ export default function SignUpContainer() {
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    //console.log(formData);
     signUp(formData);
     navigate("/login");
   };

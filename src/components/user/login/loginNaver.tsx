@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { isTokenAtom } from "@/components/atom/auth";
+import { useAtom } from "jotai";
 
 const NaverOAuth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [isToken, setIsToken] = useAtom(isTokenAtom);
   const code: string | null = searchParams.get("code");
   const state: string | null = searchParams.get("state");
 
@@ -24,6 +27,7 @@ const NaverOAuth = () => {
         if (res.status === 202) {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
+          setIsToken(!isToken);
           navigate("/");
         }
       } catch (error) {

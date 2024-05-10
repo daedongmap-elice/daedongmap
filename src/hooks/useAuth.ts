@@ -12,7 +12,7 @@ axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      //config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -74,27 +74,9 @@ export const Login = async (info: LoginData) => {
   }
 };
 
-export const Logout = async (RT: string | null) => {
+export const DeleteUser = async () => {
   try {
-    const res = await axiosClient.post(`/logout`, {
-      headers: { Authorization: `Bearer ${RT}` },
-    });
-    if (res.status === 200) {
-      console.log(res);
-      localStorage.clear();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const DeleteUser = async (AT: string | null) => {
-  try {
-    const res = await axiosClient.delete(`/user`, {
-      headers: {
-        Authorization: `Bearer ${AT}`,
-      },
-    });
+    const res = await axiosClient.delete(`/user`);
     if (res.status === 200) {
       alert("회원이 탈퇴되었습니다.");
       localStorage.clear();
@@ -111,6 +93,22 @@ export const FindEmail = async (phoneNumber: string) => {
       console.log(res.data);
       alert(`찾으신 아이디는 ${res.data} 입니다.`);
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const Follow = async (userId: string) => {
+  try {
+    await axiosClient.post(`/follows/${userId}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const UnFollow = async (userId: string) => {
+  try {
+    await axiosClient.delete(`/follows/${userId}`);
   } catch (error) {
     console.log(error);
   }
