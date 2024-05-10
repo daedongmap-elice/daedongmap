@@ -17,7 +17,8 @@ const ReviewEdit = () => {
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
   const [placeName, setPlaceName] = useState("");
-  const [prevImgUrls, setPrevImgUrls] = useState<string[]>([]);
+  const [beforeImgUrls, setBeforeImgUrls] = useState<string[]>([]);
+  const [previewImgs, setPreviewImgs] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
   const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
@@ -49,7 +50,7 @@ const ReviewEdit = () => {
           filePath: string;
         }) => imageDto.filePath
       );
-      setPrevImgUrls(filePaths);
+      setBeforeImgUrls(filePaths);
     } catch (error) {
       console.error("리뷰수정 get요청 에러", error);
     }
@@ -70,11 +71,6 @@ const ReviewEdit = () => {
     } catch (error) {
       console.error("로그인 유저id 요청 에러:", error);
     }
-  };
-
-  const handlePostImgs = (imgs: File[]) => {
-    setPostImgs(imgs);
-    setIsImgChanged(true);
   };
 
   const appendFormData = (formData: FormData) => {
@@ -137,8 +133,6 @@ const ReviewEdit = () => {
 
     const formData: FormData = new FormData();
     appendFormData(formData);
-    console.log("isImgChanged:", isImgChanged);
-    console.log("Edit-loginUserId:", loginUserId);
 
     try {
       await axios.put(
@@ -159,6 +153,7 @@ const ReviewEdit = () => {
 
   useEffect(() => {
     getData();
+    console.log(beforeImgUrls);
     getUserId();
   }, []);
 
@@ -169,9 +164,12 @@ const ReviewEdit = () => {
         <form className="flex flex-col items-center justify-center gap-1">
           <div className="flex justify-center">
             <ImageInput
-              prevImgUrls={prevImgUrls}
+              beforeImgUrls={beforeImgUrls}
+              previewImgs={previewImgs}
+              setPreviewImgs={setPreviewImgs}
               postImgs={postImgs}
-              handlePostImgs={handlePostImgs}
+              setPostImgs={setPostImgs}
+              setIsImgChanged={setIsImgChanged}
             />
           </div>
           <div className="mt-1 flex flex-col items-center justify-center gap-2 pl-5 pr-5 text-xs">
