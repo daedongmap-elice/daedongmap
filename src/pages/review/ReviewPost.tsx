@@ -58,6 +58,10 @@ const ReviewPost = () => {
     );
   };
 
+  const handlePreventSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   const handleSubmit = async () => {
     if (postImgs.length === 0) {
       alert("사진을 1장 이상 첨부해주세요");
@@ -98,7 +102,10 @@ const ReviewPost = () => {
         <div className="mb-6 ml-5 mt-4 text-lg font-medium">
           새 리뷰 등록하기
         </div>
-        <form className="flex flex-col items-center justify-center gap-1">
+        <form
+          className="flex flex-col items-center justify-center gap-1"
+          onSubmit={(e) => handlePreventSubmit(e)}
+        >
           <div className="flex justify-center">
             <ImageInput
               beforeImgUrls={[]}
