@@ -36,8 +36,11 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
     setShowInfoCard(false);
   };
 
-  const handleSetPlace = () => {
+  const handleSetPlace = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     setPlace(selectMarker);
+    e.stopPropagation();
     // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
     document.getElementById("placeModal")?.close();
   };

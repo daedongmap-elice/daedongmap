@@ -11,7 +11,7 @@ interface PlaceInfoCardProps {
     isSetUserLocation: boolean;
   };
   type: "main" | "post";
-  handleSetPlace?: () => void;
+  handleSetPlace?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 export default function PlaceInfoCard({
@@ -37,8 +37,11 @@ export default function PlaceInfoCard({
     kakaoPlaceId,
   } = place;
 
-  const handleClickKaKaoBtn = () => {
+  const handleClickKaKaoBtn = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     window.open(placeUrl);
+    e.stopPropagation();
   };
 
   const handleClickCard = () => {
@@ -114,14 +117,14 @@ export default function PlaceInfoCard({
         <div className="flex gap-3">
           <button
             className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
-            onClick={handleClickKaKaoBtn}
+            onClick={(e) => handleClickKaKaoBtn(e)}
           >
             kakao<strong>map</strong>으로 보기
           </button>
-          {type === "post" && (
+          {type === "post" && handleSetPlace && (
             <button
               className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
-              onClick={handleSetPlace}
+              onClick={(e) => handleSetPlace(e)}
             >
               선택하기
             </button>
