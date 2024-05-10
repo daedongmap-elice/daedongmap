@@ -104,7 +104,10 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   };
 
   useEffect(() => {
-    getUserId();
+    console.log("token:", token);
+    if (token) {
+      getUserId();
+    }
     if (typeof type === "undefined") {
       getData();
     }
