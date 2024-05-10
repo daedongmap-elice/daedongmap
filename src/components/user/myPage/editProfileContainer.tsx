@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import EditProfilePresnet from "./editProfilePresent";
 import { UserInfo } from "@/type/types";
-import { axiosClient } from "@/hooks/useAuth";
+import axiosClient from "@/utils/baseUrl";
 import { useNavigate } from "react-router-dom";
 import { profileAtom } from "@/components/atom/auth";
 import { useAtom } from "jotai";

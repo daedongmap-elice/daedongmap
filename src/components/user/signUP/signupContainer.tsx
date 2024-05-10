@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { signUp } from "@/hooks/useAuth";
+import { signUp } from "@/api/userApi";
 import { SignUpData } from "@/type/types";
 import { isValidationEmail, isCheckPassword } from "@/utils/authUtils";
 import SignUpPresent from "./signupPresent";
