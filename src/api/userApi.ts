@@ -56,3 +56,11 @@ export const Follow = async (userId: string) => {
     console.log(error);
   }
 };
+
+export const UnFollow = async (userId: string) => {
+  try {
+    await axiosClient.delete(`/follows/${userId}`);
+  } catch (error) {
+    console.log(error);
+  }
+};

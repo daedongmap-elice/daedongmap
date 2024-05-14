@@ -10,20 +10,20 @@ import { isTokenAtom, profileAtom } from "@/components/atom/auth";
 
 export default function MyPageContainer() {
   const [profile, setProfile] = useAtom<UserInfo>(profileAtom);
-  const [isToken, setIsTokn] = useAtom<boolean>(isTokenAtom);
+  const [isToken, setIsToken] = useAtom<boolean>(isTokenAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [reviews, setReivews] = useState<ReviewResponse[]>([]);
   const naviagte = useNavigate();
   const getProfile = async () => {
     try {
-      const res = await axiosClient.get(`/user`);
-      if (res.status === 200) {
+      const { status, data } = await axiosClient.get(`/user`);
+      if (status === 200) {
         setProfile({
-          profileImage: res.data.profileImage,
-          nickName: res.data.nickName,
-          status: res.data.status,
-          webSite: res.data.webSite,
+          profileImage: data.profileImage,
+          nickName: data.nickName,
+          status: data.status,
+          webSite: data.webSite,
         });
       }
     } catch (error) {
@@ -32,9 +32,9 @@ export default function MyPageContainer() {
   };
   const getReview = async () => {
     try {
-      const res = await axiosClient.get(`/reviews/users/me`);
-      if (res.status === 200) {
-        setReivews(res.data);
+      const { status, data } = await axiosClient.get(`/reviews/users/me`);
+      if (status === 200) {
+        setReivews(data);
       }
     } catch (error) {
       console.log(error);
@@ -42,11 +42,11 @@ export default function MyPageContainer() {
   };
   const logout = async () => {
     try {
-      const res = await axiosClient.post(`/user/logout`);
-      if (res.status === 200) {
-        alert(`${res.data}`);
+      const { status, data } = await axiosClient.post(`/user/logout`);
+      if (status === 200) {
+        alert(`${data}`);
         localStorage.clear();
-        setIsTokn(!isToken);
+        setIsToken(!isToken);
         naviagte("/");
       }
     } catch (error) {
@@ -69,7 +69,7 @@ export default function MyPageContainer() {
     e.preventDefault();
     setIsModal(!isModal);
     DeleteUser();
-    setIsTokn(!isToken);
+    setIsToken(!isToken);
     naviagte("/");
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
