@@ -45,6 +45,18 @@ const CommentPost = ({
     }
   }, [content]);
 
+  // 댓글이 2개 등록되는 이슈로 onKeyDown 이벤트 주석 처리함
+  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === "Enter") {
+  //     e.preventDefault();
+  //     if (token) {
+  //       handleSubmit();
+  //       return;
+  //     }
+  //     alert("댓글 작성은 로그인 후 가능합니다.");
+  //   }
+  // };
+
   return (
     <div className="fixed bottom-9 w-full">
       <div className="flex justify-center">
@@ -55,17 +67,7 @@ const CommentPost = ({
             placeholder="댓글 달기..."
             className="input input-bordered h-8 w-full text-xs"
             onChange={(e) => setContent(e.target.value)}
-            // onKeyDown={(e) => {
-            //   // 댓글이 2개 등록되는 이슈로 onKeyDown 주석 처리
-            //   if (e.key === "Enter") {
-            //     e.preventDefault();
-            //     if (token) {
-            //       handleSubmit();
-            //     } else {
-            //       alert("댓글 작성은 로그인 후 가능합니다.");
-            //     }
-            //   }
-            // }}
+            // onKeyDown={handleKeyDown}
             ref={inputRef}
           />
           <button
@@ -74,9 +76,9 @@ const CommentPost = ({
               if (token) {
                 e.preventDefault();
                 handleSubmit();
-              } else {
-                alert("댓글 작성은 로그인 후 가능합니다.");
+                return;
               }
+              alert("댓글 작성은 로그인 후 가능합니다.");
             }}
             className="btn btn-sm mr-2 h-4 bg-mainG text-xs text-GbtnText"
           >
