@@ -39,7 +39,12 @@ const NaverOAuth = () => {
       naver();
     }
   }, [code]);
-  return <div>조금만 기다려주세요.</div>;
+  return (
+    <div className="my-72 flex w-full flex-col items-center justify-center">
+      <span className="loading loading-dots loading-lg"></span>
+      <h2>로그인 중입니다. 잠시간 기다려주세요.</h2>
+    </div>
+  );
 };
 
 export default NaverOAuth;

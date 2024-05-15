@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import axios from "axios";
+import axiosClient from "@/utils/baseUrl";
 
 interface CommentPostProps {
   loginUserId: number;
@@ -21,8 +21,8 @@ const CommentPost = ({
   // 나의 유저아이디 가져와야 함
   const handleSubmit = useCallback(async () => {
     try {
-      await axios.post(
-        "http://35.232.243.53:8080/api/comments",
+      await axiosClient.post(
+        "/comments",
         {
           userId: loginUserId,
           reviewId: reviewId,

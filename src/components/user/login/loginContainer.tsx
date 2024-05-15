@@ -1,5 +1,5 @@
 import { LoginData } from "@/type/types";
-import { FindEmail, Login } from "@/hooks/useAuth";
+import { FindEmail, Login } from "@/api/userApi";
 import LoginPresent from "./loginPresent";
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";

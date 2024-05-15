@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { ReviewResponse, UserInfo } from "@/type/types";
-import { Follow, axiosClient } from "@/hooks/useAuth";
+import { Follow } from "@/api/userApi";
+import axiosClient from "@/utils/baseUrl";
 
 export default function UserPageContainer() {
   const [userProfile, setUserProfile] = useState<UserInfo>({
