@@ -18,7 +18,6 @@ const ReviewProfile = ({
       onClick={() => {
         if (!token) {
           alert("사용자 프로필은 로그인 후 볼 수 있습니다.");
-          return;
         }
       }}
     >
