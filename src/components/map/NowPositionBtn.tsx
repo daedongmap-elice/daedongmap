@@ -19,7 +19,7 @@ export default function NowPositionBtn({
   map,
   showInfoCard,
 }: NowPositionBtnProps) {
-  const [toast, setToast] = useState<boolean>(false);
+  const [isToast, setisToast] = useState<boolean>(false);
 
   const handleOnClick = () => {
     if (!map) {
@@ -27,7 +27,7 @@ export default function NowPositionBtn({
     }
 
     if (!userLocation.isSetUserLocation) {
-      setToast(true);
+      setisToast(true);
       return;
     }
 
@@ -53,8 +53,8 @@ export default function NowPositionBtn({
           <MdMyLocation className="h-4 w-4 text-mainG" />
         </button>
       </div>
-      {toast && (
-        <Toast setToast={setToast} message="위치를 가져올 수 없습니다." />
+      {isToast && (
+        <Toast setToast={setisToast} message="위치를 가져올 수 없습니다." />
       )}
     </>
   );
