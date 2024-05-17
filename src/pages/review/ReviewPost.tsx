@@ -19,11 +19,16 @@ const ReviewPost = () => {
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
   const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
+  const [isShowPlaceModal, setIsShowPlaceModal] = useState<boolean>(false);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   console.log(isImgChanged);
+
+  const handleSetIsShowPlaceModal = (bool: boolean) => {
+    setIsShowPlaceModal(bool);
+  };
 
   const appendFormData = (formData: FormData) => {
     // 평균 별점 계산
@@ -146,14 +151,15 @@ const ReviewPost = () => {
           <button
             type="button"
             className="btn btn-outline btn-sm mb-2 w-3/4 max-w-xs flex-col items-baseline border-gray-300 text-xs font-normal"
-            // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
-            onClick={() => document.getElementById("placeModal").showModal()}
+            onClick={() => handleSetIsShowPlaceModal(true)}
           >
             {place === undefined ? "음식점 선택" : place.placeName}
           </button>
-          <dialog id="placeModal" className="modal modal-bottom">
-            <FindPlaceModal setPlace={setPlace} />
-          </dialog>
+          <FindPlaceModal
+            setPlace={setPlace}
+            isShowPlaceModal={isShowPlaceModal}
+            handleSetIsShowPlaceModal={handleSetIsShowPlaceModal}
+          />
           <textarea
             required
             className="textarea textarea-bordered h-32 w-3/4 max-w-xs pt-3 text-xs"
