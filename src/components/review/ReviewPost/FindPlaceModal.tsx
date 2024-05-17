@@ -5,13 +5,13 @@ import { PlaceData, PlaceInfoData } from "@/type/types";
 import React from "react";
 
 interface FindPlaceProps {
-  setPlace: React.Dispatch<React.SetStateAction<PlaceInfoData | undefined>>;
+  handleSetSelectPlace: (selectPlace: PlaceInfoData | undefined) => void;
   isShowPlaceModal: boolean;
   handleSetIsShowPlaceModal: (bool: boolean) => void;
 }
 
 const FindPlaceModal: React.FC<FindPlaceProps> = ({
-  setPlace,
+  handleSetSelectPlace,
   isShowPlaceModal,
   handleSetIsShowPlaceModal,
 }) => {
@@ -46,13 +46,12 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({
   const handleSetPlace = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setPlace(selectMarker);
+    handleSetSelectPlace(selectMarker);
     e.stopPropagation();
     handleSetIsShowPlaceModal(false);
   };
 
   useEffect(() => {
-    console.log(isShowPlaceModal);
     if (isShowPlaceModal) {
       placeModalRef.current?.showModal();
     } else {

@@ -30,6 +30,10 @@ const ReviewPost = () => {
     setIsShowPlaceModal(bool);
   };
 
+  const handleSetSelectPlace = (selectPlace: PlaceInfoData | undefined) => {
+    setPlace(selectPlace);
+  };
+
   const appendFormData = (formData: FormData) => {
     // 평균 별점 계산
     const sum = tasteRating + hygieneRating + kindnessRating;
@@ -156,7 +160,7 @@ const ReviewPost = () => {
             {place === undefined ? "음식점 선택" : place.placeName}
           </button>
           <FindPlaceModal
-            setPlace={setPlace}
+            handleSetSelectPlace={handleSetSelectPlace}
             isShowPlaceModal={isShowPlaceModal}
             handleSetIsShowPlaceModal={handleSetIsShowPlaceModal}
           />
