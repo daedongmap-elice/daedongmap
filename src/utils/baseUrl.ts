@@ -27,6 +27,7 @@ axiosClient.interceptors.response.use(
   async (error: AxiosError) => {
     const { response, config } = error;
     if (response?.status === 401 && config) {
+      //토큰이 만료로 인한 에러
       localStorage.removeItem("accessToken");
       const RT = localStorage.getItem("refreshToken");
       if (RT) {
@@ -45,6 +46,12 @@ axiosClient.interceptors.response.use(
           console.log(err);
         }
       }
+    } else if (error.request) {
+      // 요청이 이루어졌으나 응답을 받지 못한 경우
+      console.log("No response received", error.request);
+    } else {
+      //요청 설정 중 발생한 오류
+      console.log("Error setting up request", error.message);
     }
     return Promise.reject(error);
   }
