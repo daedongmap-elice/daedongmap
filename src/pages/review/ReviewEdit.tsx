@@ -5,10 +5,10 @@ import {
 } from "@/components/review/index";
 import { useEffect, useState } from "react";
 import FormData from "form-data";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PerfectScrollar from "react-perfect-scrollbar";
 import { PlaceInfoData } from "@/type/types";
+import axiosClient from "@/utils/baseUrl";
 
 const ReviewEdit = () => {
   const [loginUserId, setLoginUserId] = useState<number>(0);
@@ -29,14 +29,11 @@ const ReviewEdit = () => {
 
   const getData = async () => {
     try {
-      const response = await axios.get(
-        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosClient.get(`/reviews/${currentReviewId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTasteRating(response.data.tasteRating);
       setHygieneRating(response.data.hygieneRating);
       setKindnessRating(response.data.kindnessRating);
@@ -58,15 +55,11 @@ const ReviewEdit = () => {
 
   const getUserId = async () => {
     try {
-      const response = await axios.post(
-        "http://35.232.243.53:8080/api/user",
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosClient.post("/user", null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setLoginUserId(response.data);
     } catch (error) {
       console.error("로그인 유저id 요청 에러:", error);
@@ -135,16 +128,12 @@ const ReviewEdit = () => {
     appendFormData(formData);
 
     try {
-      await axios.put(
-        `http://35.232.243.53:8080/api/reviews/${currentReviewId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axiosClient.put(`/reviews/${currentReviewId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       navigate(`/detail#${currentReviewId}`);
     } catch (error) {
       console.error("리뷰 수정 실패:", error);

@@ -25,7 +25,7 @@ export default function PlaceListModal({
 }: PlaceListModalProps) {
   return (
     <div
-      className={`absolute z-10 h-[95.3vh] w-full bg-[#F7F7F9] transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
+      className={`fixed z-10 h-[95.3vh] w-full max-w-[425px] bg-[#F7F7F9] transition-all duration-300 ${openListModal ? "top-0" : "top-[1000px]"}`}
     >
       <PerfectScrollar>
         <div
@@ -34,15 +34,17 @@ export default function PlaceListModal({
           {placeList.length !== 0 && (
             <div className="relative mx-auto my-0 w-[320px] pb-px pt-24 text-right">
               <Select
-                optionName={
+                option={
                   userLocation.isSetUserLocation
-                    ? ["추천순", "별점순", "거리순"]
-                    : ["추천순", "별점순"]
-                }
-                optionValue={
-                  userLocation.isSetUserLocation
-                    ? ["recommend", "rating", "distance"]
-                    : ["recommend", "rating"]
+                    ? [
+                        { name: "추천순", value: "recommend" },
+                        { name: "별점순", value: "rating" },
+                        { name: "거리순", value: "distance" },
+                      ]
+                    : [
+                        { name: "추천순", value: "recommend" },
+                        { name: "별점순", value: "rating" },
+                      ]
                 }
                 handler={handleSetFilter}
               />

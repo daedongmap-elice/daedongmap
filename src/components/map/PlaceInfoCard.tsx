@@ -11,7 +11,7 @@ interface PlaceInfoCardProps {
     isSetUserLocation: boolean;
   };
   type: "main" | "post";
-  handleSetPlace?: () => void;
+  handleSetPlace?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 export default function PlaceInfoCard({
@@ -25,6 +25,7 @@ export default function PlaceInfoCard({
   }
   const nav = useNavigate();
   const [distance, setDistance] = useState(0);
+  const isMain = type === "main";
   const {
     averageRating,
     categoryName,
@@ -37,8 +38,11 @@ export default function PlaceInfoCard({
     kakaoPlaceId,
   } = place;
 
-  const handleClickKaKaoBtn = () => {
+  const handleClickKaKaoBtn = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     window.open(placeUrl);
+    e.stopPropagation();
   };
 
   const handleClickCard = () => {
@@ -62,7 +66,7 @@ export default function PlaceInfoCard({
   }, []);
 
   return (
-    <button onClick={handleClickCard}>
+    <div onClick={handleClickCard} aria-hidden>
       <div className="h-fit w-full rounded-lg bg-white p-2.5 shadow">
         <div className="flex justify-between">
           <div className="flex max-w-[220px] flex-col gap-0.5">
@@ -74,7 +78,7 @@ export default function PlaceInfoCard({
                 <p className="inline text-xs">&nbsp;{categoryName}</p>
               </h2>
             </div>
-            {type === "main" && (
+            {isMain && (
               <div className="flex items-center gap-1.5">
                 <h4 className="text-xs font-medium">{averageRating}</h4>
                 <div className="rating rating-half rating-xs pointer-events-none">
@@ -93,17 +97,17 @@ export default function PlaceInfoCard({
 
             <p className="truncate text-xs">{roadAddressName}</p>
             <div className="flex gap-1">
-              {type === "main" && userLocation?.isSetUserLocation && (
+              {isMain && userLocation?.isSetUserLocation && (
                 <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
               )}
-              {type === "main" && userLocation?.isSetUserLocation && phone && (
+              {isMain && userLocation?.isSetUserLocation && phone && (
                 <p className="text-xs font-bold">|</p>
               )}
               {phone && <p className="text-xs text-mainG">{phone}</p>}
             </div>
           </div>
 
-          {type === "main" && (
+          {isMain && (
             <img
               src={reviewImagePath}
               alt="음식점 사진"
@@ -114,20 +118,20 @@ export default function PlaceInfoCard({
         <div className="flex gap-3">
           <button
             className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-slate-300 bg-white text-xs"
-            onClick={handleClickKaKaoBtn}
+            onClick={(e) => handleClickKaKaoBtn(e)}
           >
             kakao<strong>map</strong>으로 보기
           </button>
-          {type === "post" && (
+          {!isMain && handleSetPlace && (
             <button
               className="mt-1.5 inline-flex h-6 w-full items-center justify-center rounded-full border border-solid border-mainY bg-mainY text-xs font-semibold text-YbtnText"
-              onClick={handleSetPlace}
+              onClick={(e) => handleSetPlace(e)}
             >
               선택하기
             </button>
           )}
         </div>
       </div>
-    </button>
+    </div>
   );
 }
