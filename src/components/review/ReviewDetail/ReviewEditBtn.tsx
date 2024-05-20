@@ -1,14 +1,15 @@
-import { AiOutlineMore } from "react-icons/ai";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "@/utils/baseUrl";
+import { AiOutlineMore } from "react-icons/ai";
+import Toast from "@/components/common/Toast";
 
 interface EditButtonProps {
   reviewId: number;
 }
 
 const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
-  // TODO: 삭제 버튼 클릭 시 현재 리뷰아이디로 delete요청 보내기
-  //      '리뷰를 삭제하시겠습니까?' 모달 띄우고 확인/취소 버튼
+  const [showToast, setShowToast] = useState<boolean>(false);
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
@@ -19,14 +20,13 @@ const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
     if (shouldDelete) {
       e.preventDefault();
       try {
-        const response = await axiosClient.delete(`/reviews/${reviewId}`, {
+        await axiosClient.delete(`/reviews/${reviewId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response);
         navigate("/review");
-        window.alert("삭제되었습니다.");
+        setShowToast(true);
       } catch (error) {
         console.error("리뷰삭제 delete요청 에러", error);
       }
@@ -50,6 +50,9 @@ const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
           </a>
         </li>
       </ul>
+      {showToast && (
+        <Toast setToast={setShowToast} message="리뷰가 삭제되었습니다." />
+      )}
     </div>
   );
 };

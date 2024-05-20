@@ -9,25 +9,28 @@ import { useNavigate } from "react-router-dom";
 import { PlaceInfoData } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
 import axiosClient from "@/utils/baseUrl";
+import Toast from "@/components/common/Toast";
 
 const ReviewPost = () => {
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
-  const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
   const [tasteRating, setTasteRating] = useState(5);
   const [hygieneRating, setHygieneRating] = useState(5);
   const [kindnessRating, setKindnessRating] = useState(5);
   const [content, setContent] = useState("");
   const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
-  const [isShowPlaceModal, setIsShowPlaceModal] = useState<boolean>(false);
+  const [showPlaceModal, setShowPlaceModal] = useState<boolean>(false);
+  const [showNoPhotoToast, setShowNoPhotoToast] = useState<boolean>(false);
+  const [showTooManyPhotosToast, setShowTooManyPhotosToast] =
+    useState<boolean>(false);
+  const [showNoPlaceToast, setShowNoPlaceToast] = useState<boolean>(false);
+  const [showNoTextToast, setShowNoTextToast] = useState<boolean>(false);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  console.log(isImgChanged);
-
-  const handleSetIsShowPlaceModal = (bool: boolean) => {
-    setIsShowPlaceModal(bool);
+  const handleSetShowPlaceModal = (bool: boolean) => {
+    setShowPlaceModal(bool);
   };
 
   const handleSetSelectPlace = (selectPlace: PlaceInfoData | undefined) => {
@@ -50,10 +53,8 @@ const ReviewPost = () => {
 
     // placeRequest 데이터 추가 (FindPlaceModal 컴포넌트에서 선택된 음식점 정보)
     const placeRequest = place;
-    console.log("placeRequest:", placeRequest);
-    console.log("reviewRequest:", reviewRequest);
 
-    // formData.append("file", postImgs);
+    // formData.append("file", postImgs); 서버 전송 시 에러로 for문으로 처리
     for (let i = 0; i < postImgs.length; i++) {
       formData.append("file", postImgs[i]);
     }
@@ -72,23 +73,6 @@ const ReviewPost = () => {
   };
 
   const handleSubmit = async () => {
-    if (postImgs.length === 0) {
-      alert("사진을 1장 이상 첨부해주세요");
-      return;
-    }
-    if (postImgs.length > 5) {
-      alert("사진은 5장 이하로 첨부해주세요");
-      return;
-    }
-    if (!content) {
-      alert("본문 내용을 입력해주세요");
-      return;
-    }
-    if (!place?.kakaoPlaceId) {
-      alert("음식점 정보를 선택해주세요.");
-      return;
-    }
-
     const formData: FormData = new FormData();
     appendFormData(formData);
 
@@ -122,7 +106,6 @@ const ReviewPost = () => {
               setPreviewImgs={setPreviewImgs}
               postImgs={postImgs}
               setPostImgs={setPostImgs}
-              setIsImgChanged={setIsImgChanged}
               type="post"
             />
           </div>
@@ -155,17 +138,16 @@ const ReviewPost = () => {
           <button
             type="button"
             className="btn btn-outline btn-sm mb-2 w-3/4 max-w-xs flex-col items-baseline border-gray-300 text-xs font-normal"
-            onClick={() => handleSetIsShowPlaceModal(true)}
+            onClick={() => handleSetShowPlaceModal(true)}
           >
             {place === undefined ? "음식점 선택" : place.placeName}
           </button>
           <FindPlaceModal
             handleSetSelectPlace={handleSetSelectPlace}
-            isShowPlaceModal={isShowPlaceModal}
-            handleSetIsShowPlaceModal={handleSetIsShowPlaceModal}
+            isShowPlaceModal={showPlaceModal}
+            handleSetIsShowPlaceModal={handleSetShowPlaceModal}
           />
           <textarea
-            required
             className="textarea textarea-bordered h-32 w-3/4 max-w-xs pt-3 text-xs"
             placeholder="리뷰 내용 입력..."
             onChange={(e) => setContent(e.target.value)}
@@ -174,6 +156,22 @@ const ReviewPost = () => {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
+              if (postImgs.length === 0) {
+                setShowNoPhotoToast(true);
+                return;
+              }
+              if (postImgs.length > 5) {
+                setShowTooManyPhotosToast(true);
+                return;
+              }
+              if (!place?.kakaoPlaceId) {
+                setShowNoPlaceToast(true);
+                return;
+              }
+              if (!content) {
+                setShowNoTextToast(true);
+                return;
+              }
               handleSubmit();
             }}
             className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
@@ -181,6 +179,30 @@ const ReviewPost = () => {
             리뷰 등록
           </button>
         </form>
+        {showNoPhotoToast && (
+          <Toast
+            setToast={setShowNoPhotoToast}
+            message="사진을 1장 이상 첨부해주세요."
+          />
+        )}
+        {showTooManyPhotosToast && (
+          <Toast
+            setToast={setShowTooManyPhotosToast}
+            message="사진은 5장 이하로 첨부해주세요."
+          />
+        )}
+        {showNoPlaceToast && (
+          <Toast
+            setToast={setShowNoPlaceToast}
+            message="음식점 정보를 선택해주세요."
+          />
+        )}
+        {showNoTextToast && (
+          <Toast
+            setToast={setShowNoTextToast}
+            message="리뷰 내용을 입력해주세요."
+          />
+        )}
       </div>
     </PerfectScrollar>
   );

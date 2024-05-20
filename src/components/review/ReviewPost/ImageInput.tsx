@@ -6,7 +6,7 @@ interface ImageInputProps {
   setPreviewImgs: React.Dispatch<React.SetStateAction<string[]>>;
   postImgs: File[];
   setPostImgs: React.Dispatch<React.SetStateAction<any>>;
-  setIsImgChanged: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsImgChanged?: React.Dispatch<React.SetStateAction<boolean>>;
   type: "post" | "edit";
 }
 
@@ -66,7 +66,7 @@ const ImageInput = ({
       </label>
       <div className="carousel h-52 w-52">
         {type === "edit" && showImgEdit ? (
-          <div className="carousel-item absolute h-full w-full flex-col items-center justify-center gap-1 border border-solid border-gray-200  bg-white text-base text-subGray">
+          <div className="carousel-item absolute h-full w-full flex-col items-center justify-center gap-1 border border-solid border-gray-200 bg-white text-base text-subGray">
             <button
               onClick={() => {
                 setPreviewImgs([]);

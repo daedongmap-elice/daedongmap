@@ -1,14 +1,10 @@
-import {
-  RatingStar,
-  ImageInput,
-  FindPlaceModal,
-} from "@/components/review/index";
 import { useEffect, useState } from "react";
-import FormData from "form-data";
 import { useNavigate } from "react-router-dom";
 import PerfectScrollar from "react-perfect-scrollbar";
-import { PlaceInfoData } from "@/type/types";
+import FormData from "form-data";
+import { RatingStar, ImageInput } from "@/components/review/index";
 import axiosClient from "@/utils/baseUrl";
+import Toast from "@/components/common/Toast";
 
 const ReviewEdit = () => {
   const [loginUserId, setLoginUserId] = useState<number>(0);
@@ -21,7 +17,10 @@ const ReviewEdit = () => {
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
   const [postImgs, setPostImgs] = useState<File[]>([]);
   const [isImgChanged, setIsImgChanged] = useState<boolean>(false);
-  const [place, setPlace] = useState<PlaceInfoData | undefined>(undefined);
+  const [showNoPhotoToast, setShowNoPhotoToast] = useState<boolean>(false);
+  const [showTooManyPhotosToast, setShowTooManyPhotosToast] =
+    useState<boolean>(false);
+  const [showNoTextToast, setShowNoTextToast] = useState<boolean>(false);
 
   const currentReviewId = window.location.hash.substring(1);
   const token = localStorage.getItem("accessToken");
@@ -82,8 +81,6 @@ const ReviewEdit = () => {
       imageModified: isImgChanged,
     };
 
-    const placeRequest = place;
-
     // formData에 파일 항목이 없으면 원래 이미지를 그대로 쓴다
     // formData에 파일이 있으면 원래 이미지를 삭제하고 새로운 이미지로 대체
     if (isImgChanged) {
@@ -104,26 +101,9 @@ const ReviewEdit = () => {
         type: "application/json",
       })
     );
-    formData.append(
-      "placeRequest",
-      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
-    );
   };
 
   const handleSubmit = async () => {
-    if (isImgChanged && postImgs.length === 0) {
-      alert("사진을 1장 이상 첨부해주세요.");
-      return;
-    }
-    if (postImgs.length > 5) {
-      alert("사진은 5장 이하로 첨부해주세요");
-      return;
-    }
-    if (!content) {
-      alert("본문 내용을 입력해주세요.");
-      return;
-    }
-
     const formData: FormData = new FormData();
     appendFormData(formData);
 
@@ -142,7 +122,6 @@ const ReviewEdit = () => {
 
   useEffect(() => {
     getData();
-    console.log(beforeImgUrls);
     getUserId();
   }, []);
 
@@ -194,10 +173,6 @@ const ReviewEdit = () => {
             className="input input-sm input-bordered mb-2 box-border w-3/4 max-w-xs"
             disabled
           />
-          {/* 리뷰 수정 요청에 placeRequest 필요없으면 dialog 삭제할 것(eslint setPlace never used 에러 때문) */}
-          <dialog>
-            <FindPlaceModal setPlace={setPlace} />
-          </dialog>
           <textarea
             required
             className="textarea textarea-bordered box-border h-32 w-3/4 max-w-xs pt-3 text-xs"
@@ -209,6 +184,18 @@ const ReviewEdit = () => {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
+              if (isImgChanged && postImgs.length === 0) {
+                setShowNoPhotoToast(true);
+                return;
+              }
+              if (postImgs.length > 5) {
+                setShowTooManyPhotosToast(true);
+                return;
+              }
+              if (!content) {
+                setShowNoTextToast(true);
+                return;
+              }
               handleSubmit();
             }}
             className="btn btn-sm mt-2 w-1/2 bg-mainY font-medium text-YbtnText"
@@ -216,6 +203,24 @@ const ReviewEdit = () => {
             리뷰 수정
           </button>
         </form>
+        {showNoPhotoToast && (
+          <Toast
+            setToast={setShowNoPhotoToast}
+            message="사진을 1장 이상 첨부해주세요."
+          />
+        )}
+        {showTooManyPhotosToast && (
+          <Toast
+            setToast={setShowTooManyPhotosToast}
+            message="사진은 5장 이하로 첨부해주세요."
+          />
+        )}
+        {showNoTextToast && (
+          <Toast
+            setToast={setShowNoTextToast}
+            message="리뷰 내용을 입력해주세요."
+          />
+        )}
       </div>
     </PerfectScrollar>
   );

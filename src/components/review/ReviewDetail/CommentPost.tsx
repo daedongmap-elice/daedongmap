@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import axiosClient from "@/utils/baseUrl";
+import Toast from "@/components/common/Toast";
 
 interface CommentPostProps {
   loginUserId: number;
@@ -15,6 +16,7 @@ const CommentPost = ({
   scrollToBottom,
 }: CommentPostProps) => {
   const [content, setContent] = useState("");
+  const [showToast, setShowToast] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const token = localStorage.getItem("accessToken");
 
@@ -78,12 +80,18 @@ const CommentPost = ({
                 handleSubmit();
                 return;
               }
-              alert("댓글 작성은 로그인 후 가능합니다.");
+              setShowToast(true);
             }}
             className="btn btn-sm mr-2 h-4 bg-mainG text-xs text-GbtnText"
           >
             확인
           </button>
+          {showToast && (
+            <Toast
+              setToast={setShowToast}
+              message="댓글 달기는 로그인 후 가능합니다."
+            />
+          )}
         </div>
       </div>
     </div>
