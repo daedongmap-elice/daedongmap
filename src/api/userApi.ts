@@ -1,4 +1,9 @@
-import { SignUpRequest, LoginData } from "@/type/types";
+import {
+  SignUpRequest,
+  LoginData,
+  UserInfo,
+  ReviewResponse,
+} from "@/type/types";
 import axiosClient from "@/utils/baseUrl";
 
 export const signUp = async (info: SignUpRequest) => {
@@ -25,6 +30,17 @@ export const Login = async (info: LoginData) => {
   }
 };
 
+export const Logout = async () => {
+  try {
+    const { status, data } = await axiosClient.post(`/user/logout`);
+    if (status === 200) {
+      alert(`${data}`);
+      localStorage.clear();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const DeleteUser = async () => {
   try {
     const res = await axiosClient.delete(`/user`);
@@ -60,6 +76,35 @@ export const Follow = async (userId: string) => {
 export const UnFollow = async (userId: string) => {
   try {
     await axiosClient.delete(`/follows/${userId}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getProfile = async (setProfile: (profile: UserInfo) => void) => {
+  try {
+    const { status, data } = await axiosClient.get(`/user`);
+    if (status === 200) {
+      setProfile({
+        profileImage: data.profileImage,
+        nickName: data.nickName,
+        status: data.status,
+        webSite: data.webSite,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getReview = async (
+  setReviews: (reviews: ReviewResponse[]) => void
+) => {
+  try {
+    const { status, data } = await axiosClient.get(`/reviews/users/me`);
+    if (status === 200) {
+      setReviews(data);
+    }
   } catch (error) {
     console.log(error);
   }

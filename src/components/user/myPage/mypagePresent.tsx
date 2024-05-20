@@ -53,7 +53,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
                 <p className="mr-2 flex items-center">
                   <RiLink />
                 </p>
-                <p className="text-center">{profile.webSite}</p>
+                <p className="w-24 truncate text-center">{profile.webSite}</p>
               </div>
             )}
           </div>
