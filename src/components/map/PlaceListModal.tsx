@@ -34,15 +34,17 @@ export default function PlaceListModal({
           {placeList.length !== 0 && (
             <div className="relative mx-auto my-0 w-[320px] pb-px pt-24 text-right">
               <Select
-                optionName={
+                option={
                   userLocation.isSetUserLocation
-                    ? ["추천순", "별점순", "거리순"]
-                    : ["추천순", "별점순"]
-                }
-                optionValue={
-                  userLocation.isSetUserLocation
-                    ? ["recommend", "rating", "distance"]
-                    : ["recommend", "rating"]
+                    ? [
+                        { name: "추천순", value: "recommend" },
+                        { name: "별점순", value: "rating" },
+                        { name: "거리순", value: "distance" },
+                      ]
+                    : [
+                        { name: "추천순", value: "recommend" },
+                        { name: "별점순", value: "rating" },
+                      ]
                 }
                 handler={handleSetFilter}
               />

@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { PlaceInfoCard, SearchInput } from "@/components/map/index";
 import { PlaceData, PlaceInfoData } from "@/type/types";
 import React from "react";
 
 interface FindPlaceProps {
-  setPlace: React.Dispatch<React.SetStateAction<PlaceInfoData | undefined>>;
+  handleSetSelectPlace: (selectPlace: PlaceInfoData | undefined) => void;
+  isShowPlaceModal: boolean;
+  handleSetIsShowPlaceModal: (bool: boolean) => void;
 }
 
-const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
+const FindPlaceModal: React.FC<FindPlaceProps> = ({
+  handleSetSelectPlace,
+  isShowPlaceModal,
+  handleSetIsShowPlaceModal,
+}) => {
   const [markers, setMarkers] = useState<PlaceData[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [selectMarker, setSelectMarker] = useState<PlaceInfoData>();
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const placeModalRef = useRef<HTMLDialogElement>(null);
 
   const handleSetMarkers = (places: PlaceData[]) => {
     setMarkers(places);
@@ -39,14 +46,21 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
   const handleSetPlace = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setPlace(selectMarker);
+    handleSetSelectPlace(selectMarker);
     e.stopPropagation();
-    // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
-    document.getElementById("placeModal")?.close();
+    handleSetIsShowPlaceModal(false);
   };
 
+  useEffect(() => {
+    if (isShowPlaceModal) {
+      placeModalRef.current?.showModal();
+    } else {
+      placeModalRef.current?.close();
+    }
+  }, [isShowPlaceModal]);
+
   return (
-    <>
+    <dialog id="placeModal" className="modal modal-bottom" ref={placeModalRef}>
       <div className="modal-box h-full w-full p-0">
         <div id="map" className="h-full w-full bg-slate-200">
           <Map // 지도를 표시할 Container
@@ -132,20 +146,10 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({ setPlace }) => {
           </Map>
         </div>
       </div>
-      <form method="dialog" className="modal-backdrop">
-        <button>close</button>
-      </form>
-      {/* <button
-        type="button"
-        className="btn btn-circle btn-ghost btn-sm absolute right-3 top-24"
-        onClick={() => {
-          // @ts-expect-error NOTE: DaisyUI의 Modal 사용을 위함
-          document.getElementById("placeModal")?.close();
-        }}
-      >
-        <img src="/svg/deleteIcon.svg" alt="deleteIcon" />
-      </button> */}
-    </>
+      <div className="modal-backdrop">
+        <button onClick={() => handleSetIsShowPlaceModal(false)}>close</button>
+      </div>
+    </dialog>
   );
 };
 
