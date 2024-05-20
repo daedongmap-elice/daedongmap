@@ -10,7 +10,7 @@ export default function PreLogin({ children }: Props) {
   const [isToken] = useAtom(isTokenAtom);
   return (
     <Fragment>
-      {isToken === false ? (
+      {!isToken ? (
         <div className="mt-[130px] flex w-full flex-col items-center justify-center">
           <a href="/">
             <img

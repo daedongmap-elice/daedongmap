@@ -3,6 +3,7 @@ import { AiOutlineMore } from "react-icons/ai";
 import { RiLink } from "react-icons/ri";
 import ReviewGallery from "@/pages/review/ReviewGallery";
 import { Link } from "react-router-dom";
+import DeleteUserModal from "./deleteUser";
 
 interface MypageProps {
   profile: UserInfo;
@@ -52,7 +53,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
                 <p className="mr-2 flex items-center">
                   <RiLink />
                 </p>
-                <p className="text-center">{profile.webSite}</p>
+                <p className="w-24 truncate text-center">{profile.webSite}</p>
               </div>
             )}
           </div>
@@ -97,36 +98,12 @@ const MyPagePresent: React.FC<MypageProps> = ({
           </button>
         )}
         {isModal && (
-          <div className="modal-overlay flex justify-center">
-            <div className="modal-box">
-              <form method="dialog">
-                <button
-                  className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
-                  onClick={isClickModal}
-                >
-                  ✕
-                </button>
-              </form>
-              <h3 className="text-bg-error text-center text-lg font-bold">
-                회원탈퇴
-              </h3>
-              <p className="py-4 text-center">회원탈퇴 하시겠습니까?</p>
-              <input
-                type="text"
-                name="message"
-                placeholder="회원탈퇴를 입력해주세요."
-                onChange={handleChange}
-                className="input input-sm input-bordered w-full max-w-xs"
-              />
-              <button
-                className="btn btn-sm mt-[30px] w-[280px] bg-mainG text-GbtnText"
-                disabled={buttonDisabled}
-                onClick={isClickDelete}
-              >
-                회원탈퇴
-              </button>
-            </div>
-          </div>
+          <DeleteUserModal
+            isClickDelete={isClickDelete}
+            isClickModal={isClickModal}
+            handleChange={handleChange}
+            buttonDisabled={buttonDisabled}
+          />
         )}
         <hr className="mt-5 w-full border-t border-solid border-subLightGray" />
         <div className="mt-3">
