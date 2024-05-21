@@ -62,7 +62,6 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
           Authorization: `Bearer ${token}`, // TODO: 서버수정후 토큰삭제하기
         },
       });
-      console.log(response.data.id);
       setData(response.data);
       setReviewId(response.data.id);
       setReviewUserId(response.data.user.id);
@@ -97,11 +96,10 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   };
 
   useEffect(() => {
-    console.log("token:", token);
     if (token) {
       getUserId();
     }
-    if (typeof type === "undefined") {
+    if (type === undefined) {
       getData();
     }
     if (type === "feed") {
