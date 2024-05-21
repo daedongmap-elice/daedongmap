@@ -59,7 +59,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
     try {
       const response = await axiosClient.get(`/reviews/${currentReviewId}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // TODO: 서버수정후 토큰삭제하기
+          Authorization: `Bearer ${token}`,
         },
       });
       setData(response.data);
