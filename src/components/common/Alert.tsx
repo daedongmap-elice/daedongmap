@@ -14,16 +14,16 @@ export default function Alert({
   onClose,
 }: AlertProps) {
   return (
-    <div className="absolute left-1/2 top-1/2 z-50 w-fit min-w-48 -translate-x-1/2 -translate-y-1/2">
+    <div className="fixed left-1/2 top-1/3 z-50 w-fit min-w-48 -translate-x-1/2 -translate-y-1/2">
       <div
         role="alert"
         className="alert border border-solid border-zinc-200 bg-white shadow-md"
       >
-        <div className="w-max max-w-72">
-          <h3 className="text-lg font-bold">{title}</h3>
+        <div className="w-max max-w-72 px-1 py-2">
+          <h3 className="pb-3 text-lg font-bold">{title}</h3>
           {subTitle && <div className="text-xs">{subTitle}</div>}
         </div>
-        <div className="flex w-full justify-around">
+        <div className="flex w-full justify-evenly pb-3">
           {onClose && (
             <button className="btn btn-sm" onClick={onClose}>
               취소
