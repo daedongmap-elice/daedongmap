@@ -38,6 +38,10 @@ export default function MyPageContainer() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
+  const onClickEditButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    naviagte("/editprofile");
+  };
   const buttonDisabled = useMemo(() => {
     return !isCheckDelete(message);
   }, [message]);
@@ -54,6 +58,7 @@ export default function MyPageContainer() {
       isModal={isModal}
       isClickDelete={isClickDelete}
       buttonDisabled={buttonDisabled}
+      onClickEditButton={onClickEditButton}
       handleChange={handleChange}
       reviews={reviews}
     />
