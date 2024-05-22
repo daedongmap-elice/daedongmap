@@ -259,6 +259,7 @@ export function MainMap() {
           userLocation={userLocation}
           map={map}
           showInfoCard={showInfoCard}
+          setUserLocation={setUserLocation}
         />
 
         <PlaceListModal

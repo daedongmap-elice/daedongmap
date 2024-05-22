@@ -12,12 +12,21 @@ interface NowPositionBtnProps {
   };
   map: kakao.maps.Map | undefined;
   showInfoCard: boolean;
+  setUserLocation: React.Dispatch<
+    React.SetStateAction<{
+      center: LatLngData;
+      errMsg: null | string;
+      isLoading: boolean;
+      isSetUserLocation: boolean;
+    }>
+  >;
 }
 
 export default function NowPositionBtn({
   userLocation,
   map,
   showInfoCard,
+  setUserLocation,
 }: NowPositionBtnProps) {
   const [isToast, setisToast] = useState<boolean>(false);
 
@@ -27,7 +36,27 @@ export default function NowPositionBtn({
     }
 
     if (!userLocation.isSetUserLocation) {
-      setisToast(true);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setUserLocation((prev) => ({
+              ...prev,
+              center: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              },
+              isLoading: false,
+              isSetUserLocation: true,
+            }));
+          },
+          (err) => {
+            console.log(err.message);
+            setisToast(true);
+          }
+        );
+      } else {
+        setisToast(true);
+      }
       return;
     }
 
