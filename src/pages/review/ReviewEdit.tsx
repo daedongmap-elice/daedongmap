@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PerfectScrollar from "react-perfect-scrollbar";
 import FormData from "form-data";
 import { RatingStar, ImageInput } from "@/components/review/index";
@@ -22,7 +22,7 @@ const ReviewEdit = () => {
     useState<boolean>(false);
   const [showNoTextToast, setShowNoTextToast] = useState<boolean>(false);
 
-  const currentReviewId = window.location.hash.substring(1);
+  const { reviewId: currentReviewId } = useParams();
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 

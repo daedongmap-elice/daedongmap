@@ -42,7 +42,7 @@ const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
       {showMenu && (
         <ul className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
           <li>
-            <Link to={`/edit/#${reviewId}`}>수정</Link>
+            <Link to={`/edit/${reviewId}`}>수정</Link>
           </li>
           <li>
             <button

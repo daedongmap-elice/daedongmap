@@ -8,6 +8,7 @@ import {
   CommentModal,
 } from "@/components/review/index";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ReviewResponse } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
 import axiosClient from "@/utils/baseUrl";
@@ -29,7 +30,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [data, setData] = useState<ReviewResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
-  const currentReviewId = window.location.hash.substring(1);
+  const { reviewId: currentReviewId } = useParams();
   const token = localStorage.getItem("accessToken");
 
   const putFeedData = (fData: ReviewResponse) => {

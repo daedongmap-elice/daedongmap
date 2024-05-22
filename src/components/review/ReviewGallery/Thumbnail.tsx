@@ -21,7 +21,7 @@ const Thumbnail = ({ reviewIds, imgUrls }: ThumbnailProps) => {
       <PerfectScrollar>
         <div className="grid grid-cols-3 gap-px">
           {idAndUrl.map((el, i) => (
-            <Link to={`/detail#${el.id}`} key={`thumbnail${i}`}>
+            <Link to={`/detail/${el.id}`} key={`thumbnail${i}`}>
               <img
                 src={el.url}
                 alt="thumbnail"

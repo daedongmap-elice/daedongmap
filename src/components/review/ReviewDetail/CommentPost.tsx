@@ -4,7 +4,7 @@ import Toast from "@/components/common/Toast";
 
 interface CommentPostProps {
   loginUserId: number;
-  reviewId: string;
+  reviewId?: string;
   getData: () => void;
   scrollToBottom: () => void;
 }
