@@ -1,6 +1,7 @@
-import { AiOutlineMore } from "react-icons/ai";
 import { useState } from "react";
 import axiosClient from "@/utils/baseUrl";
+import { AiOutlineMore } from "react-icons/ai";
+import Toast from "@/components/common/Toast";
 
 interface EditButtonProps {
   commentId: number;
@@ -9,6 +10,7 @@ interface EditButtonProps {
 
 const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showToast, setShowToast] = useState<boolean>(false);
   const token = localStorage.getItem("accessToken");
 
   const handleDelete = async () => {
@@ -19,9 +21,9 @@ const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
         },
       });
       console.log(response);
-      // alert("댓글이 삭제되었습니다.");
       getData();
       setShowMenu(false);
+      setShowToast(true);
     } catch (error) {
       console.error("댓글삭제 delete요청 에러", error);
     }
@@ -35,15 +37,13 @@ const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
         </button>
         {showMenu && (
           <ul className="menu dropdown-content z-[1] w-28 rounded-box bg-base-100 p-2 shadow">
-            {/* <li>
-            <a href={"/"} onClick={}>
-              수정
-            </a>
-          </li> */}
             <li>
               <button onClick={handleDelete}>댓글 삭제</button>
             </li>
           </ul>
+        )}
+        {showToast && (
+          <Toast setToast={setShowToast} message="댓글이 삭제되었습니다." />
         )}
       </div>
     </>
