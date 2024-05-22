@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface ImageInputProps {
   beforeImgUrls: string[];
@@ -99,7 +100,6 @@ const ImageInput = ({
                     }
                   }
                   setPostImgs(newPostImgs);
-                  console.log("newPostImgs:", newPostImgs);
                 }}
               >
                 {/* <img
@@ -129,9 +129,13 @@ const ImageInput = ({
       </div>
       <div className="flex w-full justify-center gap-3 pb-2 pt-2">
         {previewImgs.map((url, i) => (
-          <a href={`#item${i}`} className="btn btn-xs w-6 rounded-xl" key={url}>
+          <Link
+            to={`#item${i + 1}`}
+            className="btn btn-xs w-6 rounded-xl"
+            key={url}
+          >
             {i + 1}
-          </a>
+          </Link>
         ))}
       </div>
     </div>
