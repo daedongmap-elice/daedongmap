@@ -14,17 +14,12 @@ const ReviewEditBtn = ({ reviewId }: EditButtonProps) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   const handleDelete = async () => {
     try {
       console.log("handleDelete");
-      await axiosClient.delete(`/reviews/${reviewId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axiosClient.delete(`/reviews/${reviewId}`);
       navigate("/review");
       setShowToast(true);
     } catch (error) {

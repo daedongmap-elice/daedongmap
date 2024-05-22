@@ -11,15 +11,10 @@ interface EditButtonProps {
 const CommentEditBtn = ({ commentId, getData }: EditButtonProps) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showToast, setShowToast] = useState<boolean>(false);
-  const token = localStorage.getItem("accessToken");
 
   const handleDelete = async () => {
     try {
-      const response = await axiosClient.delete(`/comments/${commentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosClient.delete(`/comments/${commentId}`);
       console.log(response);
       getData();
       setShowMenu(false);

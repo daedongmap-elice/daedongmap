@@ -28,7 +28,7 @@ const CommentModal = ({
   const [data, setData] = useState<CommentModalResponse[]>([]);
   const { reviewId: currentReviewId } = useParams();
   const commentRef = useRef<HTMLDivElement>(null);
-  const token = localStorage.getItem("accessToken");
+  const isToken = localStorage.getItem("isToken");
 
   // TO FIX: 새 댓글 등록 시 하단으로 이동하는 기능을 넣었으나 동작하지 않고 있음
   const scrollToBottom = () => {
@@ -37,7 +37,7 @@ const CommentModal = ({
 
   const getData = async () => {
     try {
-      if (token) {
+      if (isToken) {
         const response = await axiosClient.get(
           `/comments/reviews/${currentReviewId}`
         );
@@ -51,7 +51,7 @@ const CommentModal = ({
   };
 
   useEffect(() => {
-    if (token) {
+    if (isToken) {
       getData();
     }
   }, []);

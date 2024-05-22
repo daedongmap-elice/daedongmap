@@ -23,16 +23,11 @@ const ReviewEdit = () => {
   const [showNoTextToast, setShowNoTextToast] = useState<boolean>(false);
 
   const { reviewId: currentReviewId } = useParams();
-  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   const getData = async () => {
     try {
-      const response = await axiosClient.get(`/reviews/${currentReviewId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosClient.get(`/reviews/${currentReviewId}`);
       setTasteRating(response.data.tasteRating);
       setHygieneRating(response.data.hygieneRating);
       setKindnessRating(response.data.kindnessRating);
@@ -54,11 +49,7 @@ const ReviewEdit = () => {
 
   const getUserId = async () => {
     try {
-      const response = await axiosClient.post("/user", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosClient.post("/user", null);
       setLoginUserId(response.data);
     } catch (error) {
       console.error("로그인 유저id 요청 에러:", error);
@@ -111,7 +102,6 @@ const ReviewEdit = () => {
       await axiosClient.put(`/reviews/${currentReviewId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
       });
       navigate(`/detail#${currentReviewId}`);

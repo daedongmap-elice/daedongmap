@@ -31,7 +31,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
   const { reviewId: currentReviewId } = useParams();
-  const token = localStorage.getItem("accessToken");
+  const isToken = localStorage.getItem("isToken");
 
   const putFeedData = (fData: ReviewResponse) => {
     setData(fData);
@@ -58,11 +58,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   const getData = async () => {
     try {
-      const response = await axiosClient.get(`/reviews/${currentReviewId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosClient.get(`/reviews/${currentReviewId}`);
       setData(response.data);
       setReviewId(response.data.id);
       setReviewUserId(response.data.user.id);
@@ -85,11 +81,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   const getUserId = async () => {
     try {
-      const response = await axiosClient.post("/user", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosClient.post("/user", null);
       setLoginUserId(response.data);
     } catch (error) {
       console.error("로그인 유저id 요청 에러:", error);
@@ -97,7 +89,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   };
 
   useEffect(() => {
-    if (token) {
+    if (isToken) {
       getUserId();
     }
     if (type === undefined) {
