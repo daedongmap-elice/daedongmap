@@ -8,7 +8,6 @@ interface NowPositionBtnProps {
     center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
-    isSetUserLocation: boolean;
   };
   map: kakao.maps.Map | undefined;
   showInfoCard: boolean;
@@ -17,7 +16,6 @@ interface NowPositionBtnProps {
       center: LatLngData;
       errMsg: null | string;
       isLoading: boolean;
-      isSetUserLocation: boolean;
     }>
   >;
 }
@@ -35,7 +33,7 @@ export default function NowPositionBtn({
       return null;
     }
 
-    if (!userLocation.isSetUserLocation) {
+    if (userLocation.errMsg) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -45,16 +43,25 @@ export default function NowPositionBtn({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               },
+              errMsg: null,
               isLoading: false,
-              isSetUserLocation: true,
             }));
           },
           (err) => {
-            console.log(err.message);
+            setUserLocation((prev) => ({
+              ...prev,
+              errMsg: err.message,
+              isLoading: false,
+            }));
             setisToast(true);
           }
         );
       } else {
+        setUserLocation((prev) => ({
+          ...prev,
+          errMsg: "위치를 불러올 수 없습니다.",
+          isLoading: false,
+        }));
         setisToast(true);
       }
       return;
