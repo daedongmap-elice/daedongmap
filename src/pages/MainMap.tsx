@@ -58,6 +58,19 @@ export function MainMap() {
     setShowInfoCard(false);
   };
 
+  const handleSetUserLocation = (location: {
+    center?: LatLngData;
+    errMsg?: null | string;
+    isLoading: boolean;
+  }) => {
+    setUserLocation((prev) => ({
+      ...prev,
+      ...(location.center && { center: location.center }),
+      ...(location.errMsg && { errMsg: location.errMsg }),
+      isLoading: location.isLoading,
+    }));
+  };
+
   const handleOnCenterChanged = (mapInfo: kakao.maps.Map) => {
     const latlng = mapInfo.getCenter();
 
@@ -112,35 +125,29 @@ export function MainMap() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation((prev) => ({
-            ...prev,
+          handleSetUserLocation({
             center: {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             },
             isLoading: false,
-          }));
+          });
         },
         (err) => {
-          setUserLocation((prev) => ({
-            ...prev,
-            errMsg: err.message,
-            isLoading: false,
-          }));
+          handleSetUserLocation({ errMsg: err.message, isLoading: false });
         }
       );
     } else {
-      setUserLocation((prev) => ({
-        ...prev,
+      handleSetUserLocation({
         errMsg: "위치를 불러올 수 없습니다.",
         isLoading: false,
-      }));
+      });
     }
   }, []);
 
   useEffect(() => {
     getPlaces();
-  }, [userLocation]);
+  }, [userLocation.center]);
 
   useEffect(() => {
     if (selectMarker?.lat === 0 && selectMarker.lng === 0) {
@@ -254,7 +261,7 @@ export function MainMap() {
           userLocation={userLocation}
           map={map}
           showInfoCard={showInfoCard}
-          setUserLocation={setUserLocation}
+          handleSetUserLocation={handleSetUserLocation}
         />
 
         <PlaceListModal

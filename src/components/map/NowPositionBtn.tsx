@@ -1,5 +1,5 @@
 import { LatLngData } from "@/type/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdMyLocation } from "react-icons/md";
 import Toast from "../common/Toast";
 
@@ -11,20 +11,18 @@ interface NowPositionBtnProps {
   };
   map: kakao.maps.Map | undefined;
   showInfoCard: boolean;
-  setUserLocation: React.Dispatch<
-    React.SetStateAction<{
-      center: LatLngData;
-      errMsg: null | string;
-      isLoading: boolean;
-    }>
-  >;
+  handleSetUserLocation: (location: {
+    center?: LatLngData;
+    errMsg?: null | string;
+    isLoading: boolean;
+  }) => void;
 }
 
 export default function NowPositionBtn({
   userLocation,
   map,
   showInfoCard,
-  setUserLocation,
+  handleSetUserLocation,
 }: NowPositionBtnProps) {
   const [isToast, setisToast] = useState<boolean>(false);
 
@@ -32,51 +30,50 @@ export default function NowPositionBtn({
     if (!map) {
       return null;
     }
+    handleSetUserLocation({ isLoading: true });
 
     if (userLocation.errMsg) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            setUserLocation((prev) => ({
-              ...prev,
+            handleSetUserLocation({
               center: {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               },
               errMsg: null,
               isLoading: false,
-            }));
+            });
           },
           (err) => {
-            setUserLocation((prev) => ({
-              ...prev,
-              errMsg: err.message,
-              isLoading: false,
-            }));
+            handleSetUserLocation({ errMsg: err.message, isLoading: false });
             setisToast(true);
           }
         );
       } else {
-        setUserLocation((prev) => ({
-          ...prev,
+        handleSetUserLocation({
           errMsg: "위치를 불러올 수 없습니다.",
           isLoading: false,
-        }));
+        });
         setisToast(true);
       }
-      return;
     }
-
-    const bounds = new kakao.maps.LatLngBounds();
-    bounds.extend(
-      new kakao.maps.LatLng(
-        Number(userLocation.center.lat),
-        Number(userLocation.center.lng)
-      )
-    );
-    map.setBounds(bounds);
-    map.setLevel(5);
   };
+
+  useEffect(() => {
+    if (!userLocation.isLoading && map) {
+      const bounds = new kakao.maps.LatLngBounds();
+      bounds.extend(
+        new kakao.maps.LatLng(
+          Number(userLocation.center.lat),
+          Number(userLocation.center.lng)
+        )
+      );
+      map.setBounds(bounds);
+      map.setLevel(5);
+    }
+  }, [userLocation.isLoading]);
+
   return (
     <>
       <div
