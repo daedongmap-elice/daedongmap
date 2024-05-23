@@ -1,7 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MyPagePresent from "./mypagePresent";
 import { UserInfo, ReviewResponse } from "@/type/types";
-import { DeleteUser, Logout, getProfile, getReview } from "@/api/userApi";
+import {
+  DeleteUser,
+  GetFollowing,
+  Logout,
+  getProfile,
+  getReview,
+} from "@/api/userApi";
 import { useNavigate } from "react-router-dom";
 import { isCheckDelete } from "@/utils/authUtils";
 import { useAtom } from "jotai";
@@ -14,6 +20,9 @@ export default function MyPageContainer() {
   const [message, setMessage] = useState<string>("");
   const [reviews, setReivews] = useState<ReviewResponse[]>([]);
   const naviagte = useNavigate();
+
+  const abc = GetFollowing();
+  console.log(abc);
   const isClickLogout = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
