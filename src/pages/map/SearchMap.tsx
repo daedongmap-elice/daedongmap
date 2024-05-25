@@ -1,7 +1,8 @@
 import { Map } from "react-kakao-maps-sdk";
 import { NowPositionBtn2 } from "@/components/map/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LatLngData } from "@/type/types";
+import { useSearchParams } from "react-router-dom";
 
 export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -17,6 +18,8 @@ export default function SearchMap() {
     errMsg: null,
     isLoading: true,
   });
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q")?.replace(/"/g, "");
 
   const handleSetUserLocation = (location: {
     center?: LatLngData;
@@ -33,6 +36,23 @@ export default function SearchMap() {
     }));
   };
 
+  useEffect(() => {
+    if (!map || !query) return;
+    const ps = new kakao.maps.services.Places();
+
+    try {
+      ps.keywordSearch(query, (datas, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          map.setCenter(
+            new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
+          );
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, [map]);
+
   return (
     <>
       <div className="absolute left-1/2 top-4 z-20 h-6 w-28 -translate-x-1/2 rounded-full bg-[url('img/sample3.png')] bg-cover bg-center"></div>
@@ -45,17 +65,16 @@ export default function SearchMap() {
           width: "100%",
           height: "95.3vh",
         }}
-        level={6}
+        level={7}
         isPanto
         onCreate={setMap}
-      ></Map>
-      {map && (
+      >
         <NowPositionBtn2
           userLocation={userLocation}
           map={map}
           handleSetUserLocation={handleSetUserLocation}
         />
-      )}
+      </Map>
     </>
   );
 }
