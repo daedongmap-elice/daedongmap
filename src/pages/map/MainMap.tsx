@@ -12,7 +12,7 @@ import { LatLngData, PlaceData } from "@/type/types";
 import Toast from "@/components/common/Toast";
 import axiosClient from "@/utils/baseUrl";
 
-export function MainMap() {
+export default function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
   const [selectMarker, setSelectMarker] = useState<LatLngData>();
   const [userLocation, setUserLocation] = useState<{

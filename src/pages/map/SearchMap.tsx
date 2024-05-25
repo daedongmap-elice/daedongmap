@@ -3,7 +3,7 @@ import { NowPositionBtn2 } from "@/components/map/index";
 import { useState } from "react";
 import { LatLngData } from "@/type/types";
 
-export function SearchMap() {
+export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
   const [userLocation, setUserLocation] = useState<{
     center: LatLngData;
