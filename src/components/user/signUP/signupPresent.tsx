@@ -16,7 +16,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
 }) => {
   return (
     <>
-      <div className="mt-[20px] flex w-full flex-col items-center">
+      <div className="mt-[20px] flex w-full flex-col items-center pb-16">
         <img src="img/Logo.jpg" alt="로고 이미지" />
         <form className="w-full max-w-xs" onSubmit={onFormSubmit}>
           <div className="label">
@@ -82,7 +82,7 @@ const SignUpPresent: React.FC<SignUpProps> = ({
             <input
               type="password"
               name="checkPassword"
-              placeholder="비밀번호를 입렵해주세요."
+              placeholder="비밀번호를 입력해주세요."
               onChange={handleChange}
               className="input input-bordered w-full max-w-xs"
             />

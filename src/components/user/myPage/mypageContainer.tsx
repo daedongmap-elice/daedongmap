@@ -9,6 +9,7 @@ import {
   getProfile,
   getReview,
 } from "@/api/userApi";
+
 import { useNavigate } from "react-router-dom";
 import { isCheckDelete } from "@/utils/authUtils";
 import { useAtom } from "jotai";
@@ -61,6 +62,7 @@ export default function MyPageContainer() {
     getFollower(setFollow);
     getFollowing(setFollow);
   }, [setprofile, setReivews, setFollow]);
+
 
   return (
     <MyPagePresent

@@ -102,7 +102,6 @@ export const getFollower = async (setFollow: any) => {
     console.log(error);
   }
 };
-
 export const getProfile = async (setProfile: (profile: UserInfo) => void) => {
   try {
     const { status, data } = await axiosClient.get(`/user`);

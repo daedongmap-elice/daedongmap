@@ -7,9 +7,9 @@ const DateCreated = ({ createdAt }: DateCreatedProps) => {
     if (!created) return;
     const dateObject = new Date(created);
     const year: number = dateObject.getFullYear();
-    const month: number = dateObject.getMonth() + 1;
-    const day: number = dateObject.getDate();
-    return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObject.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   return (
