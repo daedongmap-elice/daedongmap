@@ -1,12 +1,19 @@
 import { Map } from "react-kakao-maps-sdk";
-import { NowPositionBtn2 } from "@/components/map/index";
+import {
+  ChangeViewBtn,
+  NowPositionBtn2,
+  PlaceListModal,
+} from "@/components/map/index";
 import { useEffect, useState } from "react";
-import { LatLngData } from "@/type/types";
+import { LatLngData, PlaceData } from "@/type/types";
 import { useSearchParams } from "react-router-dom";
 import SearchInput2 from "@/components/map/SearchInput2";
 
 export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
+  const [markers] = useState<PlaceData[]>([]);
+  const [filter, setFilter] = useState<string>("default");
+  const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<{
     center: LatLngData;
     errMsg: null | string;
@@ -19,8 +26,9 @@ export default function SearchMap() {
     errMsg: null,
     isLoading: true,
   });
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q");
+  const view = searchParams.get("view");
 
   const handleSetUserLocation = (location: {
     center?: LatLngData;
@@ -36,6 +44,30 @@ export default function SearchMap() {
       isLoading: location.isLoading,
     }));
   };
+
+  const handleChangeView = () => {
+    if (view === "map" || view === null) {
+      searchParams.set("view", "list");
+    }
+    if (view === "list") {
+      searchParams.set("view", "map");
+    }
+
+    setSearchParams(searchParams);
+  };
+
+  const handleSetFilter = (type: string) => {
+    console.log(filter);
+    setFilter(type);
+  };
+
+  useEffect(() => {
+    if (view === "map" || view === null) {
+      setOpenListModal(false);
+    } else {
+      setOpenListModal(true);
+    }
+  }, [view]);
 
   useEffect(() => {
     if (!map || !query) return;
@@ -77,6 +109,21 @@ export default function SearchMap() {
         />
       </Map>
       <SearchInput2 type="main" />
+
+      <div
+        className={`absolute bottom-8 left-1/2 z-20 -translate-x-1/2 transition-all duration-150`}
+      >
+        <ChangeViewBtn
+          onClick={handleChangeView}
+          btnType={openListModal ? "listView" : "mapView"}
+        />
+      </div>
+      <PlaceListModal
+        openListModal={openListModal}
+        placeList={markers}
+        userLocation={userLocation}
+        handleSetFilter={handleSetFilter}
+      />
     </>
   );
 }
