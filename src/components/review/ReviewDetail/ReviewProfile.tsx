@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface ReviewProfileProps {
   userId: number | undefined;
   nickName: string | undefined;
@@ -18,11 +20,10 @@ const ReviewProfile = ({
       onClick={() => {
         if (!token) {
           alert("사용자 프로필은 로그인 후 볼 수 있습니다.");
-          return;
         }
       }}
     >
-      <a href={`/userpage/#${userId}`}>
+      <Link to={`/userpage/#${userId}`}>
         <div className="mb-3 mt-4 flex">
           <div>
             <img
@@ -38,7 +39,7 @@ const ReviewProfile = ({
             <p className="text-xxs">{placeName}</p>
           </div>
         </div>
-      </a>
+      </Link>
     </button>
   );
 };

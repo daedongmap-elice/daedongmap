@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import DateCreated from "../DateCreated";
 import CommentEditBtn from "./CommentEditBtn";
 
@@ -29,13 +30,13 @@ const Comment = ({
     <div className={`mb-6 mt-4 flex justify-start ${!isMyComment && "mr-6"}`}>
       <div className="flex w-full">
         <div className="min-w-14">
-          <a href={`/mypage/#${userId}`}>
+          <Link to={`/mypage/#${userId}`}>
             <img
               className="mask mask-circle ml-3 mr-3 w-9"
               src={profileImagePath}
               alt="user-profile"
             />
-          </a>
+          </Link>
         </div>
         <div className="w-full text-xs">
           <div className="mb-2 flex items-center justify-between">
