@@ -3,6 +3,7 @@ import { NowPositionBtn2 } from "@/components/map/index";
 import { useEffect, useState } from "react";
 import { LatLngData } from "@/type/types";
 import { useSearchParams } from "react-router-dom";
+import SearchInput2 from "@/components/map/SearchInput2";
 
 export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -19,7 +20,7 @@ export default function SearchMap() {
     isLoading: true,
   });
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("q")?.replace(/"/g, "");
+  const query = searchParams.get("q");
 
   const handleSetUserLocation = (location: {
     center?: LatLngData;
@@ -51,7 +52,7 @@ export default function SearchMap() {
     } catch (err) {
       console.log(err);
     }
-  }, [map]);
+  }, [map, query]);
 
   return (
     <>
@@ -75,6 +76,7 @@ export default function SearchMap() {
           handleSetUserLocation={handleSetUserLocation}
         />
       </Map>
+      <SearchInput2 type="main" />
     </>
   );
 }
