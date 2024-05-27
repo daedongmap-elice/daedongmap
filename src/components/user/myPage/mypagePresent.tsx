@@ -16,6 +16,7 @@ interface MypageProps {
   userId?: string;
   isClickFollow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onClickEditButton?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  follow?: any;
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
@@ -30,6 +31,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
   userId,
   isClickFollow,
   onClickEditButton,
+  follow,
 }) => {
   return (
     <>
@@ -79,11 +81,15 @@ const MyPagePresent: React.FC<MypageProps> = ({
                 <span className="mr-1 text-xs text-subGray">게시물</span>
               </div>
               <div className="flex flex-col">
-                <p className="text-center text-lg font-semibold">2</p>
+                <p className="text-center text-lg font-semibold">
+                  {follow?.followers.length}
+                </p>
                 <span className="mr-1 text-xs text-subGray">팔로워</span>
               </div>
               <div className="flex flex-col">
-                <p className="text-center text-lg font-semibold">3</p>
+                <p className="text-center text-lg font-semibold">
+                  {follow?.followings.length}
+                </p>
                 <span className="mr-1 text-xs text-subGray">팔로잉</span>
               </div>
             </div>

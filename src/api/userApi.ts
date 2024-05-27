@@ -81,23 +81,22 @@ export const UnFollow = async (userId: string) => {
   }
 };
 
-export const GetFollowing = async () => {
+export const getFollowing = async (setFollow: any) => {
   try {
     const { status, data } = await axiosClient.get(`/follows/following`);
     if (status === 200) {
-      return data;
+      setFollow((prev: any) => ({ ...prev, followings: data }));
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const GetFollower = async (k: number) => {
+export const getFollower = async (setFollow: any) => {
   try {
     const { status, data } = await axiosClient.get(`/follows/follower`);
     if (status === 200) {
-      k = data.length;
-      return k;
+      setFollow((prev: any) => ({ ...prev, followers: data }));
     }
   } catch (error) {
     console.log(error);

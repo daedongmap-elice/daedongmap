@@ -3,7 +3,8 @@ import MyPagePresent from "./mypagePresent";
 import { UserInfo, ReviewResponse } from "@/type/types";
 import {
   DeleteUser,
-  GetFollowing,
+  getFollowing,
+  getFollower,
   Logout,
   getProfile,
   getReview,
@@ -19,10 +20,9 @@ export default function MyPageContainer() {
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [reviews, setReivews] = useState<ReviewResponse[]>([]);
+  const [follow, setFollow] = useState({ followers: [], followings: [] });
   const naviagte = useNavigate();
 
-  const abc = GetFollowing();
-  console.log(abc);
   const isClickLogout = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -54,10 +54,13 @@ export default function MyPageContainer() {
   const buttonDisabled = useMemo(() => {
     return !isCheckDelete(message);
   }, [message]);
+
   useEffect(() => {
     getProfile(setprofile);
     getReview(setReivews);
-  }, [setprofile, setReivews]);
+    getFollower(setFollow);
+    getFollowing(setFollow);
+  }, [setprofile, setReivews, setFollow]);
 
   return (
     <MyPagePresent
@@ -70,6 +73,7 @@ export default function MyPageContainer() {
       onClickEditButton={onClickEditButton}
       handleChange={handleChange}
       reviews={reviews}
+      follow={follow}
     />
   );
 }
