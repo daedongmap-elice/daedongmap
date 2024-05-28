@@ -81,6 +81,27 @@ export const UnFollow = async (userId: string) => {
   }
 };
 
+export const getFollowing = async (setFollow: any) => {
+  try {
+    const { status, data } = await axiosClient.get(`/follows/following`);
+    if (status === 200) {
+      setFollow((prev: any) => ({ ...prev, followings: data }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFollower = async (setFollow: any) => {
+  try {
+    const { status, data } = await axiosClient.get(`/follows/follower`);
+    if (status === 200) {
+      setFollow((prev: any) => ({ ...prev, followers: data }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getProfile = async (setProfile: (profile: UserInfo) => void) => {
   try {
     const { status, data } = await axiosClient.get(`/user`);
