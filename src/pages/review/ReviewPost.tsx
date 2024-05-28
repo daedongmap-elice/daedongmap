@@ -26,7 +26,6 @@ const ReviewPost = () => {
   const [showNoPlaceToast, setShowNoPlaceToast] = useState<boolean>(false);
   const [showNoTextToast, setShowNoTextToast] = useState<boolean>(false);
 
-  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   const handleSetShowPlaceModal = (bool: boolean) => {
@@ -80,7 +79,6 @@ const ReviewPost = () => {
       await axiosClient.post("/reviews", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
       });
       navigate("/review");

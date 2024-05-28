@@ -9,19 +9,12 @@ const ReviewFeed = () => {
   const [dataArray, setDataArray] = useState<ReviewResponse[] | undefined>(
     undefined
   );
-  const token = localStorage.getItem("accessToken");
-  // const currentPlaceId = window.location.hash.substring(1);
-  const { id: currentPlaceId } = useParams();
+  const { placeId: currentPlaceId } = useParams();
 
   const getData = async () => {
     try {
       const response = await axiosClient.get(
-        `/reviews/places/${currentPlaceId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `/reviews/places/${currentPlaceId}`
       );
       setDataArray(response.data);
     } catch (error) {
