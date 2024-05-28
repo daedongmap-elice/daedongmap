@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { isCheckPhone } from "@/utils/authUtils";
 import { useAtom } from "jotai";
 import { isTokenAtom } from "@/components/atom/auth";
+import { userIdAtom } from "@/components/atom/userId";
 
 export default function LoginContainer() {
   const [formData, setFormData] = useState<LoginData>({
@@ -14,6 +15,8 @@ export default function LoginContainer() {
   });
   const [phone, setPhone] = useState<string>("");
   const [isToken, setIsTokn] = useAtom(isTokenAtom);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [userId, setUserId] = useAtom<number>(userIdAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleFormSubmit = async (
@@ -21,8 +24,9 @@ export default function LoginContainer() {
   ) => {
     e.preventDefault();
     const loginState = await Login(formData);
-    if (loginState) {
+    if (loginState?.success) {
       setIsTokn(!isToken);
+      setUserId(loginState.id);
       navigate("/");
     }
   };
