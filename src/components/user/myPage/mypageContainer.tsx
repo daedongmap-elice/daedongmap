@@ -63,7 +63,6 @@ export default function MyPageContainer() {
     getFollowing(setFollow);
   }, [setprofile, setReivews, setFollow]);
 
-
   return (
     <MyPagePresent
       profile={profile}
