@@ -67,6 +67,11 @@ export default function SearchMap() {
     setFilter(type);
   };
 
+  const handleResetSelectMarker = () => {
+    setSelectMarker({ lat: 0, lng: 0 });
+    setShowInfoCard(false);
+  };
+
   const handleOnClickMarker = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
     setShowInfoCard(true);
@@ -96,6 +101,7 @@ export default function SearchMap() {
         }
       }
       setIsLoadingMarker(false);
+      handleResetSelectMarker();
       handleSetFilter("default");
     } catch (err) {
       console.log(err);
@@ -143,6 +149,7 @@ export default function SearchMap() {
         level={7}
         isPanto
         onCreate={setMap}
+        onClick={handleResetSelectMarker}
       >
         <NowPositionBtn2
           userLocation={userLocation}
