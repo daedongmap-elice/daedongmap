@@ -151,11 +151,6 @@ export default function SearchMap() {
         onCreate={setMap}
         onClick={handleResetSelectMarker}
       >
-        <NowPositionBtn2
-          userLocation={userLocation}
-          map={map}
-          handleSetUserLocation={handleSetUserLocation}
-        />
         {!isLoadingMarker &&
           (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
             <></>
@@ -210,7 +205,7 @@ export default function SearchMap() {
                   />
 
                   {isSelected && showInfoCard && (
-                    <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                    <div className="absolute bottom-8 left-1/2 z-10 w-[320px] -translate-x-1/2">
                       <PlaceInfoCard
                         place={place}
                         userLocation={userLocation}
@@ -222,17 +217,26 @@ export default function SearchMap() {
               );
             })
           ))}
+        <div
+          className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-44" : "bottom-8"}`}
+        >
+          <NowPositionBtn2
+            userLocation={userLocation}
+            map={map}
+            handleSetUserLocation={handleSetUserLocation}
+          />
+        </div>
+        <div
+          className={`absolute left-1/2 z-20 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-44" : "bottom-8"}`}
+        >
+          <ChangeViewBtn
+            onClick={handleChangeView}
+            btnType={openListModal ? "listView" : "mapView"}
+          />
+        </div>
       </Map>
       <SearchInput2 type="main" />
 
-      <div
-        className={`absolute bottom-8 left-1/2 z-20 -translate-x-1/2 transition-all duration-150`}
-      >
-        <ChangeViewBtn
-          onClick={handleChangeView}
-          btnType={openListModal ? "listView" : "mapView"}
-        />
-      </div>
       <PlaceListModal
         openListModal={openListModal}
         placeList={markers}

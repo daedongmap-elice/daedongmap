@@ -82,16 +82,12 @@ export default function NowPositionBtn2({
 
   return (
     <>
-      <div
-        className={`absolute bottom-8 right-5 z-10 transition-all duration-150`}
+      <button
+        onClick={handleOnClick}
+        className="btn btn-circle btn-sm border-none bg-white shadow"
       >
-        <button
-          onClick={handleOnClick}
-          className="btn btn-circle btn-sm border-none bg-white shadow"
-        >
-          <MdMyLocation className="h-4 w-4 text-mainG" />
-        </button>
-      </div>
+        <MdMyLocation className="h-4 w-4 text-mainG" />
+      </button>
       {isToast && (
         <Toast setToast={setisToast} message="위치를 가져올 수 없습니다." />
       )}
