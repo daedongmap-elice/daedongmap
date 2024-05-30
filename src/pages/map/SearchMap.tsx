@@ -4,7 +4,6 @@ import {
   NowPositionBtn2,
   PlaceInfoCard,
   PlaceListModal,
-  ReSearchBtn,
 } from "@/components/map/index";
 import { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
@@ -12,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import SearchInput2 from "@/components/map/SearchInput2";
 import axiosClient from "@/utils/baseUrl";
 import React from "react";
+import ReSearchBtn2 from "@/components/map/ReSearchBtn2";
 
 export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -38,6 +38,8 @@ export default function SearchMap() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q");
   const view = searchParams.get("view");
+  const searchLatLng = searchParams.get("latlng");
+  const level = searchParams.get("lvl");
 
   const handleSetUserLocation = (location: {
     center?: LatLngData;
@@ -134,19 +136,29 @@ export default function SearchMap() {
     if (!map || !query) return;
     const ps = new kakao.maps.services.Places();
 
-    try {
-      ps.keywordSearch(query, (datas, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-          map.setCenter(
-            new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
-          );
-          getPlaces();
-        }
-      });
-    } catch (err) {
-      console.log(err);
+    if (searchLatLng) {
+      const [lat, lng] = searchLatLng.split(",");
+      if (level) {
+        map.setLevel(Number(level));
+      }
+
+      map.setCenter(new kakao.maps.LatLng(Number(lat), Number(lng)));
+      getPlaces();
+    } else {
+      try {
+        ps.keywordSearch(query, (datas, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            map.setCenter(
+              new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
+            );
+            getPlaces();
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, [map, query]);
+  }, [map, query, searchLatLng]);
 
   return (
     <>
@@ -254,7 +266,7 @@ export default function SearchMap() {
           !isLoadingMarker &&
           !openListModal && (
             <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
-              <ReSearchBtn getPlaces={getPlaces} />
+              <ReSearchBtn2 map={map} />
             </div>
           )}
       </Map>
