@@ -4,6 +4,7 @@ import {
   NowPositionBtn2,
   PlaceInfoCard,
   PlaceListModal,
+  ReSearchBtn,
 } from "@/components/map/index";
 import { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
@@ -19,6 +20,8 @@ export default function SearchMap() {
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const [nowCenter, setNowCenter] = useState<LatLngData>();
+  const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [selectMarker, setSelectMarker] = useState<LatLngData>();
   const [userLocation, setUserLocation] = useState<{
     center: LatLngData;
@@ -63,7 +66,6 @@ export default function SearchMap() {
   };
 
   const handleSetFilter = (type: string) => {
-    console.log(filter);
     setFilter(type);
   };
 
@@ -75,6 +77,15 @@ export default function SearchMap() {
   const handleOnClickMarker = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
     setShowInfoCard(true);
+  };
+
+  const handleOnCenterChanged = (mapInfo: kakao.maps.Map) => {
+    const latlng = mapInfo.getCenter();
+
+    setNowCenter({
+      lat: latlng.getLat(),
+      lng: latlng.getLng(),
+    });
   };
 
   async function getPlaces() {
@@ -102,6 +113,9 @@ export default function SearchMap() {
       }
       setIsLoadingMarker(false);
       handleResetSelectMarker();
+      const latlng = map.getCenter();
+      setNowCenter({ lat: latlng.getLat(), lng: latlng.getLng() });
+      setSearchLocation({ lat: latlng.getLat(), lng: latlng.getLng() });
       handleSetFilter("default");
     } catch (err) {
       console.log(err);
@@ -150,6 +164,7 @@ export default function SearchMap() {
         isPanto
         onCreate={setMap}
         onClick={handleResetSelectMarker}
+        onCenterChanged={handleOnCenterChanged}
       >
         {!isLoadingMarker &&
           (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
@@ -234,6 +249,14 @@ export default function SearchMap() {
             btnType={openListModal ? "listView" : "mapView"}
           />
         </div>
+        {nowCenter?.lat !== searchLocation?.lat &&
+          nowCenter?.lng !== searchLocation?.lng &&
+          !isLoadingMarker &&
+          !openListModal && (
+            <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
+              <ReSearchBtn getPlaces={getPlaces} />
+            </div>
+          )}
       </Map>
       <SearchInput2 type="main" />
 
