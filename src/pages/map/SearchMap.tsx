@@ -130,6 +130,12 @@ export default function SearchMap() {
   }
 
   useEffect(() => {
+    if (filter !== "default") {
+      getPlaces();
+    }
+  }, [filter]);
+
+  useEffect(() => {
     if (view === "map" || view === null) {
       setOpenListModal(false);
     } else {
