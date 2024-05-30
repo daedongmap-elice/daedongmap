@@ -21,20 +21,24 @@ export const Login = async (info: LoginData) => {
     if (res.status === 202) {
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
-      return true;
+      return {
+        success: true,
+        id: res.data.userId,
+      };
     }
-    return false;
   } catch (error) {
     console.log(error);
-    return false;
+    return {
+      success: false,
+      id: 0,
+    };
   }
 };
 
 export const Logout = async () => {
   try {
-    const { status, data } = await axiosClient.post(`/user/logout`);
+    const { status } = await axiosClient.post(`/user/logout`);
     if (status === 200) {
-      alert(`${data}`);
       localStorage.clear();
     }
   } catch (error) {

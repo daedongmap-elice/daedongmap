@@ -19,15 +19,11 @@ const LikeBtn = ({
   likeCount,
 }: LikeProps) => {
   const [showToast, setShowToast] = useState<boolean>(false);
-  const token = localStorage.getItem("accessToken");
+  const isToken = localStorage.getItem("isToken");
 
   const likePost = async () => {
     try {
-      await axiosClient.post(`/likes?reviewId=${reviewId}`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axiosClient.post(`/likes?reviewId=${reviewId}`, null);
       handleIsLiked(true);
     } catch (error) {
       console.error("좋아요 post요청 에러:", error);
@@ -36,11 +32,7 @@ const LikeBtn = ({
 
   const likeDelete = async () => {
     try {
-      await axiosClient.delete(`/likes?reviewId=${reviewId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axiosClient.delete(`/likes?reviewId=${reviewId}`);
       handleIsLiked(false);
     } catch (error) {
       console.error("좋아요 deleted요청 에러:", error);
@@ -51,7 +43,7 @@ const LikeBtn = ({
     <div className="flex items-center">
       <button
         onClick={() => {
-          if (!token) {
+          if (!isToken) {
             setShowToast(true);
             return;
           }

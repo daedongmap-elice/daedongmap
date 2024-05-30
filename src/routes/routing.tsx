@@ -28,8 +28,9 @@ const router = createBrowserRouter([
       { path: "/search", element: <SearchMap /> },
       //게시글 관련 페이지
       { path: "/review", element: <ReviewGallery /> },
-      { path: "/detail", element: <ReviewDetail /> },
-      { path: "/feed/:id", element: <ReviewFeed /> },
+      { path: "/detail/:reviewId", element: <ReviewDetail /> },
+      { path: "/feed/:placeId", element: <ReviewFeed /> },
+      { path: "/edit/:reviewId", element: <ReviewEdit /> },
       //유저 관련 페이지
       { path: "/signup", element: <SignUpContainer /> },
       { path: "/login", element: <LoginContainer /> },

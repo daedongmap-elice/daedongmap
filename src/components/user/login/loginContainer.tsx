@@ -1,11 +1,12 @@
 import { LoginData } from "@/type/types";
-import { FindEmail, Login } from "@/api/userApi";
+import { FindEmail, Login, getProfile } from "@/api/userApi";
 import LoginPresent from "./loginPresent";
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isCheckPhone } from "@/utils/authUtils";
-import { useAtom } from "jotai";
-import { isTokenAtom } from "@/components/atom/auth";
+import { useAtom, useSetAtom } from "jotai";
+import { isTokenAtom, profileAtom } from "@/components/atom/auth";
+import { userIdAtom } from "@/components/atom/userId";
 
 export default function LoginContainer() {
   const [formData, setFormData] = useState<LoginData>({
@@ -14,6 +15,8 @@ export default function LoginContainer() {
   });
   const [phone, setPhone] = useState<string>("");
   const [isToken, setIsTokn] = useAtom(isTokenAtom);
+  const setUserId = useSetAtom(userIdAtom);
+  const setProfile = useSetAtom(profileAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleFormSubmit = async (
@@ -21,8 +24,10 @@ export default function LoginContainer() {
   ) => {
     e.preventDefault();
     const loginState = await Login(formData);
-    if (loginState) {
+    if (loginState?.success) {
       setIsTokn(!isToken);
+      setUserId(loginState.id);
+      getProfile(setProfile);
       navigate("/");
     }
   };

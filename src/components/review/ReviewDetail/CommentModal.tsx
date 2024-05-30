@@ -1,6 +1,7 @@
-import { Comment, CommentPost } from "@/components/review/index";
 import { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import PerfectScrollar from "react-perfect-scrollbar";
+import { Comment, CommentPost } from "@/components/review/index";
 import axiosClient from "@/utils/baseUrl";
 
 interface CommentModalProps {
@@ -25,19 +26,18 @@ const CommentModal = ({
   loginUserId,
 }: CommentModalProps) => {
   const [data, setData] = useState<CommentModalResponse[]>([]);
-  const currentReviewId = window.location.hash.substring(1);
-  // 부모 컴포넌트에서 자식의 DOM요소 접근 시는 useRef 대신 forwardRef를 사용해 접근
+  const { reviewId: currentReviewId } = useParams();
   const commentRef = useRef<HTMLDivElement>(null);
-  const token = localStorage.getItem("accessToken");
+  const isToken = localStorage.getItem("isToken");
 
-  // TOFIX: 새 댓글 등록 시 하단으로 이동하는 기능을 넣었으나 동작하지 않고 있음
+  // TO FIX: 새 댓글 등록 시 하단으로 이동하는 기능을 넣었으나 동작하지 않고 있음
   const scrollToBottom = () => {
     commentRef.current?.scrollIntoView(false);
   };
 
   const getData = async () => {
     try {
-      if (token) {
+      if (isToken) {
         const response = await axiosClient.get(
           `/comments/reviews/${currentReviewId}`
         );
@@ -51,7 +51,7 @@ const CommentModal = ({
   };
 
   useEffect(() => {
-    if (token) {
+    if (isToken) {
       getData();
     }
   }, []);

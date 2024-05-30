@@ -8,9 +8,12 @@ import {
   CommentModal,
 } from "@/components/review/index";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ReviewResponse } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
 import axiosClient from "@/utils/baseUrl";
+import { useAtom } from "jotai";
+import { userIdAtom } from "@/components/atom/userId";
 
 interface ReviewDetailProps {
   type?: "feed";
@@ -23,14 +26,13 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const [loginUserId, setLoginUserId] = useState<number>(0);
+  const [loginUserId] = useAtom(userIdAtom);
   const [reviewUserId, setReviewUserId] = useState<number>(0);
   const [reviewId, setReviewId] = useState<number>(0);
   const [data, setData] = useState<ReviewResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
-  const currentReviewId = window.location.hash.substring(1);
-  const token = localStorage.getItem("accessToken");
+  const { reviewId: currentReviewId } = useParams();
 
   const putFeedData = (fData: ReviewResponse) => {
     setData(fData);
@@ -57,11 +59,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
 
   const getData = async () => {
     try {
-      const response = await axiosClient.get(`/reviews/${currentReviewId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosClient.get(`/reviews/${currentReviewId}`);
       setData(response.data);
       setReviewId(response.data.id);
       setReviewUserId(response.data.user.id);
@@ -82,23 +80,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
     }
   };
 
-  const getUserId = async () => {
-    try {
-      const response = await axiosClient.post("/user", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setLoginUserId(response.data);
-    } catch (error) {
-      console.error("로그인 유저id 요청 에러:", error);
-    }
-  };
-
   useEffect(() => {
-    if (token) {
-      getUserId();
-    }
     if (type === undefined) {
       getData();
     }
@@ -154,7 +136,11 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
         <div className="flex w-full justify-between px-5 pt-4 text-sm">
           {data?.content && data?.content.length >= 110 ? (
             <p
-              className={`${isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"} ${isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"} ${isSeeMoreClicked ? "" : "text-clip"}`}
+              className={`${
+                isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"
+              } ${
+                isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"
+              } ${isSeeMoreClicked ? "" : "text-clip"}`}
             >
               {data?.content}
             </p>
@@ -164,7 +150,9 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
           {data?.content && data?.content.length >= 110 ? (
             <button
               onClick={() => setIsSeeMoreClicked(true)}
-              className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
+              className={`min-w-fit cursor-pointer text-subGray ${
+                isSeeMoreClicked ? "hidden" : ""
+              }`}
             >
               <span>...&nbsp; 더 보기</span>
             </button>

@@ -1,9 +1,3 @@
-import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-interface UserId {
-  userId: number;
-}
-
-export const userId = atom<UserId>({
-  userId: 0,
-});
+export const userIdAtom = atomWithStorage<number>("daedongmapId", 0);
