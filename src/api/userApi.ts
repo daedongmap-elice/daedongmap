@@ -37,9 +37,8 @@ export const Login = async (info: LoginData) => {
 
 export const Logout = async () => {
   try {
-    const { status, data } = await axiosClient.post(`/user/logout`);
+    const { status } = await axiosClient.post(`/user/logout`);
     if (status === 200) {
-      alert(`${data}`);
       localStorage.clear();
     }
   } catch (error) {
