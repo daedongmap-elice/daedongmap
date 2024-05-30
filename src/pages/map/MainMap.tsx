@@ -3,14 +3,14 @@ import {
   PlaceListModal,
   PlaceInfoCard,
   ChangeViewBtn,
-  NowPositionBtn2,
+  NowPositionBtn,
+  ReSearchBtn,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
 import Toast from "@/components/common/Toast";
 import axiosClient from "@/utils/baseUrl";
 import { useSearchParams } from "react-router-dom";
-import ReSearchBtn2 from "@/components/map/ReSearchBtn2";
 import SearchInput2 from "@/components/map/SearchInput2";
 
 export default function MainMap() {
@@ -263,7 +263,7 @@ export default function MainMap() {
           <div
             className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-44" : "bottom-8"}`}
           >
-            <NowPositionBtn2
+            <NowPositionBtn
               userLocation={userLocation}
               map={map}
               handleSetUserLocation={handleSetUserLocation}
@@ -285,7 +285,7 @@ export default function MainMap() {
             !isLoadingMarker &&
             !openListModal && (
               <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
-                <ReSearchBtn2 map={map} />
+                <ReSearchBtn map={map} />
               </div>
             )}
         </Map>

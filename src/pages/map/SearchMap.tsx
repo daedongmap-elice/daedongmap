@@ -1,9 +1,10 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import {
   ChangeViewBtn,
-  NowPositionBtn2,
+  NowPositionBtn,
   PlaceInfoCard,
   PlaceListModal,
+  ReSearchBtn,
 } from "@/components/map/index";
 import { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
@@ -11,7 +12,6 @@ import { useSearchParams } from "react-router-dom";
 import SearchInput2 from "@/components/map/SearchInput2";
 import axiosClient from "@/utils/baseUrl";
 import React from "react";
-import ReSearchBtn2 from "@/components/map/ReSearchBtn2";
 import Toast from "@/components/common/Toast";
 
 export default function SearchMap() {
@@ -264,7 +264,7 @@ export default function SearchMap() {
         <div
           className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-44" : "bottom-8"}`}
         >
-          <NowPositionBtn2
+          <NowPositionBtn
             userLocation={userLocation}
             map={map}
             handleSetUserLocation={handleSetUserLocation}
@@ -285,7 +285,7 @@ export default function SearchMap() {
           !isLoadingMarker &&
           !openListModal && (
             <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
-              <ReSearchBtn2 map={map} />
+              <ReSearchBtn map={map} />
             </div>
           )}
       </Map>

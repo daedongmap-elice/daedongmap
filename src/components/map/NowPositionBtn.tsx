@@ -1,7 +1,6 @@
 import { LatLngData } from "@/type/types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MdMyLocation } from "react-icons/md";
-import Toast from "../common/Toast";
 
 interface NowPositionBtnProps {
   userLocation: {
@@ -10,85 +9,87 @@ interface NowPositionBtnProps {
     isLoading: boolean;
   };
   map: kakao.maps.Map | undefined;
-  showInfoCard: boolean;
   handleSetUserLocation: (location: {
     center?: LatLngData;
     errMsg?: null | string;
     isLoading: boolean;
   }) => void;
+  setToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setToastMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function NowPositionBtn({
+export default function NowPositionBtn2({
   userLocation,
   map,
-  showInfoCard,
   handleSetUserLocation,
+  setToast,
+  setToastMessage,
 }: NowPositionBtnProps) {
-  const [isToast, setisToast] = useState<boolean>(false);
-
-  const handleOnClick = () => {
+  const handleGetUserLocation = () => {
     if (!map) {
       return null;
     }
-    handleSetUserLocation({ isLoading: true });
 
-    if (userLocation.errMsg) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            handleSetUserLocation({
-              center: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              },
-              errMsg: null,
-              isLoading: false,
-            });
-          },
-          (err) => {
-            handleSetUserLocation({ errMsg: err.message, isLoading: false });
-            setisToast(true);
-          }
-        );
-      } else {
-        handleSetUserLocation({
-          errMsg: "위치를 불러올 수 없습니다.",
-          isLoading: false,
-        });
-        setisToast(true);
-      }
+    handleSetUserLocation({ isLoading: true });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          handleSetUserLocation({
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+            errMsg: null,
+            isLoading: false,
+          });
+        },
+        (err) => {
+          handleSetUserLocation({ errMsg: err.message, isLoading: false });
+        }
+      );
+    } else {
+      handleSetUserLocation({
+        errMsg: "위치를 불러올 수 없습니다.",
+        isLoading: false,
+      });
     }
   };
 
+  const handleOnClick = () => {
+    handleGetUserLocation();
+  };
+
   useEffect(() => {
-    if (!userLocation.isLoading && map) {
-      const bounds = new kakao.maps.LatLngBounds();
-      bounds.extend(
-        new kakao.maps.LatLng(
-          Number(userLocation.center.lat),
-          Number(userLocation.center.lng)
-        )
-      );
-      map.setBounds(bounds);
-      map.setLevel(5);
+    handleGetUserLocation();
+  }, []);
+
+  useEffect(() => {
+    if (!userLocation.isLoading) {
+      if (userLocation.errMsg === null) {
+        const bounds = new kakao.maps.LatLngBounds();
+        bounds.extend(
+          new kakao.maps.LatLng(
+            Number(userLocation.center.lat),
+            Number(userLocation.center.lng)
+          )
+        );
+        map?.setBounds(bounds);
+        map?.setLevel(7);
+      } else {
+        setToastMessage("위치를 가져올 수 없습니다.");
+        setToast(true);
+      }
     }
-  }, [userLocation.isLoading]);
+  }, [userLocation]);
 
   return (
     <>
-      <div
-        className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-44" : "bottom-8"}`}
+      <button
+        onClick={handleOnClick}
+        className="btn btn-circle btn-sm border-none bg-white shadow"
       >
-        <button
-          onClick={handleOnClick}
-          className="btn btn-circle btn-sm border-none bg-white shadow"
-        >
-          <MdMyLocation className="h-4 w-4 text-mainG" />
-        </button>
-      </div>
-      {isToast && (
-        <Toast setToast={setisToast} message="위치를 가져올 수 없습니다." />
-      )}
+        <MdMyLocation className="h-4 w-4 text-mainG" />
+      </button>
     </>
   );
 }
