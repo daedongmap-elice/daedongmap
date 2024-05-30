@@ -1,3 +1,3 @@
-import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-export const userIdAtom = atom<number>(0);
+export const userIdAtom = atomWithStorage<number>("daedongmapId", 0);

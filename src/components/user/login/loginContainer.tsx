@@ -4,7 +4,7 @@ import LoginPresent from "./loginPresent";
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isCheckPhone } from "@/utils/authUtils";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { isTokenAtom, profileAtom } from "@/components/atom/auth";
 import { userIdAtom } from "@/components/atom/userId";
 
@@ -15,10 +15,9 @@ export default function LoginContainer() {
   });
   const [phone, setPhone] = useState<string>("");
   const [isToken, setIsTokn] = useAtom(isTokenAtom);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [, setUserId] = useAtom<number>(userIdAtom);
+  const setUserId = useSetAtom(userIdAtom);
+  const setProfile = useSetAtom(profileAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
-  const [, setProfile] = useAtom(profileAtom);
   const navigate = useNavigate();
   const handleFormSubmit = async (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
