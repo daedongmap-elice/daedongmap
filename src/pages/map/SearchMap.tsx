@@ -12,6 +12,7 @@ import SearchInput2 from "@/components/map/SearchInput2";
 import axiosClient from "@/utils/baseUrl";
 import React from "react";
 import ReSearchBtn2 from "@/components/map/ReSearchBtn2";
+import Toast from "@/components/common/Toast";
 
 export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -20,6 +21,8 @@ export default function SearchMap() {
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const [toast, setToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
   const [nowCenter, setNowCenter] = useState<LatLngData>();
   const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [selectMarker, setSelectMarker] = useState<LatLngData>();
@@ -105,6 +108,8 @@ export default function SearchMap() {
       const data = await res.data;
       if (res.status === 200) {
         if (data.length === 0) {
+          setToastMessage("해당 지역에는 리뷰가 등록된 맛집이 없습니다.");
+          setToast(true);
           setMarkers([]);
         } else {
           const placeArr: PlaceData[] = [];
@@ -147,6 +152,10 @@ export default function SearchMap() {
     } else {
       try {
         ps.keywordSearch(query, (datas, status) => {
+          if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            setToastMessage(`"${query}"(으)로 검색한 결과가 없습니다.`);
+            setToast(true);
+          }
           if (status === kakao.maps.services.Status.OK) {
             map.setCenter(
               new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
@@ -278,6 +287,7 @@ export default function SearchMap() {
         userLocation={userLocation}
         handleSetFilter={handleSetFilter}
       />
+      {toast && <Toast setToast={setToast} message={toastMessage} />}
     </>
   );
 }
