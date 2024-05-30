@@ -147,7 +147,11 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
         <div className="flex w-full justify-between px-5 pt-4 text-sm">
           {data?.content && data?.content.length >= 110 ? (
             <p
-              className={`${isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"} ${isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"} ${isSeeMoreClicked ? "" : "text-clip"}`}
+              className={`${
+                isSeeMoreClicked ? "overflow-visible" : "overflow-hidden"
+              } ${
+                isSeeMoreClicked ? "whitespace-normal" : "whitespace-nowrap"
+              } ${isSeeMoreClicked ? "" : "text-clip"}`}
             >
               {data?.content}
             </p>
@@ -157,7 +161,9 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
           {data?.content && data?.content.length >= 110 ? (
             <button
               onClick={() => setIsSeeMoreClicked(true)}
-              className={`min-w-fit cursor-pointer text-subGray ${isSeeMoreClicked ? "hidden" : ""}`}
+              className={`min-w-fit cursor-pointer text-subGray ${
+                isSeeMoreClicked ? "hidden" : ""
+              }`}
             >
               <span>...&nbsp; 더 보기</span>
             </button>
