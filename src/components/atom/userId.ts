@@ -1,9 +1,3 @@
 import { atom } from "jotai";
 
-interface UserId {
-  userId: number;
-}
-
-export const userId = atom<UserId>({
-  userId: 0,
-});
+export const userIdAtom = atom<number>(0);

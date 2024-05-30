@@ -13,12 +13,12 @@ const ReviewProfile = ({
   placeName,
   profileImagePath,
 }: ReviewProfileProps) => {
-  const token = localStorage.getItem("accessToken");
+  const isToken = localStorage.getItem("isToken");
 
   return (
     <button
       onClick={() => {
-        if (!token) {
+        if (!isToken) {
           alert("사용자 프로필은 로그인 후 볼 수 있습니다.");
         }
       }}

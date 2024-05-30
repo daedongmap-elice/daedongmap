@@ -4,7 +4,7 @@ import Toast from "@/components/common/Toast";
 
 interface CommentPostProps {
   loginUserId: number;
-  reviewId: string;
+  reviewId?: string;
   getData: () => void;
   scrollToBottom: () => void;
 }
@@ -18,25 +18,17 @@ const CommentPost = ({
   const [content, setContent] = useState("");
   const [showToast, setShowToast] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const token = localStorage.getItem("accessToken");
+  const isToken = localStorage.getItem("isToken");
 
   // 나의 유저아이디 가져와야 함
   const handleSubmit = useCallback(async () => {
     try {
-      await axiosClient.post(
-        "/comments",
-        {
-          userId: loginUserId,
-          reviewId: reviewId,
-          content: content,
-          parentId: null,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axiosClient.post("/comments", {
+        userId: loginUserId,
+        reviewId: reviewId,
+        content: content,
+        parentId: null,
+      });
       getData();
       scrollToBottom();
       if (inputRef.current) {
@@ -75,7 +67,7 @@ const CommentPost = ({
           <button
             type="submit"
             onClick={(e) => {
-              if (token) {
+              if (isToken) {
                 e.preventDefault();
                 handleSubmit();
                 return;
