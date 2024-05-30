@@ -12,6 +12,8 @@ import { useParams } from "react-router-dom";
 import { ReviewResponse } from "@/type/types";
 import PerfectScrollar from "react-perfect-scrollbar";
 import axiosClient from "@/utils/baseUrl";
+import { useAtom } from "jotai";
+import { userIdAtom } from "@/components/atom/userId";
 
 interface ReviewDetailProps {
   type?: "feed";
@@ -24,14 +26,13 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const [loginUserId, setLoginUserId] = useState<number>(0);
+  const [loginUserId] = useAtom(userIdAtom);
   const [reviewUserId, setReviewUserId] = useState<number>(0);
   const [reviewId, setReviewId] = useState<number>(0);
   const [data, setData] = useState<ReviewResponse | null>(null);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
   const { reviewId: currentReviewId } = useParams();
-  const isToken = localStorage.getItem("isToken");
 
   const putFeedData = (fData: ReviewResponse) => {
     setData(fData);
@@ -79,19 +80,7 @@ const ReviewDetail = ({ type, feedData }: ReviewDetailProps) => {
     }
   };
 
-  const getUserId = async () => {
-    try {
-      const response = await axiosClient.post("/user", null);
-      setLoginUserId(response.data);
-    } catch (error) {
-      console.error("로그인 유저id 요청 에러:", error);
-    }
-  };
-
   useEffect(() => {
-    if (isToken) {
-      getUserId();
-    }
     if (type === undefined) {
       getData();
     }
