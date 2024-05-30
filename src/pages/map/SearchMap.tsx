@@ -144,7 +144,7 @@ export default function SearchMap() {
   }, [view]);
 
   useEffect(() => {
-    if (!map || !query) return;
+    if (!map) return;
     const ps = new kakao.maps.services.Places();
 
     if (searchLatLng) {
@@ -157,18 +157,20 @@ export default function SearchMap() {
       getPlaces();
     } else {
       try {
-        ps.keywordSearch(query, (datas, status) => {
-          if (status === kakao.maps.services.Status.ZERO_RESULT) {
-            setToastMessage(`"${query}"(으)로 검색한 결과가 없습니다.`);
-            setToast(true);
-          }
-          if (status === kakao.maps.services.Status.OK) {
-            map.setCenter(
-              new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
-            );
-            getPlaces();
-          }
-        });
+        if (query) {
+          ps.keywordSearch(query, (datas, status) => {
+            if (status === kakao.maps.services.Status.ZERO_RESULT) {
+              setToastMessage(`"${query}"(으)로 검색한 결과가 없습니다.`);
+              setToast(true);
+            }
+            if (status === kakao.maps.services.Status.OK) {
+              map.setCenter(
+                new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
+              );
+              getPlaces();
+            }
+          });
+        }
       } catch (err) {
         console.log(err);
       }

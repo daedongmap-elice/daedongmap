@@ -1,17 +1,26 @@
 import { IoRefresh } from "react-icons/io5";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export default function ReSearchBtn2({ map }: { map?: kakao.maps.Map }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const nav = useNavigate();
+
   const handleOnClick = () => {
     if (!map) {
       return;
     }
     const center = map.getCenter();
     const latlng = `${center.getLat()},${center.getLng()}`;
-    searchParams.set("latlng", latlng);
-    searchParams.set("lvl", map.getLevel().toString());
-    setSearchParams(searchParams);
+    const level = map.getLevel().toString();
+    if (location.pathname === "/") {
+      nav(`/search?latlng=${latlng}&lvl=${level}`);
+    }
+    if (location.pathname === "/search") {
+      searchParams.set("latlng", latlng);
+      searchParams.set("lvl", level);
+      setSearchParams(searchParams);
+    }
   };
   return (
     <button

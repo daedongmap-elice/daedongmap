@@ -40,6 +40,8 @@ export default function SearchInput2({ type }: SearchInputProps) {
   useEffect(() => {
     if (query !== null) {
       setText(query);
+    } else {
+      setText("");
     }
   }, []);
 
