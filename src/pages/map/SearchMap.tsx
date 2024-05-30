@@ -4,12 +4,12 @@ import {
   NowPositionBtn,
   PlaceInfoCard,
   PlaceListModal,
+  SearchInput,
   ReSearchBtn,
 } from "@/components/map/index";
 import { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
 import { useSearchParams } from "react-router-dom";
-import SearchInput2 from "@/components/map/SearchInput2";
 import axiosClient from "@/utils/baseUrl";
 import React from "react";
 import Toast from "@/components/common/Toast";
@@ -289,7 +289,7 @@ export default function SearchMap() {
             </div>
           )}
       </Map>
-      <SearchInput2 type="main" />
+      <SearchInput type="main" />
 
       <PlaceListModal
         openListModal={openListModal}

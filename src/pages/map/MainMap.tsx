@@ -5,13 +5,13 @@ import {
   ChangeViewBtn,
   NowPositionBtn,
   ReSearchBtn,
+  SearchInput,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
 import Toast from "@/components/common/Toast";
 import axiosClient from "@/utils/baseUrl";
 import { useSearchParams } from "react-router-dom";
-import SearchInput2 from "@/components/map/SearchInput2";
 
 export default function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -289,7 +289,7 @@ export default function MainMap() {
               </div>
             )}
         </Map>
-        <SearchInput2 type="main" />
+        <SearchInput type="main" />
         <PlaceListModal
           openListModal={openListModal}
           placeList={markers}

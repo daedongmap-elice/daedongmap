@@ -1,9 +1,9 @@
-import { LatLngData, PlaceData } from "@/type/types";
+import { LatLngData, PlaceData, PlaceInfoData } from "@/type/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface PlaceInfoCardProps {
-  place: PlaceData;
+  place: PlaceData | PlaceInfoData;
   userLocation?: {
     center: LatLngData;
     errMsg: null | string;
@@ -24,31 +24,40 @@ export default function PlaceInfoCard({
   }
   const nav = useNavigate();
   const [distance, setDistance] = useState(0);
+  const [placeInfo, setPlaceInfo] = useState<PlaceData>({
+    kakaoPlaceId: 0,
+    placeName: "",
+    addressName: "",
+    categoryName: "",
+    roadAddressName: "",
+    placeUrl: "",
+    phone: null,
+    x: 0,
+    y: 0,
+    averageRating: 0,
+    id: 0,
+    reviewCnt: "",
+    reviewImagePath: "",
+  });
   const isMain = type === "main";
-  const {
-    averageRating,
-    categoryName,
-    phone,
-    placeName,
-    placeUrl,
-    roadAddressName,
-    reviewCnt,
-    reviewImagePath,
-    kakaoPlaceId,
-  } = place;
 
   const handleClickKaKaoBtn = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    window.open(placeUrl);
+    window.open(placeInfo.placeUrl);
     e.stopPropagation();
   };
 
   const handleClickCard = () => {
-    nav(`/feed/${kakaoPlaceId}`);
+    nav(`/feed/${placeInfo.kakaoPlaceId}`);
   };
 
   useEffect(() => {
+    setPlaceInfo((prev) => ({
+      ...prev,
+      ...place,
+    }));
+
     if (userLocation?.errMsg === null) {
       const pos = new kakao.maps.Polyline({
         path: [
@@ -72,43 +81,49 @@ export default function PlaceInfoCard({
             <div>
               <h2 className="truncate font-normal text-subGray">
                 <span className="text-base font-bold text-black">
-                  {placeName}
+                  {placeInfo.placeName}
                 </span>
-                <p className="inline text-xs">&nbsp;{categoryName}</p>
+                <p className="inline text-xs">&nbsp;{placeInfo.categoryName}</p>
               </h2>
             </div>
             {isMain && (
               <div className="flex items-center gap-1.5">
-                <h4 className="text-xs font-medium">{averageRating}</h4>
+                <h4 className="text-xs font-medium">
+                  {placeInfo.averageRating}
+                </h4>
                 <div className="rating rating-half rating-xs pointer-events-none">
                   {[...Array(10)].map((_, i) => (
                     <input
                       key={i}
                       type="radio"
                       className={`mask ${i % 2 === 0 ? "mask-half-1" : "mask-half-2"} mask-star-2 bg-mainY`}
-                      defaultChecked={i === Math.floor(averageRating * 2) - 1}
+                      defaultChecked={
+                        i === Math.floor(placeInfo.averageRating * 2) - 1
+                      }
                     />
                   ))}
                 </div>
-                <p className="text-xs text-subGray">({reviewCnt})</p>
+                <p className="text-xs text-subGray">({placeInfo.reviewCnt})</p>
               </div>
             )}
 
-            <p className="truncate text-xs">{roadAddressName}</p>
+            <p className="truncate text-xs">{placeInfo.roadAddressName}</p>
             <div className="flex gap-1">
               {isMain && userLocation?.errMsg === null && (
                 <p className="text-xs font-medium">{`${(distance / 1000).toFixed(1)}km`}</p>
               )}
-              {isMain && userLocation?.errMsg === null && phone && (
+              {isMain && userLocation?.errMsg === null && placeInfo.phone && (
                 <p className="text-xs font-bold">|</p>
               )}
-              {phone && <p className="text-xs text-mainG">{phone}</p>}
+              {placeInfo.phone && (
+                <p className="text-xs text-mainG">{placeInfo.phone}</p>
+              )}
             </div>
           </div>
 
           {isMain && (
             <img
-              src={reviewImagePath}
+              src={placeInfo.reviewImagePath}
               alt="음식점 사진"
               className="h-[80px] w-[80px] rounded object-cover"
             />
