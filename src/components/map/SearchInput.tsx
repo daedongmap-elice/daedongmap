@@ -8,10 +8,7 @@ interface SearchInputProps {
   handleSetText?: (t: string) => void;
 }
 
-export default function SearchInput2({
-  type,
-  handleSetText,
-}: SearchInputProps) {
+export default function SearchInput({ type, handleSetText }: SearchInputProps) {
   const [text, setText] = useState<string>("");
   const [toast, setToast] = useState<boolean>(false);
   const [searchParams] = useSearchParams();

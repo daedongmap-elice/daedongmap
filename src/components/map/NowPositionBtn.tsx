@@ -18,7 +18,7 @@ interface NowPositionBtnProps {
   setToastMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function NowPositionBtn2({
+export default function NowPositionBtn({
   userLocation,
   map,
   handleSetUserLocation,

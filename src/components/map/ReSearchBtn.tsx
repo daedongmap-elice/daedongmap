@@ -1,7 +1,7 @@
 import { IoRefresh } from "react-icons/io5";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-export default function ReSearchBtn2({ map }: { map?: kakao.maps.Map }) {
+export default function ReSearchBtn({ map }: { map?: kakao.maps.Map }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const nav = useNavigate();
