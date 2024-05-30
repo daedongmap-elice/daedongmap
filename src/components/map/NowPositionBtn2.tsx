@@ -1,7 +1,6 @@
 import { LatLngData } from "@/type/types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MdMyLocation } from "react-icons/md";
-import Toast from "../common/Toast";
 
 interface NowPositionBtnProps {
   userLocation: {
@@ -15,15 +14,17 @@ interface NowPositionBtnProps {
     errMsg?: null | string;
     isLoading: boolean;
   }) => void;
+  setToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setToastMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function NowPositionBtn2({
   userLocation,
   map,
   handleSetUserLocation,
+  setToast,
+  setToastMessage,
 }: NowPositionBtnProps) {
-  const [isToast, setisToast] = useState<boolean>(false);
-
   const handleGetUserLocation = () => {
     if (!map) {
       return null;
@@ -73,9 +74,10 @@ export default function NowPositionBtn2({
           )
         );
         map?.setBounds(bounds);
-        map?.setLevel(6);
+        map?.setLevel(7);
       } else {
-        setisToast(true);
+        setToastMessage("위치를 가져올 수 없습니다.");
+        setToast(true);
       }
     }
   }, [userLocation]);
@@ -88,9 +90,6 @@ export default function NowPositionBtn2({
       >
         <MdMyLocation className="h-4 w-4 text-mainG" />
       </button>
-      {isToast && (
-        <Toast setToast={setisToast} message="위치를 가져올 수 없습니다." />
-      )}
     </>
   );
 }

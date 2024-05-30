@@ -266,6 +266,8 @@ export default function SearchMap() {
             userLocation={userLocation}
             map={map}
             handleSetUserLocation={handleSetUserLocation}
+            setToast={setToast}
+            setToastMessage={setToastMessage}
           />
         </div>
         <div

@@ -2,15 +2,16 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import {
   PlaceListModal,
   PlaceInfoCard,
-  NowPositionBtn,
-  SearchInput,
   ChangeViewBtn,
-  ReSearchBtn,
+  NowPositionBtn2,
 } from "@/components/map/index";
 import React, { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
 import Toast from "@/components/common/Toast";
 import axiosClient from "@/utils/baseUrl";
+import { useSearchParams } from "react-router-dom";
+import ReSearchBtn2 from "@/components/map/ReSearchBtn2";
+import SearchInput2 from "@/components/map/SearchInput2";
 
 export default function MainMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -31,30 +32,22 @@ export default function MainMap() {
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
   const [toast, setToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
   const [nowCenter, setNowCenter] = useState<LatLngData>();
   const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [markers, setMarkers] = useState<PlaceData[]>([]);
   const [filter, setFilter] = useState<string>("default");
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const view = searchParams.get("view");
 
   const handleOnClickMarker = (position: { lat: number; lng: number }) => {
     setSelectMarker(position);
     setShowInfoCard(true);
   };
 
-  const handleToggleShowInfoCard = (state: boolean) => {
-    setShowInfoCard(state);
-  };
-
-  const handleOpenModal = () => {
-    setOpenListModal((prev) => !prev);
-  };
-
   const handleResetSelectMarker = () => {
     setSelectMarker({ lat: 0, lng: 0 });
-  };
-
-  const handleClickMap = () => {
-    handleResetSelectMarker();
     setShowInfoCard(false);
   };
 
@@ -66,7 +59,9 @@ export default function MainMap() {
     setUserLocation((prev) => ({
       ...prev,
       ...(location.center && { center: location.center }),
-      ...(location.errMsg && { errMsg: location.errMsg }),
+      ...((location.errMsg === null || location.errMsg) && {
+        errMsg: location.errMsg,
+      }),
       isLoading: location.isLoading,
     }));
   };
@@ -84,16 +79,27 @@ export default function MainMap() {
     setFilter(type);
   };
 
+  const handleChangeView = () => {
+    if (view === "map" || view === null) {
+      searchParams.set("view", "list");
+    }
+    if (view === "list") {
+      searchParams.set("view", "map");
+    }
+
+    setSearchParams(searchParams);
+  };
+
   async function getPlaces() {
     if (!map) {
       return;
     }
+
     setIsLoadingMarker(true);
     const bounds = map.getBounds();
-    // 영역의 남서쪽 좌표를 얻어옵니다
     const swLatLng = bounds.getSouthWest();
-    // 영역의 북동쪽 좌표를 얻어옵니다
     const neLatLng = bounds.getNorthEast();
+
     try {
       const res = await axiosClient.get(
         `/place/region?x1=${swLatLng.getLng()}&x2=${neLatLng.getLng()}&y1=${swLatLng.getLat()}&y2=${neLatLng.getLat()}&x=${userLocation.center.lng}&y=${userLocation.center.lat}${filter !== "default" && filter !== "recommend" ? `&filter=${filter}` : ""}`
@@ -101,6 +107,7 @@ export default function MainMap() {
       const data = await res.data;
       if (res.status === 200) {
         if (data.length === 0) {
+          setToastMessage("해당 지역에는 리뷰가 등록된 맛집이 없습니다.");
           setToast(true);
           setMarkers([]);
         } else {
@@ -146,14 +153,16 @@ export default function MainMap() {
   }, []);
 
   useEffect(() => {
-    getPlaces();
-  }, [userLocation.center]);
+    if (view === "map" || view === null) {
+      setOpenListModal(false);
+    } else {
+      setOpenListModal(true);
+    }
+  }, [view]);
 
   useEffect(() => {
-    if (selectMarker?.lat === 0 && selectMarker.lng === 0) {
-      setShowInfoCard(false);
-    }
-  }, [selectMarker]);
+    getPlaces();
+  }, [userLocation.center]);
 
   useEffect(() => {
     if (filter !== "default") {
@@ -163,137 +172,132 @@ export default function MainMap() {
 
   return (
     <>
-      <div className="absolute left-1/2 top-4 z-20 h-6 w-28 -translate-x-1/2 rounded-full bg-[url('img/sample3.png')] bg-cover bg-center"></div>
-      <Map
-        center={
-          userLocation.errMsg === null
-            ? userLocation.center
-            : {
-                lat: 37.5665851,
-                lng: 126.9782038,
-              }
-        }
-        style={{
-          width: "100%",
-          height: "95.3vh",
-        }}
-        level={4}
-        onClick={handleClickMap}
-        isPanto
-        onCreate={setMap}
-        onCenterChanged={handleOnCenterChanged}
-      >
-        <SearchInput
-          map={map}
-          type="main"
-          handleToggleShowInfoCard={handleToggleShowInfoCard}
-          getPlaces={getPlaces}
-          handleResetSelectMarker={handleResetSelectMarker}
-        />
-        {!isLoadingMarker &&
-          (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
-            <></>
-          ) : (
-            markers.map((place) => {
-              const { id, x: lng, y: lat } = place;
-              const isSelected =
-                selectMarker?.lat === Number(lat) &&
-                selectMarker?.lng === Number(lng);
-              return (
-                <React.Fragment key={id}>
-                  <MapMarker
-                    position={{
-                      lat: Number(lat),
-                      lng: Number(lng),
-                    }}
-                    image={
-                      isSelected
-                        ? {
-                            src: "svg/selectedMarker.svg",
-                            size: {
-                              width: 26,
-                              height: 32,
-                            },
-                            options: {
-                              offset: {
-                                x: 13,
-                                y: 32,
-                              },
-                            },
-                          }
-                        : {
-                            src: "svg/marker.svg",
-                            size: {
-                              width: 21,
-                              height: 29,
-                            },
-                            options: {
-                              offset: {
-                                x: 10.5,
-                                y: 29,
-                              },
-                            },
-                          }
-                    }
-                    onClick={() =>
-                      handleOnClickMarker({
+      <>
+        <div className="absolute left-1/2 top-4 z-20 h-6 w-28 -translate-x-1/2 rounded-full bg-[url('img/sample3.png')] bg-cover bg-center"></div>
+        <Map
+          center={
+            userLocation.errMsg === null
+              ? userLocation.center
+              : {
+                  lat: 37.5665851,
+                  lng: 126.9782038,
+                }
+          }
+          style={{
+            width: "100%",
+            height: "95.3vh",
+          }}
+          level={7}
+          onClick={handleResetSelectMarker}
+          isPanto
+          onCreate={setMap}
+          onCenterChanged={handleOnCenterChanged}
+        >
+          {!isLoadingMarker &&
+            (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
+              <></>
+            ) : (
+              markers.map((place) => {
+                const { id, x: lng, y: lat } = place;
+                const isSelected =
+                  selectMarker?.lat === Number(lat) &&
+                  selectMarker?.lng === Number(lng);
+                return (
+                  <React.Fragment key={id}>
+                    <MapMarker
+                      position={{
                         lat: Number(lat),
                         lng: Number(lng),
-                      })
-                    }
-                  />
+                      }}
+                      image={
+                        isSelected
+                          ? {
+                              src: "svg/selectedMarker.svg",
+                              size: {
+                                width: 26,
+                                height: 32,
+                              },
+                              options: {
+                                offset: {
+                                  x: 13,
+                                  y: 32,
+                                },
+                              },
+                            }
+                          : {
+                              src: "svg/marker.svg",
+                              size: {
+                                width: 21,
+                                height: 29,
+                              },
+                              options: {
+                                offset: {
+                                  x: 10.5,
+                                  y: 29,
+                                },
+                              },
+                            }
+                      }
+                      onClick={() =>
+                        handleOnClickMarker({
+                          lat: Number(lat),
+                          lng: Number(lng),
+                        })
+                      }
+                    />
 
-                  {isSelected && showInfoCard && (
-                    <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
-                      <PlaceInfoCard
-                        place={place}
-                        userLocation={userLocation}
-                        type="main"
-                      />
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            })
-          ))}
+                    {isSelected && showInfoCard && (
+                      <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                        <PlaceInfoCard
+                          place={place}
+                          userLocation={userLocation}
+                          type="main"
+                        />
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })
+            ))}
 
-        <NowPositionBtn
-          userLocation={userLocation}
-          map={map}
-          showInfoCard={showInfoCard}
-          handleSetUserLocation={handleSetUserLocation}
-        />
+          <div
+            className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-44" : "bottom-8"}`}
+          >
+            <NowPositionBtn2
+              userLocation={userLocation}
+              map={map}
+              handleSetUserLocation={handleSetUserLocation}
+              setToast={setToast}
+              setToastMessage={setToastMessage}
+            />
+          </div>
+          <div
+            className={`absolute left-1/2 z-20 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-44" : "bottom-8"}`}
+          >
+            <ChangeViewBtn
+              onClick={handleChangeView}
+              btnType={openListModal ? "listView" : "mapView"}
+            />
+          </div>
 
+          {nowCenter?.lat !== searchLocation?.lat &&
+            nowCenter?.lng !== searchLocation?.lng &&
+            !isLoadingMarker &&
+            !openListModal && (
+              <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
+                <ReSearchBtn2 map={map} />
+              </div>
+            )}
+        </Map>
+        <SearchInput2 type="main" />
         <PlaceListModal
           openListModal={openListModal}
           placeList={markers}
           userLocation={userLocation}
           handleSetFilter={handleSetFilter}
         />
-
-        <div
-          className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-44" : "bottom-8"}`}
-        >
-          <ChangeViewBtn
-            onClick={handleOpenModal}
-            btnType={openListModal ? "listView" : "mapView"}
-          />
-        </div>
-        {nowCenter?.lat !== searchLocation?.lat &&
-          nowCenter?.lng !== searchLocation?.lng &&
-          !isLoadingMarker &&
-          !openListModal && (
-            <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
-              <ReSearchBtn getPlaces={getPlaces} />
-            </div>
-          )}
-        {toast && (
-          <Toast
-            setToast={setToast}
-            message="해당 지역에는 리뷰가 등록된 맛집이 없습니다."
-          />
-        )}
-      </Map>
+        {toast && <Toast setToast={setToast} message={toastMessage} />}
+      </>
     </>
   );
 }
