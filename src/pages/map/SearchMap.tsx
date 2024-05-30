@@ -1,25 +1,35 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import {
-  PlaceListModal,
-  PlaceInfoCard,
-  NowPositionBtn,
-  SearchInput,
   ChangeViewBtn,
+  NowPositionBtn,
+  PlaceInfoCard,
+  PlaceListModal,
+  SearchInput,
   ReSearchBtn,
 } from "@/components/map/index";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LatLngData, PlaceData } from "@/type/types";
-import Toast from "@/components/common/Toast";
+import { useSearchParams } from "react-router-dom";
 import axiosClient from "@/utils/baseUrl";
+import React from "react";
+import Toast from "@/components/common/Toast";
 
-export function MainMap() {
+export default function SearchMap() {
   const [map, setMap] = useState<kakao.maps.Map>();
+  const [markers, setMarkers] = useState<PlaceData[]>([]);
+  const [filter, setFilter] = useState<string>("default");
+  const [openListModal, setOpenListModal] = useState<boolean>(false);
+  const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
+  const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const [toast, setToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  const [nowCenter, setNowCenter] = useState<LatLngData>();
+  const [searchLocation, setSearchLocation] = useState<LatLngData>();
   const [selectMarker, setSelectMarker] = useState<LatLngData>();
   const [userLocation, setUserLocation] = useState<{
     center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
-    isSetUserLocation: boolean;
   }>({
     center: {
       lat: 37.5665851,
@@ -27,37 +37,51 @@ export function MainMap() {
     },
     errMsg: null,
     isLoading: true,
-    isSetUserLocation: false,
   });
-  const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
-  const [openListModal, setOpenListModal] = useState<boolean>(false);
-  const [isLoadingMarker, setIsLoadingMarker] = useState<boolean>(false);
-  const [toast, setToast] = useState<boolean>(false);
-  const [nowCenter, setNowCenter] = useState<LatLngData>();
-  const [searchLocation, setSearchLocation] = useState<LatLngData>();
-  const [markers, setMarkers] = useState<PlaceData[]>([]);
-  const [filter, setFilter] = useState<string>("default");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("q");
+  const view = searchParams.get("view");
+  const searchLatLng = searchParams.get("latlng");
+  const level = searchParams.get("lvl");
 
-  const handleOnClickMarker = (position: { lat: number; lng: number }) => {
-    setSelectMarker(position);
-    setShowInfoCard(true);
+  const handleSetUserLocation = (location: {
+    center?: LatLngData;
+    errMsg?: null | string;
+    isLoading: boolean;
+  }) => {
+    setUserLocation((prev) => ({
+      ...prev,
+      ...(location.center && { center: location.center }),
+      ...((location.errMsg === null || location.errMsg) && {
+        errMsg: location.errMsg,
+      }),
+      isLoading: location.isLoading,
+    }));
   };
 
-  const handleToggleShowInfoCard = (state: boolean) => {
-    setShowInfoCard(state);
+  const handleChangeView = () => {
+    if (view === "map" || view === null) {
+      searchParams.set("view", "list");
+    }
+    if (view === "list") {
+      searchParams.set("view", "map");
+    }
+
+    setSearchParams(searchParams);
   };
 
-  const handleOpenModal = () => {
-    setOpenListModal((prev) => !prev);
+  const handleSetFilter = (type: string) => {
+    setFilter(type);
   };
 
   const handleResetSelectMarker = () => {
     setSelectMarker({ lat: 0, lng: 0 });
+    setShowInfoCard(false);
   };
 
-  const handleClickMap = () => {
-    handleResetSelectMarker();
-    setShowInfoCard(false);
+  const handleOnClickMarker = (position: { lat: number; lng: number }) => {
+    setSelectMarker(position);
+    setShowInfoCard(true);
   };
 
   const handleOnCenterChanged = (mapInfo: kakao.maps.Map) => {
@@ -69,19 +93,13 @@ export function MainMap() {
     });
   };
 
-  const handleSetFilter = (type: string) => {
-    setFilter(type);
-  };
-
   async function getPlaces() {
     if (!map) {
       return;
     }
     setIsLoadingMarker(true);
     const bounds = map.getBounds();
-    // 영역의 남서쪽 좌표를 얻어옵니다
     const swLatLng = bounds.getSouthWest();
-    // 영역의 북동쪽 좌표를 얻어옵니다
     const neLatLng = bounds.getNorthEast();
     try {
       const res = await axiosClient.get(
@@ -90,6 +108,7 @@ export function MainMap() {
       const data = await res.data;
       if (res.status === 200) {
         if (data.length === 0) {
+          setToastMessage("해당 지역에는 리뷰가 등록된 맛집이 없습니다.");
           setToast(true);
           setMarkers([]);
         } else {
@@ -99,59 +118,16 @@ export function MainMap() {
           setMarkers(placeArr);
         }
       }
-
       setIsLoadingMarker(false);
+      handleResetSelectMarker();
       const latlng = map.getCenter();
       setNowCenter({ lat: latlng.getLat(), lng: latlng.getLng() });
       setSearchLocation({ lat: latlng.getLat(), lng: latlng.getLng() });
-      handleResetSelectMarker();
       handleSetFilter("default");
     } catch (err) {
       console.log(err);
     }
   }
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation((prev) => ({
-            ...prev,
-            center: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-            isLoading: false,
-            isSetUserLocation: true,
-          }));
-        },
-        (err) => {
-          setUserLocation((prev) => ({
-            ...prev,
-            errMsg: err.message,
-            isLoading: false,
-            isSetUserLocation: false,
-          }));
-        }
-      );
-    } else {
-      setUserLocation((prev) => ({
-        ...prev,
-        errMsg: "위치를 불러올 수 없습니다.",
-        isLoading: false,
-        isSetUserLocation: false,
-      }));
-    }
-  }, []);
-
-  useEffect(() => {
-    getPlaces();
-  }, [userLocation]);
-
-  useEffect(() => {
-    if (selectMarker?.lat === 0 && selectMarker.lng === 0) {
-      setShowInfoCard(false);
-    }
-  }, [selectMarker]);
 
   useEffect(() => {
     if (filter !== "default") {
@@ -159,35 +135,66 @@ export function MainMap() {
     }
   }, [filter]);
 
+  useEffect(() => {
+    if (view === "map" || view === null) {
+      setOpenListModal(false);
+    } else {
+      setOpenListModal(true);
+    }
+  }, [view]);
+
+  useEffect(() => {
+    if (!map) return;
+    const ps = new kakao.maps.services.Places();
+
+    if (searchLatLng) {
+      const [lat, lng] = searchLatLng.split(",");
+      if (level) {
+        map.setLevel(Number(level));
+      }
+
+      map.setCenter(new kakao.maps.LatLng(Number(lat), Number(lng)));
+      getPlaces();
+    } else {
+      try {
+        if (query) {
+          ps.keywordSearch(query, (datas, status) => {
+            if (status === kakao.maps.services.Status.ZERO_RESULT) {
+              setToastMessage(`"${query}"(으)로 검색한 결과가 없습니다.`);
+              setToast(true);
+            }
+            if (status === kakao.maps.services.Status.OK) {
+              map.setCenter(
+                new kakao.maps.LatLng(Number(datas[0].y), Number(datas[0].x))
+              );
+              getPlaces();
+            }
+          });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [map, query, searchLatLng]);
+
   return (
     <>
       <div className="absolute left-1/2 top-4 z-20 h-6 w-28 -translate-x-1/2 rounded-full bg-[url('img/sample3.png')] bg-cover bg-center"></div>
       <Map
-        center={
-          userLocation.isSetUserLocation
-            ? userLocation.center
-            : {
-                lat: 37.5665851,
-                lng: 126.9782038,
-              }
-        }
+        center={{
+          lat: 37.5665851,
+          lng: 126.9782038,
+        }}
         style={{
           width: "100%",
           height: "95.3vh",
         }}
-        level={4}
-        onClick={handleClickMap}
+        level={7}
         isPanto
         onCreate={setMap}
+        onClick={handleResetSelectMarker}
         onCenterChanged={handleOnCenterChanged}
       >
-        <SearchInput
-          map={map}
-          type="main"
-          handleToggleShowInfoCard={handleToggleShowInfoCard}
-          getPlaces={getPlaces}
-          handleResetSelectMarker={handleResetSelectMarker}
-        />
         {!isLoadingMarker &&
           (markers === undefined ? ( //맛집이 없을 경우 메세지로 알림
             <></>
@@ -242,7 +249,7 @@ export function MainMap() {
                   />
 
                   {isSelected && showInfoCard && (
-                    <div className="absolute bottom-16 left-1/2 z-10 w-[320px] -translate-x-1/2">
+                    <div className="absolute bottom-8 left-1/2 z-10 w-[320px] -translate-x-1/2">
                       <PlaceInfoCard
                         place={place}
                         userLocation={userLocation}
@@ -254,25 +261,22 @@ export function MainMap() {
               );
             })
           ))}
-
-        <NowPositionBtn
-          userLocation={userLocation}
-          map={map}
-          showInfoCard={showInfoCard}
-        />
-
-        <PlaceListModal
-          openListModal={openListModal}
-          placeList={markers}
-          userLocation={userLocation}
-          handleSetFilter={handleSetFilter}
-        />
-
         <div
-          className={`absolute left-1/2 z-10 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-52" : "bottom-16"}`}
+          className={`absolute right-5 z-10 transition-all duration-150 ${showInfoCard ? "bottom-44" : "bottom-8"}`}
+        >
+          <NowPositionBtn
+            userLocation={userLocation}
+            map={map}
+            handleSetUserLocation={handleSetUserLocation}
+            setToast={setToast}
+            setToastMessage={setToastMessage}
+          />
+        </div>
+        <div
+          className={`absolute left-1/2 z-20 -translate-x-1/2 transition-all duration-150 ${showInfoCard && !openListModal ? "bottom-44" : "bottom-8"}`}
         >
           <ChangeViewBtn
-            onClick={handleOpenModal}
+            onClick={handleChangeView}
             btnType={openListModal ? "listView" : "mapView"}
           />
         </div>
@@ -281,16 +285,19 @@ export function MainMap() {
           !isLoadingMarker &&
           !openListModal && (
             <div className="absolute left-1/2 top-24 z-10 -translate-x-1/2">
-              <ReSearchBtn getPlaces={getPlaces} />
+              <ReSearchBtn map={map} />
             </div>
           )}
-        {toast && (
-          <Toast
-            setToast={setToast}
-            message="해당 지역에는 리뷰가 등록된 맛집이 없습니다."
-          />
-        )}
       </Map>
+      <SearchInput type="main" />
+
+      <PlaceListModal
+        openListModal={openListModal}
+        placeList={markers}
+        userLocation={userLocation}
+        handleSetFilter={handleSetFilter}
+      />
+      {toast && <Toast setToast={setToast} message={toastMessage} />}
     </>
   );
 }

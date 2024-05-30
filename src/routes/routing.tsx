@@ -1,6 +1,6 @@
 import { Routes, createBrowserRouter, Route } from "react-router-dom";
 import Layout from "../components/layout/Layout";
-import { MainMap } from "../pages/MainMap";
+import MainMap from "../pages/map/MainMap";
 import ReviewGallery from "../pages/review/ReviewGallery";
 import ReviewPost from "../pages/review/ReviewPost";
 import ReviewDetail from "../pages/review/ReviewDetail";
@@ -16,6 +16,7 @@ import LoginContainer from "@/components/user/login/loginContainer";
 import KakaoOauth from "@/components/user/login/loginKakao";
 import NaverOAuth from "@/components/user/login/loginNaver";
 import GoogleOauth from "@/components/user/login/loginGoogle";
+import SearchMap from "@/pages/map/SearchMap";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPresent />,
     children: [
       { path: "/", element: <MainMap /> },
+      { path: "/search", element: <SearchMap /> },
       //게시글 관련 페이지
       { path: "/review", element: <ReviewGallery /> },
       { path: "/detail/:reviewId", element: <ReviewDetail /> },

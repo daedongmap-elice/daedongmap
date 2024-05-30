@@ -12,7 +12,6 @@ interface PlaceListModalProps {
     center: LatLngData;
     errMsg: null | string;
     isLoading: boolean;
-    isSetUserLocation: boolean;
   };
   handleSetFilter: (type: string) => void;
 }
@@ -35,7 +34,7 @@ export default function PlaceListModal({
             <div className="relative mx-auto my-0 w-[320px] pb-px pt-24 text-right">
               <Select
                 option={
-                  userLocation.isSetUserLocation
+                  userLocation.errMsg === null
                     ? [
                         { name: "추천순", value: "recommend" },
                         { name: "별점순", value: "rating" },

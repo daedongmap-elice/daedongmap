@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { PlaceInfoCard, SearchInput } from "@/components/map/index";
-import { PlaceData, PlaceInfoData } from "@/type/types";
+import { PlaceInfoData } from "@/type/types";
 import React from "react";
 
 interface FindPlaceProps {
@@ -15,23 +15,16 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({
   isShowPlaceModal,
   handleSetIsShowPlaceModal,
 }) => {
-  const [markers, setMarkers] = useState<PlaceData[]>([]);
+  const [markers, setMarkers] = useState<PlaceInfoData[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [selectMarker, setSelectMarker] = useState<PlaceInfoData>();
   const [showInfoCard, setShowInfoCard] = useState<boolean>(false);
+  const [text, setText] = useState<string>("");
   const placeModalRef = useRef<HTMLDialogElement>(null);
-
-  const handleSetMarkers = (places: PlaceData[]) => {
-    setMarkers(places);
-  };
 
   const handleOnClickMarker = (place: PlaceInfoData) => {
     setSelectMarker(place);
     setShowInfoCard(true);
-  };
-
-  const handleToggleShowInfoCard = (state: boolean) => {
-    setShowInfoCard(state);
   };
 
   const handleResetSelectMarker = () => {
@@ -51,6 +44,10 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({
     handleSetIsShowPlaceModal(false);
   };
 
+  const handleSetText = (t: string) => {
+    setText(t);
+  };
+
   useEffect(() => {
     if (isShowPlaceModal) {
       placeModalRef.current?.showModal();
@@ -58,6 +55,66 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({
       placeModalRef.current?.close();
     }
   }, [isShowPlaceModal]);
+
+  useEffect(() => {
+    if (!map) return;
+    const ps = new kakao.maps.services.Places();
+
+    if (text !== "") {
+      try {
+        ps.keywordSearch(text + " 음식점", (datas, status) => {
+          if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            // setZeroResultToast(true);
+          }
+          if (status === kakao.maps.services.Status.OK) {
+            const bounds = new kakao.maps.LatLngBounds();
+            const newMarkers: PlaceInfoData[] = [];
+
+            datas.map((data) => {
+              const {
+                address_name: addressName,
+                category_name: categoryName,
+                id: kakaoPlaceId,
+                phone,
+                place_name: placeName,
+                place_url: placeUrl,
+                road_address_name: roadAddressName,
+                x,
+                y,
+              } = data;
+
+              const categoryArr = categoryName.split(">");
+              const category =
+                categoryArr.length === 1
+                  ? categoryArr[0].trim()
+                  : categoryArr[1].trim();
+
+              newMarkers.push({
+                addressName,
+                categoryName: category,
+                kakaoPlaceId: Number(kakaoPlaceId),
+                phone,
+                placeName,
+                placeUrl,
+                roadAddressName,
+                x: Number(x),
+                y: Number(y),
+              });
+
+              bounds.extend(new kakao.maps.LatLng(Number(y), Number(x)));
+            });
+
+            setMarkers(newMarkers);
+            map.setBounds(bounds);
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      handleResetSelectMarker();
+      setShowInfoCard(false);
+    }
+  }, [text]);
 
   return (
     <dialog id="placeModal" className="modal modal-bottom" ref={placeModalRef}>
@@ -79,13 +136,7 @@ const FindPlaceModal: React.FC<FindPlaceProps> = ({
             onCreate={setMap}
             onClick={handleClickMap}
           >
-            <SearchInput
-              map={map}
-              type="post"
-              handleSetMarkers={handleSetMarkers}
-              handleResetSelectMarker={handleResetSelectMarker}
-              handleToggleShowInfoCard={handleToggleShowInfoCard}
-            />
+            <SearchInput type="post" handleSetText={handleSetText} />
             {markers.map((place) => {
               const { kakaoPlaceId, x: lng, y: lat } = place;
               const isSelected =
