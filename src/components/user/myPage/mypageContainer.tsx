@@ -20,6 +20,7 @@ export default function MyPageContainer() {
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [reviews, setReivews] = useState<ReviewResponse[]>([]);
+  const [type, setType] = useState<string>("");
   const [follow, setFollow] = useState({ followers: [], followings: [] });
   const naviagte = useNavigate();
 
@@ -31,8 +32,18 @@ export default function MyPageContainer() {
     setIsToken(!isToken);
     naviagte("/");
   };
-  const isClickModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const isClickDeleteModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
+    setType("delete");
+    setIsModal(!isModal);
+  };
+  const isClickFollowersModal = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setType("followers");
     setIsModal(!isModal);
   };
   const isClickDelete = (
@@ -60,12 +71,13 @@ export default function MyPageContainer() {
     getFollower(setFollow);
     getFollowing(setFollow);
   }, [setReivews, setFollow]);
-
+  console.log(follow);
   return (
     <MyPagePresent
       profile={profile}
       isClickLogout={isClickLogout}
-      isClickModal={isClickModal}
+      isClickDeleteModal={isClickDeleteModal}
+      isClickFollowersModal={isClickFollowersModal}
       isModal={isModal}
       isClickDelete={isClickDelete}
       buttonDisabled={buttonDisabled}
@@ -73,6 +85,7 @@ export default function MyPageContainer() {
       handleChange={handleChange}
       reviews={reviews}
       follow={follow}
+      type={type}
     />
   );
 }
