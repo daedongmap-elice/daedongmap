@@ -72,3 +72,12 @@ export interface ReviewResponse {
   createdAt: string | undefined;
   updatedAt: string;
 }
+
+export interface ModalProps {
+  isClickModal?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isClickDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  buttonDisabled?: boolean;
+  type?: string;
+  follow?: any;
+}

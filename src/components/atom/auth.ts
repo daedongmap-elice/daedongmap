@@ -1,8 +1,7 @@
 import { UserInfo } from "@/type/types";
-import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-export const profileAtom = atom<UserInfo>({
+export const profileAtom = atomWithStorage<UserInfo>("profile", {
   profileImage: "",
   nickName: "",
   status: "",

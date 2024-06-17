@@ -6,7 +6,6 @@ import {
   getFollowing,
   getFollower,
   Logout,
-  getProfile,
   getReview,
 } from "@/api/userApi";
 
@@ -16,11 +15,12 @@ import { useAtom } from "jotai";
 import { isTokenAtom, profileAtom } from "@/components/atom/auth";
 
 export default function MyPageContainer() {
-  const [profile, setprofile] = useAtom<UserInfo>(profileAtom);
+  const [profile] = useAtom<UserInfo>(profileAtom);
   const [isToken, setIsToken] = useAtom<boolean>(isTokenAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [reviews, setReivews] = useState<ReviewResponse[]>([]);
+  const [type, setType] = useState<string>("");
   const [follow, setFollow] = useState({ followers: [], followings: [] });
   const naviagte = useNavigate();
 
@@ -32,8 +32,18 @@ export default function MyPageContainer() {
     setIsToken(!isToken);
     naviagte("/");
   };
-  const isClickModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const isClickDeleteModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
+    setType("delete");
+    setIsModal(!isModal);
+  };
+  const isClickFollowersModal = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setType("followers");
     setIsModal(!isModal);
   };
   const isClickDelete = (
@@ -57,17 +67,17 @@ export default function MyPageContainer() {
   }, [message]);
 
   useEffect(() => {
-    getProfile(setprofile);
     getReview(setReivews);
     getFollower(setFollow);
     getFollowing(setFollow);
-  }, [setprofile, setReivews, setFollow]);
-
+  }, [setReivews, setFollow]);
+  console.log(follow);
   return (
     <MyPagePresent
       profile={profile}
       isClickLogout={isClickLogout}
-      isClickModal={isClickModal}
+      isClickDeleteModal={isClickDeleteModal}
+      isClickFollowersModal={isClickFollowersModal}
       isModal={isModal}
       isClickDelete={isClickDelete}
       buttonDisabled={buttonDisabled}
@@ -75,6 +85,7 @@ export default function MyPageContainer() {
       handleChange={handleChange}
       reviews={reviews}
       follow={follow}
+      type={type}
     />
   );
 }

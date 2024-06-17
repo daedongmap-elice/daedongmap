@@ -17,6 +17,7 @@ import KakaoOauth from "@/components/user/login/loginKakao";
 import NaverOAuth from "@/components/user/login/loginNaver";
 import GoogleOauth from "@/components/user/login/loginGoogle";
 import SearchMap from "@/pages/map/SearchMap";
+import FollowModal from "@/components/user/myPage/followModal";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
               <Route path="/mypage" element={<MyPageContainer />} />
               <Route path="/userpage" element={<UserPageContainer />} />
               <Route path="/editprofile" element={<EditProfileContainer />} />
+              <Route path="followers" element={<FollowModal />} />
             </Routes>
           </PreLogin>
         ),

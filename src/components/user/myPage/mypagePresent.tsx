@@ -2,12 +2,18 @@ import { UserInfo, ReviewResponse } from "@/type/types";
 import { AiOutlineMore } from "react-icons/ai";
 import { RiLink } from "react-icons/ri";
 import ReviewGallery from "@/pages/review/ReviewGallery";
-import DeleteUserModal from "./deleteUser";
+import UserModal from "./userModal";
+import { Link } from "react-router-dom";
 
 interface MypageProps {
   profile: UserInfo;
   isClickLogout?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  isClickModal?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isClickDeleteModal?: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  isClickFollowersModal?: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => void;
   isModal?: boolean;
   isClickDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   buttonDisabled?: boolean;
@@ -17,12 +23,14 @@ interface MypageProps {
   isClickFollow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onClickEditButton?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   follow?: any;
+  type: string;
 }
 
 const MyPagePresent: React.FC<MypageProps> = ({
   profile,
   isClickLogout,
-  isClickModal,
+  isClickDeleteModal,
+  isClickFollowersModal,
   isModal,
   isClickDelete,
   handleChange,
@@ -32,6 +40,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
   isClickFollow,
   onClickEditButton,
   follow,
+  type,
 }) => {
   return (
     <>
@@ -58,7 +67,7 @@ const MyPagePresent: React.FC<MypageProps> = ({
                 </li>
                 <button
                   className="btn btn-outline btn-error mx-auto text-center"
-                  onClick={isClickModal}
+                  onClick={isClickDeleteModal}
                 >
                   회원탈퇴
                 </button>
@@ -81,15 +90,21 @@ const MyPagePresent: React.FC<MypageProps> = ({
                 <span className="mr-1 text-xs text-subGray">게시물</span>
               </div>
               <div className="flex flex-col">
-                <p className="text-center text-lg font-semibold">
-                  {follow?.followers.length}
-                </p>
-                <span className="mr-1 text-xs text-subGray">팔로워</span>
+                <Link
+                  className="mr-1 text-xs text-subGray"
+                  to="/followers"
+                  onClick={isClickFollowersModal}
+                >
+                  <p className="text-center text-lg font-semibold text-black">
+                    {follow?.followers.length}
+                  </p>
+                  팔로워
+                </Link>
               </div>
               <div className="flex flex-col">
-                <p className="text-center text-lg font-semibold">
+                <span className="text-center text-lg font-semibold">
                   {follow?.followings.length}
-                </p>
+                </span>
                 <span className="mr-1 text-xs text-subGray">팔로잉</span>
               </div>
             </div>
@@ -132,11 +147,12 @@ const MyPagePresent: React.FC<MypageProps> = ({
           </button>
         )}
         {isModal && (
-          <DeleteUserModal
+          <UserModal
             isClickDelete={isClickDelete}
-            isClickModal={isClickModal}
+            isClickModal={isClickDeleteModal}
             handleChange={handleChange}
             buttonDisabled={buttonDisabled}
+            type={type}
           />
         )}
         <hr className="mt-5 w-full border-t border-solid border-subLightGray" />
