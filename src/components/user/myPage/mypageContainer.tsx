@@ -6,7 +6,6 @@ import {
   getFollowing,
   getFollower,
   Logout,
-  getProfile,
   getReview,
 } from "@/api/userApi";
 
@@ -16,7 +15,7 @@ import { useAtom } from "jotai";
 import { isTokenAtom, profileAtom } from "@/components/atom/auth";
 
 export default function MyPageContainer() {
-  const [profile, setprofile] = useAtom<UserInfo>(profileAtom);
+  const [profile] = useAtom<UserInfo>(profileAtom);
   const [isToken, setIsToken] = useAtom<boolean>(isTokenAtom);
   const [isModal, setIsModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -57,11 +56,10 @@ export default function MyPageContainer() {
   }, [message]);
 
   useEffect(() => {
-    getProfile(setprofile);
     getReview(setReivews);
     getFollower(setFollow);
     getFollowing(setFollow);
-  }, [setprofile, setReivews, setFollow]);
+  }, [setReivews, setFollow]);
 
   return (
     <MyPagePresent
